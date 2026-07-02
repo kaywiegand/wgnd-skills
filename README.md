@@ -59,3 +59,8 @@ project-case/
   scripts/                     ← build scripts (slides.yaml → JSON/HTML/MD, mechanical)
   templates/                   ← shared slide/hub design (HTML/CSS)
 ```
+
+---
+
+**Last updated:** 2026-07-02
+**Next review:** whenever a skill's modes/paths change, or 2026-10-02, whichever comes first
