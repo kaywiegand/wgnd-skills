@@ -25,15 +25,20 @@ Part of the `wgnd-*` toolchain — pairs with [wgnd-scaffolding](https://github.
 ## Setup
 
 These are [Claude Code](https://docs.claude.com/claude-code) skills, plain markdown instruction files.
-Clone this repo and point Claude Code at it — e.g. symlink into a workspace's `skills/` directory:
+Clone this repo and register each skill as a slash command — point `~/.claude/commands/*.md`
+directly at the skill files, no symlink needed:
 
 ```bash
 git clone git@github.com:kaywiegand/wgnd-skills.git
-ln -s "$(pwd)/wgnd-skills" /path/to/workspace/skills
+ln -s "$(pwd)/wgnd-skills/project-init/project-init.md" ~/.claude/commands/project-init.md
+ln -s "$(pwd)/wgnd-skills/project-review/project-review.md" ~/.claude/commands/project-review.md
+ln -s "$(pwd)/wgnd-skills/project-case/project-case.md" ~/.claude/commands/project-case.md
 ```
 
-Each skill resolves a `WORKSPACE_ROOT` (the workspace it's invoked from) and, where relevant, a
-`SCAFFOLDING_ROOT` (the `wgnd-scaffolding` checkout) at runtime from context — no hardcoded paths.
+Each skill resolves a `SKILL_ROOT` (the folder containing the skill file itself, for its own
+`scripts/`/`templates/`) and, where genuinely external, a `WORKSPACE_ROOT` (the workspace it's
+invoked from) and `SCAFFOLDING_ROOT` (the `wgnd-scaffolding` checkout) at runtime from context —
+no hardcoded paths.
 
 ## Structure
 
