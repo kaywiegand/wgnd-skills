@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<!--
+  SLIDES TEMPLATE — Workspace Portfolio
+  ======================================
+  Basis für /project-case (generate_html_from_json.py).
+  Enthält NUR Gerüst: Reveal.js CDN · Slide-Theme-Link · JS-Navigation.
+  KEIN inline-CSS und KEIN Projektinhalt.
+
+  Single source of truth für das Slide-Design:
+    public/css/slides.css                              (Theme + alle Komponenten)
+    docs/portfolio/templates/styleguide.html           (visuelle Referenz aller Bausteine)
+
+  Platzhalter (vom Generator ersetzt): der Projekt-Titel im title-Tag
+  und der Slides-Platzhalter-Kommentar im body. (Token hier bewusst nicht
+  literal genannt, damit der naive String-Replace nur den body trifft.)
+-->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ PROJECT_TITLE }}</title>
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/theme/white.css">
+  <link rel="stylesheet" href="css/slides.css?v={{ CSS_VERSION }}">
+</head>
+<body>
+<div class="reveal">
+<div class="slides">
+<!-- SLIDES_PLACEHOLDER -->
+</div><!-- /slides -->
+</div><!-- /reveal -->
+
+<div id="nav-prev" class="nav-arrow" title="Zurück">←</div>
+<div id="slideticks"></div>
+<div id="nav-next" class="nav-arrow" title="Weiter">→</div>
+<div id="progress-track"><div id="progress-fill"></div></div>
+
+<script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  controls: false,
+  progress: false,
+  transition: 'slide',
+  transitionSpeed: 'fast',
+  margin: 0.07,
+  width: 1280,
+  height: 720
+});
+
+// Custom bottom navigation: slide ticks + progress bar
+const slides = Array.from(document.querySelectorAll('.reveal .slides > section'));
+const total = slides.length;
+const progressFill = document.getElementById('progress-fill');
+const tickContainer = document.getElementById('slideticks');
+
+// Detect chapter-start slides via data-chapter-label attribute
+const chapterStarts = {};
+slides.forEach((section, i) => {
+  if (section.hasAttribute('data-chapter-label')) {
+    chapterStarts[i] = i === 0 ? 'Titel' : section.dataset.chapterLabel;
+  }
+});
+
+// Build tick elements
+for (let i = 0; i < total; i++) {
+  const wrap = document.createElement('div');
+  wrap.className = 'stk-wrap';
+  if (chapterStarts.hasOwnProperty(i)) {
+    wrap.classList.add('stk-chapter');
+    const lbl = document.createElement('span');
+    lbl.className = 'stk-ch-label';
+    lbl.textContent = chapterStarts[i];
+    wrap.appendChild(lbl);
+  }
+  const line = document.createElement('span');
+  line.className = 'stk';
+  const num = document.createElement('span');
+  num.className = 'stk-num';
+  num.textContent = i + 1;
+  wrap.appendChild(line);
+  wrap.appendChild(num);
+  tickContainer.appendChild(wrap);
+}
+
+const ticks = tickContainer.querySelectorAll('.stk-wrap');
+
+// Click a tick (or its number) to jump straight to that slide
+ticks.forEach((t, i) => t.addEventListener('click', () => Reveal.slide(i)));
+
+// Prev / next arrows flanking the tick bar
+const prevArrow = document.getElementById('nav-prev');
+const nextArrow = document.getElementById('nav-next');
+prevArrow.addEventListener('click', () => Reveal.prev());
+nextArrow.addEventListener('click', () => Reveal.next());
+
+function updateNav() {
+  const idx = Reveal.getState().indexh;
+  ticks.forEach((t, i) => {
+    t.classList.remove('stk-past', 'stk-current');
+    if (i === idx) t.classList.add('stk-current');
+    else if (i < idx) t.classList.add('stk-past');
+  });
+  // Invert nav colors on dark title / closing slides
+  const current = slides[idx];
+  document.body.classList.toggle('nav-invert', !!current && current.classList.contains('title-slide'));
+  // Only show the arrow that can actually navigate
+  prevArrow.classList.toggle('nav-hidden', idx === 0);
+  nextArrow.classList.toggle('nav-hidden', idx === total - 1);
+  requestAnimationFrame(() => {
+    const track = document.getElementById('progress-track');
+    const tick = ticks[idx];
+    if (!track || !tick) return;
+    const stkLine = tick.querySelector('.stk');
+    if (!stkLine) return;
+    const trackRect = track.getBoundingClientRect();
+    const stkRect = stkLine.getBoundingClientRect();
+    const centerX = stkRect.left + stkRect.width / 2;
+    const pct = trackRect.width > 0
+      ? Math.max(0, Math.min(100, (centerX - trackRect.left) / trackRect.width * 100))
+      : 0;
+    progressFill.style.width = pct + '%';
+  });
+}
+
+Reveal.on('slidechanged', updateNav);
+Reveal.on('ready', updateNav);
+updateNav();
+</script>
+</body>
+</html>

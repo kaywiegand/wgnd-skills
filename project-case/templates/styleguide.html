@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<!--
+  DESIGN-SYSTEM STYLEGUIDE — eigenständige Referenzseite, NICHT Teil der Pipeline.
+  Zeigt jede Slide- und Hub-Komponente einzeln mit Label + CSS-Klasse (neutraler Inhalt).
+  Self-contained: direkt im Browser öffenbar.
+
+  WICHTIG — Single Source of Truth:
+    Das SLIDE-THEME kommt per <link> direkt aus slides.css (selber Ordner) —
+    keine Kopie mehr. Bei Design-Änderungen nur slides.css editieren, diese
+    Seite zieht es beim Neuladen automatisch nach. Klassen-Namen hier = exakt
+    das, was generate_html_from_json.py ausgibt.
+-->
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design-System Styleguide — Portfolio-Projekte</title>
+  <link rel="stylesheet" href="slides.css">
+  <style>
+    /* SLIDE-THEME kommt jetzt per <link> oben aus slides.css (selber Ordner) */
+
+    /* ===== STYLEGUIDE-CHROME (nicht Teil von slides.css) ===== */
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #eef2f6; color: #333; line-height: 1.6; }
+    .sr-wrap { max-width: 1000px; margin: 0 auto; padding: 44px 24px 100px; }
+    .sr-title { font-size: 1.9rem; font-weight: 700; color: var(--color-primary); }
+    .sr-intro { color: #667; margin: 6px 0 8px; font-size: 0.95rem; }
+    .sr-cat { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 44px 0 6px; border-top: 1px solid #d6e2ec; padding-top: 30px; }
+    .sr-demo { background: #fff; border: 1px solid #dde8f0; border-radius: 8px; margin: 14px 0; overflow: hidden; }
+    .sr-bar { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; background: #f5f9fc; border-bottom: 1px solid #e3edf4; padding: 8px 14px; }
+    .sr-bar b { color: var(--color-primary); font-size: 0.84rem; }
+    .sr-bar code { color: var(--color-accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.76rem; }
+    .sr-stage { padding: 20px 18px; }
+    .sr-stage.flush { padding: 0; }
+    .sr-stage.dark { background: var(--color-primary); padding: 24px 18px; }
+
+    /* ── Hub-Elemente (aus index-template.html) ── */
+    .hub-header { background: var(--color-primary); color: #fff; padding: 2.4rem 2rem; }
+    .hub-header h1 { font-size: 2rem; font-weight: 700; margin: 0 0 0.35rem; }
+    .hub-header .tagline { font-size: 1rem; opacity: 0.85; margin: 0 0 0.15rem; }
+    .hub-header .subtitle { font-size: 1rem; opacity: 0.85; margin: 0; }
+    .hub-kpi-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 1.4rem; }
+    .hub-kpi { background: #fff; border: 1px solid #dde8f0; border-radius: var(--radius-card); padding: 10px 18px; text-align: center; min-width: 110px; }
+    .hub-kpi .v { font-size: 1.5rem; font-weight: 700; color: var(--color-primary); }
+    .hub-kpi .l { font-size: 0.68rem; color: #888; letter-spacing: 0.04em; margin-top: 2px; }
+    .hub-kpi.positive .v { color: var(--color-positive); }  .hub-kpi.negative .v { color: var(--color-negative); }
+    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; color: var(--color-accent); margin-bottom: 0.5rem; }
+    .hub-h2 { font-size: 1.35rem; font-weight: 700; color: var(--color-primary); margin: 0 0 0.5rem; }
+    .section-intro { font-size: 0.92rem; color: #555; margin-bottom: 0.5rem; }
+    .view-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+    .view-card { background: #fff; border: 1px solid #dde8f0; padding: 22px; border-top: 4px solid var(--color-accent); border-radius: var(--radius-card); display: flex; flex-direction: column; }
+    .view-label { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 8px; color: var(--color-accent); }
+    .view-card h3 { font-size: 1.1rem; color: var(--color-primary); margin: 0 0 6px; }
+    .view-desc { font-size: 0.85rem; color: #555; margin-bottom: 14px; flex-grow: 1; }
+    .view-meta { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
+    .view-time { font-size: 0.75rem; color: #888; font-weight: 500; }
+    .view-badge { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-box); background: #e6f3ff; color: #0066cc; }
+
+    /* ── Navigation-Demo (statisch) ── */
+    .nav-demo-wrap { background: #f0f4f8; padding: 24px 0 0; border-radius: 0 0 6px 6px; }
+    .nav-demo-slide { background: #fff; margin: 0 24px 0; height: 60px; border-radius: var(--radius-card); display: flex; align-items: center; justify-content: center; color: #bbb; font-size: 0.78rem; margin-bottom: 16px; }
+    .demo-ticks { display: flex; align-items: flex-end; justify-content: space-between; padding: 0 28px 10px; height: 58px; }
+    .demo-stk-wrap { display: flex; flex-direction: column; align-items: center; gap: 3px; flex-shrink: 0; width: 40px; }
+    .demo-stk-ch-label { font-size: 8px; color: transparent; white-space: nowrap; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-weight: 600; letter-spacing: 0.04em; align-self: flex-start; margin-left: 50%; height: 11px; line-height: 11px; }
+    .demo-stk { width: 1px; height: 11px; background: rgba(26,58,92,0.2); border-radius: 1px; transition: all 0.18s; }
+    .demo-stk-num { font-size: 9px; line-height: 1; color: rgba(26,58,92,0.3); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; font-variant-numeric: tabular-nums; }
+    .demo-stk-wrap.is-chapter .demo-stk-ch-label { color: rgba(26,58,92,0.35); }
+    .demo-stk-wrap.is-chapter .demo-stk { height: 28px; }
+    .demo-stk-wrap.is-past .demo-stk { background: rgba(26,58,92,0.45); }
+    .demo-stk-wrap.is-past .demo-stk-num { color: rgba(26,58,92,0.45); }
+    .demo-stk-wrap.is-current .demo-stk { width: 2px; height: 30px; background: var(--color-primary); }
+    .demo-stk-wrap.is-current .demo-stk-num { color: var(--color-primary); font-weight: 700; }
+    .demo-stk-wrap.is-chapter.is-current .demo-stk-ch-label { color: var(--color-primary); font-weight: 700; }
+    .demo-progress { height: 8px; background: rgba(26,58,92,0.1); margin: 0; }
+    .demo-progress-fill { height: 100%; background: var(--color-primary); }
+    /* prev/next arrows flanking the tick bar */
+    .demo-navrow { display: flex; align-items: flex-end; }
+    .demo-navrow .demo-ticks { flex: 1; }
+    .demo-arrow { display: flex; align-items: flex-end; padding: 0 10px 10px; font-size: 18px; line-height: 1; color: rgba(26,58,92,0.4); cursor: pointer; user-select: none; }
+    .demo-arrow.is-hidden { visibility: hidden; }
+    .demo-hover .demo-stk { background: rgba(26,58,92,0.6); }      /* hover state shown statically */
+    .demo-hover .demo-stk-num { color: rgba(26,58,92,0.7); }
+    /* inverted variant — title / closing slide */
+    .nav-demo-wrap.dark { background: var(--color-primary); }
+    .nav-demo-wrap.dark .nav-demo-slide { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
+    .nav-demo-wrap.dark .demo-stk { background: rgba(255,255,255,0.4); }
+    .nav-demo-wrap.dark .demo-stk-num { color: rgba(255,255,255,0.55); }
+    .nav-demo-wrap.dark .demo-stk-wrap.is-current .demo-stk { background: #fff; }
+    .nav-demo-wrap.dark .demo-stk-wrap.is-current .demo-stk-num { color: #fff; }
+    .nav-demo-wrap.dark .demo-stk-wrap.is-chapter .demo-stk-ch-label { color: rgba(255,255,255,0.55); }
+    .nav-demo-wrap.dark .demo-stk-wrap.is-chapter.is-current .demo-stk-ch-label { color: #fff; }
+    .nav-demo-wrap.dark .demo-arrow { color: rgba(255,255,255,0.6); }
+    .nav-demo-wrap.dark .demo-progress { background: rgba(255,255,255,0.2); }
+    .nav-demo-wrap.dark .demo-progress-fill { background: #fff; }
+
+    /* ── Farb-Palette ── */
+    .palette-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 10px; }
+    .swatch { border-radius: var(--radius-card); overflow: hidden; border: 1px solid rgba(0,0,0,0.06); }
+    .swatch-color { height: 60px; }
+    .swatch-info { padding: 8px 10px; background: #fff; }
+    .swatch-name { font-size: 0.78rem; font-weight: 600; color: #333; }
+    .swatch-hex { font-size: 0.72rem; color: #888; font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 1px; }
+    .swatch-var { font-size: 0.68rem; color: var(--color-accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 2px; }
+    .palette-group-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin: 16px 0 6px; }
+  </style>
+</head>
+<body>
+<div class="sr-wrap">
+
+  <div class="sr-title">Design-System Styleguide</div>
+  <p class="sr-intro">Jede Komponente einzeln, mit Label + CSS-Klasse. Die Klassennamen entsprechen
+     exakt dem, was <code>generate_html_from_json.py</code> ausgibt; das Theme kommt per
+     <code>&lt;link&gt;</code> direkt aus <code>slides.css</code> (selber Ordner) — jede Projekt-Kopie
+     wird bei <code>make portfolio</code> von hier aus aktualisiert.</p>
+
+  <!-- ═══════════════ HUB-ELEMENTE ═══════════════ -->
+  <div class="sr-cat">Hub-Elemente (index.html)</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Header</b> <code>.hub-header · h1 · .tagline · .subtitle · .hub-kpi-row</code></div>
+    <div class="sr-stage flush">
+      <header class="hub-header">
+        <h1>Projekt-Titel</h1>
+        <p class="tagline">Eine Zeile Untertitel — worum es geht</p>
+        <p class="subtitle">Kategorie · Stack | Zeitraum</p>
+        <div class="hub-kpi-row">
+          <div class="hub-kpi"><div class="v">00,0 M</div><div class="l">Kennzahl A</div></div>
+          <div class="hub-kpi negative"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
+          <div class="hub-kpi positive"><div class="v">00,0 s</div><div class="l">Kennzahl C</div></div>
+        </div>
+      </header>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Text-Block</b> <code>.section-label · .hub-h2 · .section-intro</code></div>
+    <div class="sr-stage">
+      <div class="section-label">Caption / Kicker</div>
+      <div class="hub-h2">Abschnitts-Titel</div>
+      <p class="section-intro"><strong>Label:</strong> Beispiel-Copy für einen Absatz mit hervorgehobenen Schlüsselbegriffen.</p>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Info-Karten</b> <code>.view-grid · .view-card · .view-label · .view-badge</code></div>
+    <div class="sr-stage">
+      <div class="view-grid">
+        <div class="view-card">
+          <div class="view-label">Caption A</div>
+          <h3>Karten-Titel A</h3>
+          <p class="view-desc">Kurze Beschreibung in ein bis zwei Zeilen.</p>
+          <div class="view-meta"><span class="view-time">⏱ 00 Min</span><span class="view-badge">Badge</span></div>
+        </div>
+        <div class="view-card">
+          <div class="view-label">Caption B</div>
+          <h3>Karten-Titel B</h3>
+          <p class="view-desc">Kurze Beschreibung in ein bis zwei Zeilen.</p>
+          <div class="view-meta"><span class="view-time">⏱ 00 Min</span><span class="view-badge">Badge</span></div>
+        </div>
+        <div class="view-card">
+          <div class="view-label">Caption C</div>
+          <h3>Karten-Titel C</h3>
+          <p class="view-desc">Kurze Beschreibung in ein bis zwei Zeilen.</p>
+          <div class="view-meta"><span class="view-time">⏱ 00 Min</span><span class="view-badge">Badge</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE-BAUSTEINE ═══════════════ -->
+  <div class="sr-cat">Slide-Bausteine — Klassen = Generator-Output</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Navigation — Normal-Slide</b> <code>.nav-arrow · #slideticks · .stk-wrap (.stk-chapter/.stk-past/.stk-current/:hover) · #progress-track</code> — Ticks + Zahlen klickbar (Sprung), große Klickfläche, leichter Hover</div>
+    <div class="sr-stage flush">
+      <div class="nav-demo-wrap">
+        <div class="nav-demo-slide">Slide-Inhalt (Mitte: ← und → sichtbar)</div>
+        <div class="demo-navrow">
+          <span class="demo-arrow" title="zurück">←</span>
+          <div class="demo-ticks">
+            <div class="demo-stk-wrap is-chapter is-past"><span class="demo-stk-ch-label">Titel</span><span class="demo-stk"></span><span class="demo-stk-num">1</span></div>
+            <div class="demo-stk-wrap is-past"><span class="demo-stk-ch-label"></span><span class="demo-stk"></span><span class="demo-stk-num">2</span></div>
+            <div class="demo-stk-wrap is-chapter is-current"><span class="demo-stk-ch-label">Kapitel A</span><span class="demo-stk"></span><span class="demo-stk-num">3</span></div>
+            <div class="demo-stk-wrap demo-hover"><span class="demo-stk-ch-label"></span><span class="demo-stk"></span><span class="demo-stk-num">4</span></div>
+            <div class="demo-stk-wrap is-chapter"><span class="demo-stk-ch-label">Kapitel B</span><span class="demo-stk"></span><span class="demo-stk-num">5</span></div>
+            <div class="demo-stk-wrap"><span class="demo-stk-ch-label"></span><span class="demo-stk"></span><span class="demo-stk-num">6</span></div>
+            <div class="demo-stk-wrap is-chapter"><span class="demo-stk-ch-label">Ende</span><span class="demo-stk"></span><span class="demo-stk-num">7</span></div>
+          </div>
+          <span class="demo-arrow" title="weiter">→</span>
+        </div>
+        <div class="demo-progress"><div class="demo-progress-fill" style="width: 35%"></div></div>
+      </div>
+    </div>
+    <div class="sr-bar" style="border-top:1px solid #e3edf4;border-bottom:none;">Tick 4 zeigt den <b>Hover-Zustand</b> (Marker + Zahl dunkler).</div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Navigation — invertiert (Title / Closing)</b> <code>body.nav-invert · .nav-arrow.nav-hidden</code> — hell auf dunkel; auf der ersten Slide nur <b>→</b></div>
+    <div class="sr-stage dark flush">
+      <div class="nav-demo-wrap dark">
+        <div class="nav-demo-slide">Title-Slide (Slide 1 — nur → navigierbar)</div>
+        <div class="demo-navrow">
+          <span class="demo-arrow is-hidden" title="zurück">←</span>
+          <div class="demo-ticks">
+            <div class="demo-stk-wrap is-chapter is-current"><span class="demo-stk-ch-label">Titel</span><span class="demo-stk"></span><span class="demo-stk-num">1</span></div>
+            <div class="demo-stk-wrap is-past"><span class="demo-stk-ch-label"></span><span class="demo-stk"></span><span class="demo-stk-num">2</span></div>
+            <div class="demo-stk-wrap is-chapter"><span class="demo-stk-ch-label">Kapitel A</span><span class="demo-stk"></span><span class="demo-stk-num">3</span></div>
+            <div class="demo-stk-wrap"><span class="demo-stk-ch-label"></span><span class="demo-stk"></span><span class="demo-stk-num">4</span></div>
+            <div class="demo-stk-wrap is-chapter"><span class="demo-stk-ch-label">Ende</span><span class="demo-stk"></span><span class="demo-stk-num">5</span></div>
+          </div>
+          <span class="demo-arrow" title="weiter">→</span>
+        </div>
+        <div class="demo-progress"><div class="demo-progress-fill" style="width: 6%"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Title-Slide</b> <code>.title-slide · h1 · .sub · .kpi-row · .kpi (.red/.amber/.green) · .meta</code></div>
+    <div class="sr-stage dark flush"><div class="reveal">
+      <div class="title-slide">
+        <h1>Projekt-Titel</h1>
+        <div class="sub">Tagline-Zeile<br>Zeitraum · Umfang · Stack</div>
+        <div class="kpi-row">
+          <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
+          <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
+          <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
+        </div>
+        <div class="meta">github.com/user/repo</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>End-Slide</b> <code>.title-slide · h1 · .sub · .closing-links · .c-link — letzte Slide</code></div>
+    <div class="sr-stage dark flush"><div class="reveal">
+      <div class="title-slide">
+        <h1>Projekt-Titel</h1>
+        <div class="sub">Der Bogen zurück zur Ausgangsfrage</div>
+        <div class="closing-links">
+          <a href="#" class="c-link">GitHub-Repo</a>
+          <a href="#" class="c-link">Dashboard-Prototype</a>
+          <a href="#" class="c-link">Netzwerk-Karte</a>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Slide-Titel</b> <code>.slide-kicker (Kapitel) · h2 · .subline (subtitle)</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <span class="slide-kicker">Kapitel-Titel</span>
+      <h2>Abschnitts-Überschrift</h2>
+      <p class="subline">Optionale Subline — präzisiert das Thema der Folie in einem Satz.</p>
+      <p>Fließtext unter der Überschrift — Standardabsatz im Slide-Kontext.</p>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Inhalt-Slide (zwei Spalten)</b> <code>.agenda-cols · .agenda-head (Caption+Titel+Subline) · .agenda-list · .ag-item (.ag-num/.ag-label) · .ag-sub</code> — Content-Typ <code>agenda</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="agenda-cols">
+        <div class="agenda-head">
+          <span class="slide-kicker">Inhalt</span>
+          <h2>Inhalt</h2>
+          <p class="subline">Eine Zeile Untertitel zum Überblick.</p>
+        </div>
+        <div class="agenda-list">
+          <div class="ag-item"><span class="ag-num">1</span><span class="ag-label">Erstes Kapitel</span></div>
+          <div class="ag-item"><span class="ag-num">2</span><span class="ag-label">Zweites Kapitel</span></div>
+          <div class="ag-sub">Optionaler Unterpunkt (grouped)</div>
+          <div class="ag-item"><span class="ag-num">3</span><span class="ag-label">Drittes Kapitel</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Metric-Row</b> <code>.metric-row · .metric (.good/.warn/.bad) · .val · .lbl</code> — Content-Typ <code>figures</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="metric-row">
+        <div class="metric"><div class="val">00,0</div><div class="lbl">Neutral</div></div>
+        <div class="metric good"><div class="val">00,0</div><div class="lbl">Gut (grün)</div></div>
+        <div class="metric warn"><div class="val">00,0</div><div class="lbl">Warnung (orange)</div></div>
+        <div class="metric bad"><div class="val">00,0</div><div class="lbl">Schlecht (rot)</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Fakt + Text</b> <code>.kv-list · .kv-row · .kv-fact (.green/.red/.amber) · .fv/.fl · .kv-text</code> — <code>figures_with_context</code> / <code>scenarios</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="kv-list">
+        <div class="kv-row">
+          <div class="kv-fact red"><div class="fv">00 %</div><div class="fl">Kennzahl A</div></div>
+          <div class="kv-text">Erklärender Kontext zur Kennzahl in ein bis zwei Zeilen.</div>
+        </div>
+        <div class="kv-row">
+          <div class="kv-fact green"><div class="fv">00,0 s</div><div class="fl">Kennzahl B</div></div>
+          <div class="kv-text">Zweite Zeile im gleichen Rhythmus.</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Myth-Busting</b> <code>.myth-rows · .myth-row-pair · .myth-assume (✗) · .myth-arrow · .myth-finding (✓)</code> — <code>contrasts</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="myth-rows">
+        <div class="myth-row-pair">
+          <div class="myth-assume">Verbreitete Annahme.</div>
+          <div class="myth-arrow">→</div>
+          <div class="myth-finding">Was die Daten tatsächlich zeigen.</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Statement-Callout</b> <code>blockquote.statement</code> — <code>statement</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <blockquote class="statement">Eine zentrale, zugespitzte Aussage als Akzent zwischen den Inhalten.</blockquote>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Steps</b> <code>.steps · .step · .sn (Nummer) · .sl (Label) · p</code> — <code>steps</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="steps">
+        <div class="step"><div class="sn">1</div><span class="sl">Schritt A</span><p>Kurzbeschreibung des Schritts.</p></div>
+        <div class="step"><div class="sn">2</div><span class="sl">Schritt B</span><p>Kurzbeschreibung des Schritts.</p></div>
+        <div class="step"><div class="sn">3</div><span class="sl">Schritt C</span><p>Kurzbeschreibung des Schritts.</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Evidence-Chain</b> <code>.ev-chain · .ev-step (.climax) · .ev-circle · .ev-body · .ev-arrow</code> — <code>sequence</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="ev-chain">
+        <div class="ev-step"><div class="ev-circle">1</div><div class="ev-body"><strong>Erster Schritt</strong><span>Beobachtung oder Befund.</span></div></div>
+        <div class="ev-arrow">↓</div>
+        <div class="ev-step"><div class="ev-circle">2</div><div class="ev-body"><strong>Zweiter Schritt</strong><span>Ableitung daraus.</span></div></div>
+        <div class="ev-arrow">↓</div>
+        <div class="ev-step climax"><div class="ev-circle">3</div><div class="ev-body"><strong>Ergebnis (climax)</strong><span>Die Schlussfolgerung — grün hervorgehoben.</span></div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Karten-Grid</b> <code>.pf-grid · .pf-card · .pf-title · ul</code> — <code>sections</code> / <code>tools</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="pf-grid">
+        <div class="pf-card"><div class="pf-title">Karte A</div><ul><li>Punkt eins</li><li>Punkt zwei</li></ul></div>
+        <div class="pf-card"><div class="pf-title">Karte B</div><ul><li>Punkt eins</li><li>Punkt zwei</li></ul></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Recommendations</b> <code>.reco-grid · .reco · .rn (Kategorie) · strong (Titel) · ul</code> — <code>recommendations</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="reco-grid">
+        <div class="reco"><div class="rn">R1 · Kategorie</div><strong>Empfehlungs-Titel</strong><ul><li>Begründung eins</li><li>Begründung zwei</li></ul></div>
+        <div class="reco"><div class="rn">R2 · Kategorie</div><strong>Empfehlungs-Titel</strong><ul><li>Begründung eins</li><li>Begründung zwei</li></ul></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Tabelle</b> <code>table · tr.hl · tr.hl-green</code> — <code>comparison_table</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <table>
+        <thead><tr><th>Spalte A</th><th>Spalte B</th><th>Spalte C</th></tr></thead>
+        <tbody>
+          <tr><td>Zeile</td><td>Wert</td><td>Wert</td></tr>
+          <tr class="hl"><td>Hervorgehoben</td><td>Wert</td><td>Wert</td></tr>
+          <tr class="hl-green"><td>Gewinner-Zeile</td><td>Wert</td><td>Wert</td></tr>
+        </tbody>
+      </table>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Chart (ein Bild/Slide)</b> <code>.chart-single · a.chart-tile > img · .caption</code> — <code>chart_refs</code>, full-size, kein Schatten</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="chart-single">
+        <a class="chart-tile" href="#"><div style="background:#dde8f0;height:220px;display:flex;align-items:center;justify-content:center;color:#9ab;font-size:0.8em;">PNG-Chart (voll Breite/Höhe)</div></a>
+        <div class="caption">Bildunterschrift / Quelle.</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Link-Grid</b> <code>.links-grid · a.quick-link</code> — <code>links</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="links-grid">
+        <a href="#" class="quick-link">Link A</a>
+        <a href="#" class="quick-link">Link B</a>
+        <a href="#" class="quick-link">Link C</a>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Boxen</b> <code>.box · .box.green · .box.amber · .box.red</code> — Hilfs-Hervorhebung</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="box">Standard-Box (blau) — neutrale Hervorhebung.</div>
+      <div class="box green">Grüne Box — positiv / bestätigend.</div>
+      <div class="box amber">Orange Box — Hinweis / Einschränkung.</div>
+      <div class="box red">Rote Box — Problem / Warnung.</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Zwei Spalten</b> <code>.cols · .w55 / .w45 · .w60 / .w40</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="cols">
+        <div class="w55"><p>Breitere Spalte (55%) — Hauptinhalt, Text oder Tabelle.</p></div>
+        <div class="w45"><div class="box">Schmalere Spalte (45%) — z. B. eine Box oder Kennzahl.</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ═══════════════ FARB-PALETTE ═══════════════ -->
+  <div class="sr-cat">Farb-Palette — für präzises Feedback</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Markenfarben</b> <code>:root CSS-Variablen</code></div>
+    <div class="sr-stage">
+      <div class="palette-group-label">Primärfarben</div>
+      <div class="palette-grid">
+        <div class="swatch"><div class="swatch-color" style="background: #1a3a5c;"></div><div class="swatch-info"><div class="swatch-name">Primary</div><div class="swatch-hex">#1a3a5c</div><div class="swatch-var">--color-primary</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #2E86AB;"></div><div class="swatch-info"><div class="swatch-name">Accent</div><div class="swatch-hex">#2E86AB</div><div class="swatch-var">--color-accent</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #27ae60;"></div><div class="swatch-info"><div class="swatch-name">Positive</div><div class="swatch-hex">#27ae60</div><div class="swatch-var">--color-positive</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #e67e22;"></div><div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#e67e22</div><div class="swatch-var">--color-warning</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #c0392b;"></div><div class="swatch-info"><div class="swatch-name">Negative</div><div class="swatch-hex">#c0392b</div><div class="swatch-var">--color-negative</div></div></div>
+      </div>
+
+      <div class="palette-group-label">Auf dunklem Hintergrund (Title / End Slide)</div>
+      <div class="palette-grid" style="background: #1a3a5c; padding: 12px; border-radius: 5px;">
+        <div class="swatch"><div class="swatch-color" style="background: #fff;"></div><div class="swatch-info"><div class="swatch-name">Text / KPI</div><div class="swatch-hex">#ffffff</div><div class="swatch-var">--color-title-text</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #4cd98a;"></div><div class="swatch-info"><div class="swatch-name">KPI Positiv</div><div class="swatch-hex">#4cd98a</div><div class="swatch-var">--color-kpi-positive</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #ff7a7a;"></div><div class="swatch-info"><div class="swatch-name">KPI Negativ</div><div class="swatch-hex">#ff7a7a</div><div class="swatch-var">--color-kpi-negative</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #ffc66d;"></div><div class="swatch-info"><div class="swatch-name">KPI Warning</div><div class="swatch-hex">#ffc66d</div><div class="swatch-var">--color-kpi-warning</div></div></div>
+      </div>
+
+      <div class="palette-group-label">Hintergründe &amp; Rahmen</div>
+      <div class="palette-grid">
+        <div class="swatch"><div class="swatch-color" style="background: #f5f9fc; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Card BG</div><div class="swatch-hex">#f5f9fc</div><div class="swatch-var">--bg-card</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #f0f7fb; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Box Default BG</div><div class="swatch-hex">#f0f7fb</div><div class="swatch-var">--bg-box-default</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #f2faf5; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Box Positive BG</div><div class="swatch-hex">#f2faf5</div><div class="swatch-var">--bg-box-positive</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #d0e8f5;"></div><div class="swatch-info"><div class="swatch-name">Border Card</div><div class="swatch-hex">#d0e8f5</div><div class="swatch-var">--border-card</div></div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>
