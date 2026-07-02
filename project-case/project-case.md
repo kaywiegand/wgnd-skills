@@ -5,9 +5,9 @@ description: Builds the portfolio case study for the current project. Extracts s
 Du baust den **Portfolio Case Study** für das **aktuelle Projekt**.
 Das Projekt ist das aktuelle Working-Directory von Claude Code.
 
-**Pfad-Konvention:** `WORKSPACE_ROOT` = das Wurzelverzeichnis des Workspace, in dem diese Skill läuft (enthält `CLAUDE.md`, `docs/`, `skills/`). Aus dem aktuellen Arbeitskontext ermitteln, nicht hart annehmen.
+**Pfad-Konvention:** `SKILL_ROOT` = der Ordner dieser Datei selbst (`.../wgnd-skills/project-case/`). Beim Lesen dieser Skill-Datei bereits bekannt — keine Herleitung nötig, kein Workspace-Bezug erforderlich.
 
-**Skill-eigene Ressourcen (alle im selben Ordner wie diese Datei, kein WORKSPACE_ROOT nötig):**
+**Skill-eigene Ressourcen (alle im selben Ordner wie diese Datei):**
 ```
 Case-Standards:       case-standards.md
 Checklist-Template:   portfolio-check-template.md
@@ -38,7 +38,7 @@ Die generischen Pipeline-Scripts liegen **im Skill**, nicht im Projekt — proje
 wiederverwendbar, da sie ausschließlich relativ zum aktuellen Arbeitsverzeichnis (`Path.cwd()`)
 arbeiten:
 ```
-{WORKSPACE_ROOT}/skills/project-case/scripts/
+{SKILL_ROOT}/scripts/
     ├─ archive_portfolio_artifacts.py
     ├─ generate_json_from_slides.py
     ├─ generate_html_from_json.py
@@ -307,7 +307,7 @@ Frage Kay: "Story-Phase abgeschlossen. Bitte einmal durchlesen — passt die Ker
 
 **Ablauf (nichts von Hand schreiben — die Scripts machen es):**
 ```bash
-SKILL_SCRIPTS={WORKSPACE_ROOT}/skills/project-case/scripts
+SKILL_SCRIPTS={SKILL_ROOT}/scripts
 uv run python $SKILL_SCRIPTS/archive_portfolio_artifacts.py    # Snapshot → public/archive/vN/
 uv run python $SKILL_SCRIPTS/generate_json_from_slides.py      # → public/json/storyline-*.json
 uv run python $SKILL_SCRIPTS/generate_html_from_json.py        # → public/{view}.html

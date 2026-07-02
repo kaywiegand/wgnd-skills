@@ -8,6 +8,9 @@
 > **Status:** 🟢 Operativ seit 2026-06-19
 > **Erstellt:** 2026-06-19 von Claude Haiku 4.5
 
+**Pfad-Konvention:** `SKILL_ROOT` = der Ordner dieser Datei selbst (`.../wgnd-skills/project-case/`).
+Beim Lesen dieser Datei bereits bekannt — keine Herleitung nötig, kein Workspace-Bezug erforderlich.
+
 ---
 
 ## Überblick
@@ -210,11 +213,11 @@ beschreiben ein nie erreichtes Ziel, nicht den Ist-Zustand).
 
 ### 2. Build-Scripts
 
-**Alle Scripts liegen im Skill** (`{WORKSPACE_ROOT}/skills/project-case/scripts/`),
+**Alle Scripts liegen im Skill** (`{SKILL_ROOT}/scripts/`),
 nicht im Projekt — sie arbeiten ausschließlich relativ zum aktuellen Arbeitsverzeichnis
 (`Path.cwd()`), also immer aus dem Projekt-Root heraus aufrufen:
 ```bash
-SKILL_SCRIPTS={WORKSPACE_ROOT}/skills/project-case/scripts
+SKILL_SCRIPTS={SKILL_ROOT}/scripts
 ```
 
 #### `generate_json_from_slides.py`
@@ -461,8 +464,8 @@ Zeigt Zeile + Fehlerursache (meist Einrückung oder fehlender Doppelpunkt).
 
 → Template-Pfad prüfen:
 ```bash
-ls {WORKSPACE_ROOT}/skills/project-case/templates/slides-template.html
-ls {WORKSPACE_ROOT}/skills/project-case/templates/slides.css
+ls {SKILL_ROOT}/templates/slides-template.html
+ls {SKILL_ROOT}/templates/slides.css
 # Beide müssen existieren
 ```
 
@@ -778,5 +781,5 @@ verschoben (statt wie ursprünglich geplant erst nach einer zweiten Session/Proj
 ---
 
 **Generated with ❤️ by Claude Haiku 4.5**
-**Skill-Ordner (Scripts + diese Doku):** `{WORKSPACE_ROOT}/skills/project-case/`
-**Erstprojekt (Referenz für das Schema):** `{WORKSPACE_ROOT}/zh-tram-flow/`
+**Skill-Ordner (Scripts + diese Doku):** `{SKILL_ROOT}`
+**Erstprojekt (Referenz für das Schema):** `zh-tram-flow` (im Workspace des Autors)
