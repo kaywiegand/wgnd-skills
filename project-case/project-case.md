@@ -69,9 +69,9 @@ Name, Zeitraum, Dashboard-Link). Details + Migrationsgeschichte: `build-pipeline
 **Wichtig — wo lebt was (übersteht Regenerierung):**
 - **Slide-Inhalt** (Titel, Text, welche Slide in welcher View) → `public/md/slides.yaml` (im Projekt)
 - **Fakten/Findings/Recommendations** → `public/md/portfolio.md` (im Projekt)
-- **Slide-Design** → `skills/project-case/templates/{slides-template.html,slides.css}` (global, für alle Portfolios identisch) — `public/css/slides.css` im Projekt ist nur die Build-Kopie, NIE von Hand editieren
-- **Hub-Layout** → `skills/project-case/templates/index-template.html` (global — reines Layout, kein Projekt-Content mehr)
-- **Mechanik** (JSON/HTML/MD generieren) → `skills/project-case/scripts/*.py` (global)
+- **Slide-Design** → `{SKILL_ROOT}/templates/{slides-template.html,slides.css}` (global, für alle Portfolios identisch) — `public/css/slides.css` im Projekt ist nur die Build-Kopie, NIE von Hand editieren
+- **Hub-Layout** → `{SKILL_ROOT}/templates/index-template.html` (global — reines Layout, kein Projekt-Content mehr)
+- **Mechanik** (JSON/HTML/MD generieren) → `{SKILL_ROOT}/scripts/*.py` (global)
 - NIE die generierten `public/*.html` direkt editieren — wird überschrieben.
 - Jeder Lauf **archiviert** zuerst nach `public/archive/vN/` → stabile Namen bleiben,
   Historie bleibt erhalten, Vergleich gegen Archiv möglich.
@@ -318,12 +318,12 @@ uv run python $SKILL_SCRIPTS/print_slide_matrix.py             # → public/md/s
 oder kurz: `make portfolio` (Makefile im Projekt kapselt die Skill-Pfade bereits)
 
 **Wichtig:**
-- `public/index.html` wird aus `skills/project-case/templates/index-template.html` generiert
+- `public/index.html` wird aus `{SKILL_ROOT}/templates/index-template.html` generiert
   (Layout, global) + `slides.yaml`s `hub`-Block (Inhalt, im Projekt) + `portfolio.md`
   (Name, Zeitraum, URLs).
 - Slide-**Inhalt** steckt in `public/md/slides.yaml` (im Projekt) — dort ändern, nicht in den
   generierten JSONs/HTMLs.
-- Slide-**Design** steckt in `skills/project-case/templates/{slides-template.html,slides.css}`
+- Slide-**Design** steckt in `{SKILL_ROOT}/templates/{slides-template.html,slides.css}`
   (global, für alle Portfolios identisch) — `public/css/slides.css` im Projekt ist nur die
   Build-Kopie.
 - Generierte `public/*.html` NIE direkt editieren — beim nächsten Lauf weg (aber im Archiv).

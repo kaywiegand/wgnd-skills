@@ -33,7 +33,7 @@ Slide als Faktenreferenz herangezogen, aber nicht mehr automatisch geparst.
 flowchart TD
     A["portfolio.md<br/>Fakten, Findings, These"] -.Referenz beim Schreiben.-> B
     B["slides.yaml<br/>Slide-Struktur + Inhalt + hub-Block<br/>(Single Source of Truth)"] --> C
-    C["Generator-Pipeline<br/>skills/project-case/scripts/<br/>rein mechanisch, kein Parsing"] --> D["Overview<br/>Business-relevant"]
+    C["Generator-Pipeline<br/>{SKILL_ROOT}/scripts/<br/>rein mechanisch, kein Parsing"] --> D["Overview<br/>Business-relevant"]
     C --> E["StoryView<br/>vollständige Story"]
     C --> F["TechView<br/>technischer Deep-Dive"]
     C --> G["index.html<br/>Hub — KPIs + View-Karten aus hub-Block"]
@@ -247,8 +247,8 @@ uv run python $SKILL_SCRIPTS/generate_json_from_slides.py
 **Was es tut:**
 1. Lädt jede JSON-Datei
 2. Rendert sie als Reveal.js Präsentation
-3. Nutzt `skills/project-case/templates/slides-template.html` (global, neben diesem Script)
-4. Kopiert `skills/project-case/templates/slides.css` → `public/css/slides.css` (Build-Kopie,
+3. Nutzt `{SKILL_ROOT}/templates/slides-template.html` (global, neben diesem Script)
+4. Kopiert `{SKILL_ROOT}/templates/slides.css` → `public/css/slides.css` (Build-Kopie,
    projektübergreifend identisches Design — siehe „Design-Templates sind Skill-eigen" unten)
 5. Schreibt eine HTML-Datei pro View
 
@@ -294,7 +294,7 @@ python3 $SKILL_SCRIPTS/convert_json_to_md.py
 #### `generate_index_from_portfolio.py`
 
 **Input:** `public/md/portfolio.md` (Project-Block: Name, Zeitraum, Dashboard-URL) **und**
-`public/md/slides.yaml` (Block `hub:` — siehe unten) + `skills/project-case/templates/index-template.html`
+`public/md/slides.yaml` (Block `hub:` — siehe unten) + `{SKILL_ROOT}/templates/index-template.html`
 (Layout, global — seit 2026-07-01 nicht mehr im Projekt, reines Layout ohne Content)
 **Output:** `public/index.html` (Hub)
 
