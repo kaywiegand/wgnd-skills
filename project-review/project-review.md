@@ -46,8 +46,13 @@ pyproject.toml  (oder requirements.txt)
 notebooks/00_introduction.ipynb    ← Einstieg für externe Leser
 notebooks/01_*.ipynb               ← min. 1 Exploration-Notebook
 public/                            ← Ordner existiert
-public/img/                    ← mind. 3 PNG-Dateien
+public/img/                        ← enthält Inhalt (format-egal: PNG/SVG/…, über .gitkeep hinaus)
 ```
+⚠️ **Nicht auf Format fixieren.** DA/DS-Projekte liefern PNG-Charts, DE-Projekte oft SVG-Diagramme
+— beides zählt. Prüfe stattdessen:
+- `public/img/` enthält mind. 1 echtes Asset (nicht nur `.gitkeep`)
+- Weicher Check (⚠️, nicht blockierend): sind die Assets in `public/index.html` verlinkt/eingebettet?
+  Ein Asset, das nirgends referenziert wird, ist toter Ballast.
 
 **Hub-Pflicht (✅/❌ — kein Optional):**
 ```
@@ -79,7 +84,7 @@ Lies `README.md`. Prüfe nach den drei Leseebenen (Zielgruppen-Definitionen → 
 | Section | Pflicht | Prüfung |
 |---|---|---|
 | Projekttitel + 1-Satz-Pitch | ✅ | Spezifisch (nicht generisch) — Thema + Scope klar |
-| Key Visual | ✅ | Mind. 1 eingebettetes PNG nahe Anfang — relativer Pfad korrekt? |
+| Key Visual | ✅ | Mind. 1 eingebettetes Bild (PNG/SVG) nahe Anfang — relativer Pfad korrekt? |
 | TL;DR / Key Results | ✅ | Mind. 3 konkrete Findings MIT Zahlen |
 
 **Dive-Ebene (Hiring Manager / Data Scientist — 5–10 Min):**
