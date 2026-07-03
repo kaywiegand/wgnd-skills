@@ -505,7 +505,7 @@ Projekttyp: [DSC / DAN / DEV / SKL]
 [Konkrete Sections die fehlen oder schwach sind + Verbesserungsvorschläge]
 
 ### Kommunikations-Artefakte (public/)
-[Landing Page, Index, Dashboard, PDF-Exports vorhanden? Links funktionieren?]
+[Hub (index.html), Dashboard, PDF-Exports vorhanden? Links funktionieren?]
 
 ### Public Artifact Fact-Check
 [Zahlen-Validierung gegen Notebooks · Alterscheck · Widersprüche erkannt?]

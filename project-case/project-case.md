@@ -446,11 +446,11 @@ Für jede Zielgruppe (A–H) prüfen ob die **Pflicht-Artefakte** vorhanden und 
 | # | Zielgruppe | Pflicht-Artefakte | Vorhanden | Status |
 |:--|:-----------|:-----------------|:----------|:-------|
 | A | Data Peers | README + Notebooks + Full Report | ✓? | ✅/❌ |
-| B | HR/Recruiter | Landing Page + README (3-tier) | ✓? | ✅/❌ |
+| B | HR/Recruiter | Hub + README (3-tier) | ✓? | ✅/❌ |
 | C | Tech Lead | Full Report + Notebooks + GitHub | ✓? | ✅/❌ |
-| D | Kunden | Landing Page + Dashboard + Presentation | ✓? | ✅/❌ |
-| E | Non-Data | Landing Page + Dashboard | ✓? | ✅/❌ |
-| F | Community | Landing + README + Notebooks + GitHub | ✓? | ✅/❌ |
+| D | Kunden | Hub + Dashboard + Presentation | ✓? | ✅/❌ |
+| E | Non-Data | Hub + Dashboard | ✓? | ✅/❌ |
+| F | Community | Hub + README + Notebooks + GitHub | ✓? | ✅/❌ |
 | G | Obsidian | PDFs + Obsidian MD + Frontmatter | ✓? | ✅/❌ |
 | H | AI Tools | PDFs + JSON metadata | ✓? | ✅/❌ |
 
@@ -463,7 +463,7 @@ Für jede Zielgruppe (A–H) prüfen ob die **Pflicht-Artefakte** vorhanden und 
 - Status: "Peer-ready?" JA / NEIN / PARTIAL
 
 **B (HR/Recruiter):**
-- Landing Page / Hub (`public/index.html`) vorhanden?
+- Hub (`public/index.html`) vorhanden?
 - README hat 3 Leseebenen (Scan 30s / Dive 5min / DeepDive 30min)?
 - README: Projekttitel + Key Visuals + KPIs + Key Results präsent?
 - Status: "HR-ready?" JA / NEIN / PARTIAL
@@ -475,20 +475,20 @@ Für jede Zielgruppe (A–H) prüfen ob die **Pflicht-Artefakte** vorhanden und 
 - Status: "Tech-Lead-ready?" JA / NEIN / PARTIAL
 
 **D (Kunden):**
-- Landing Page vorhanden + ist Deutsch + hat Business-Frames?
+- Hub vorhanden + ist Deutsch + hat Business-Frames?
 - Dashboard vorhanden + ist aufgerufen worden?
 - Presentation vorhanden + hat 22+ Slides?
 - Status: "Customer-ready?" JA / NEIN / PARTIAL
 
 **E (Non-Data):**
-- Landing Page vorhanden + einfache Sprache (keine Jargon)?
+- Hub vorhanden + einfache Sprache (keine Jargon)?
 - Dashboard vorhanden + visuell-spielerisch (nicht Code-heavy)?
 - Status: "Non-Data-ready?" JA / NEIN / PARTIAL
 
 **F (Community):**
 - README vorhanden + auf GitHub öffentlich?
 - Notebooks vorhanden + exportierbar?
-- Landing Page shareable (Deutsch, Kontext-gut)?
+- Hub shareable (Deutsch, Kontext-gut)?
 - Status: "Community-ready?" JA / NEIN / PARTIAL
 
 **G (Obsidian):**
@@ -514,11 +514,11 @@ Datum: [heute]
 | Zielgruppe | Artefakte | Status | Lücke |
 |:-----------|:----------|:-------|:------|
 | A (Peer) | README + Notebooks + Report | ✅/⚠️/❌ | – |
-| B (HR) | Landing + README 3-tier | ✅/⚠️/❌ | – |
+| B (HR) | Hub + README 3-tier | ✅/⚠️/❌ | – |
 | C (Tech) | Report + Notebooks + GitHub | ✅/⚠️/❌ | – |
-| D (Kunden) | Landing + Dashboard + Slides | ✅/⚠️/❌ | – |
-| E (Non-Data) | Landing + Dashboard | ✅/⚠️/❌ | – |
-| F (Community) | Landing + README + Notebooks | ✅/⚠️/❌ | – |
+| D (Kunden) | Hub + Dashboard + Slides | ✅/⚠️/❌ | – |
+| E (Non-Data) | Hub + Dashboard | ✅/⚠️/❌ | – |
+| F (Community) | Hub + README + Notebooks | ✅/⚠️/❌ | – |
 | G (Obsidian) | PDFs + MD + Frontmatter | ✅/⚠️/❌ | – |
 | H (AI Tools) | PDFs + JSON + Metadata | ✅/⚠️/❌ | – |
 
@@ -536,7 +536,7 @@ Liste auf:
 
 ```
 Nächste Actions:
-- [ ] Landing Page / Hub bauen (`public/index.html`)
+- [ ] Hub bauen (`public/index.html`)
 - [ ] Dashboard aufsetzen (`apps/dashboard/app.py`)
 - [ ] PDFs exportieren (`scripts/export_artifacts.py`)
 - [ ] Obsidian Frontmatter erstellen

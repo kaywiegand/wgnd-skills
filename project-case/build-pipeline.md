@@ -42,7 +42,7 @@ flowchart TD
 
 Die Kästen D/E/F stehen hier für zh-tram-flow — `view_composition` in `slides.yaml` legt pro Projekt
 fest, wie viele Views es gibt und wie sie heißen (kein fixer Wert, siehe unten). Kasten G (der Hub)
-ist kein View, sondern die Landingpage — sie bezieht ihre KPIs und View-Karten aus `slides.yaml`s
+ist kein View, sondern die Startseite — sie bezieht ihre KPIs und View-Karten aus `slides.yaml`s
 `hub`-Block (Details in Abschnitt „generate_index_from_portfolio.py"), nicht mehr aus hartcodiertem
 HTML. Das war bis 2026-07-01 doppelt gepflegt (Template + Slides), seitdem einfach.
 
@@ -422,7 +422,7 @@ Nach jeder Änderung diese Punkte checken:
   - [ ] Zusammenhang zu Originalen korrekt?
 
 - [ ] **index.html**
-  - [ ] Landing Page aktualisiert? (neue KPIs, Beschreibung)
+  - [ ] Hub aktualisiert? (neue KPIs, Beschreibung)
   - [ ] Links zu allen Views funktionieren?
   - [ ] Responsive am Handy?
 
