@@ -11,7 +11,7 @@
 ```
 name:       [Projektname, z.B. "Zürich Tram Flow"]
 slug:       [z.B. zh-tram-flow]
-type:       [DANSC | DAN | DA | DSC]
+type:       [DA | DS | DE]
 stage:      [Phase X — kurze Beschreibung des aktuellen Stands]
 target:     [Zielvariable, z.B. "arrival_delay (Sekunden)"]
 stack:      [z.B. Python · Polars · LightGBM · Plotly · Jupyter]
@@ -96,7 +96,7 @@ source:
 ---
 
 ## Model Results
-<!-- Nur befüllen wenn ML-Projekt (Typ DANSC oder DSC) -->
+<!-- Nur befüllen wenn ML-Projekt (Typ DS) -->
 
 ```
 algorithm:      [z.B. LightGBM]

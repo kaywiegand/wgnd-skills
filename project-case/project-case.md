@@ -141,7 +141,7 @@ Pflicht-Sections (✅/❌):
 Fehler-Muster (aktiv prüfen):
 - ❌ Key Visual als PNG im README (zu groß, Ladezeit) — besser in public/index.html
 - ❌ Findings-Tabelle doppelt (Approach + Results)
-- ❌ Interne Kürzel im Type-Badge (DAN/DSC/DANSC)
+- ❌ Interne Kürzel im Type-Badge (DA/DS)
 - ❌ ROADMAP oder BACKLOG verlinkt — nie öffentlich
 - ❌ Notebook-Links mit Kurzformen (`03-4`) statt vollen Dateinamen
 - ❌ Lizenz-Zeile bei gemischten Datenquellen ohne differenzierte Angabe

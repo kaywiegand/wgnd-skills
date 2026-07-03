@@ -87,8 +87,8 @@ Lies `README.md`. Prüfe nach den drei Leseebenen (Zielgruppen-Definitionen → 
 |---|---|---|
 | Problem Statement | ✅ | Was? Warum relevant? Leitfrage? — kein generischer Satz |
 | Dataset | ✅ | Quelle, Größe, Zeitraum, Lizenz |
-| Approach / Methodology | ✅ | Zum Projekttyp (DSC/DAN/DEV/SKL) passend — falsche Sections entfernt? |
-| Results | ✅ | Findings-Tabelle mit Zahlen — DSC: Modell-Tabelle mit Baseline |
+| Approach / Methodology | ✅ | Zum Projekttyp (DS/DA/DEV/SKL) passend — falsche Sections entfernt? |
+| Results | ✅ | Findings-Tabelle mit Zahlen — DS: Modell-Tabelle mit Baseline |
 | Tech Stack | ✅ | Konkrete Tools, keine Buzzword-Listen |
 | Setup / Installation | ✅ | Reproduzierbar — `uv sync` oder `pip install -e .` |
 
@@ -105,7 +105,7 @@ Lies `README.md`. Prüfe nach den drei Leseebenen (Zielgruppen-Definitionen → 
 - ❌ Generische Sätze ("This project analyzes data to gain insights...")
 - ❌ Key Visual fehlt oder ist broken link (falscher Pfad)
 - ❌ Setup-Anleitung mit falschem Paketnamen oder falschem Pfad
-- ❌ Approach-Sections für falschen Projekttyp (z.B. ML-Sections in einem DAN-Projekt)
+- ❌ Approach-Sections für falschen Projekttyp (z.B. ML-Sections in einem DA-Projekt)
 - ❌ Keine Links auf Report-Artefakte
 
 ---
@@ -143,7 +143,7 @@ Badges (Python · Stack · Type · Status)
 
 **Badges:**
 - `Status` Badge immer dabei: `Phase X complete` / `In Progress` / `Complete`
-- Type Badge: keine internen Kürzel (DAN/DSC/DANSC) — lesbar: `Analysis + Prediction`
+- Type Badge: keine internen Kürzel (DA/DS) — lesbar: `Analysis + Prediction`
 
 **TL;DR:**
 - Target Variable in Alltagssprache erklären — kein `regression`, kein `classification`
@@ -422,7 +422,7 @@ Prüfe Konsistenz zwischen den MD-Files:
 
 **CLAUDE.md vs. Realität:**
 - Stimmt der beschriebene Tech-Stack mit dem tatsächlichen Code (pyproject.toml) überein?
-- Ist der Projekttyp (DSC/DAN/DEV/SKL) korrekt definiert?
+- Ist der Projekttyp (DS/DA/DEV/SKL) korrekt definiert?
 
 ---
 
@@ -481,7 +481,7 @@ Prüfe gegen `{WORKSPACE_ROOT}/CLAUDE.md`:
 ```
 # Project Review — [Projektname]
 Datum: [heute]
-Projekttyp: [DSC / DAN / DEV / SKL]
+Projekttyp: [DS / DA / DEV / SKL]
 
 ## Scorecard
 

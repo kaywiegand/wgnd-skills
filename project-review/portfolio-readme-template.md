@@ -3,7 +3,7 @@
 VERWENDUNG:
   Dieses Template als README.md ins Projekt-Root kopieren und Platzhalter befüllen.
   Kommentare (<!-- ... -->) vor dem Veröffentlichen entfernen.
-  Projekttyp wählen: DSC (DE+DA+ML) · DAN (DE+DA) · DEV (Tool/Package) · SKL (Skill/Command)
+  Projekttyp wählen: DS (DE+DA+ML) · DA (DE+DA) · DEV (Tool/Package) · SKL (Skill/Command)
 
 DREI LESEEBENEN (aus communication-concept.md, ../project-case/):
   Scan   (30 Sek) → Title + Key Visual + TL;DR            ← HR Recruiter
@@ -45,7 +45,7 @@ DREI LESEEBENEN (aus communication-concept.md, ../project-case/):
 - **[Finding 1 mit Zahl]** — *Example: Rain increases average delay by 47% (2.3 → 3.4 min)*
 - **[Finding 2 mit Zahl]** — *Example: Line 8 is responsible for 31% of all severe delays (>5 min)*
 - **[Finding 3 mit Zahl]** — *Example: XGBoost predicts delay class with 78% F1 (vs. 61% baseline)*
-<!-- Für DAN: 3–5 Findings. Für DSC: 2 Analysis-Findings + 1 ML-Finding minimum. -->
+<!-- Für DA: 3–5 Findings. Für DS: 2 Analysis-Findings + 1 ML-Finding minimum. -->
 
 ---
 <!-- SCAN-EBENE ENDE -->
@@ -78,8 +78,8 @@ DREI LESEEBENEN (aus communication-concept.md, ../project-case/):
 
 <!-- Kurze Beschreibung des methodischen Vorgehens. NACH PROJEKTTYP ANPASSEN (s. unten). -->
 
-<!-- ── DSC (DE + DA + DS / full ML) ───────────────────────────────────────── -->
-<!-- Uncomment when project type = DSC
+<!-- ── DS (DE + DA + ML / full cycle) ─────────────────────────────────────── -->
+<!-- Uncomment when project type = DS
 
 ### Data Engineering
 - Extracted [X sources] via [API / scraping / download]
@@ -97,8 +97,8 @@ DREI LESEEBENEN (aus communication-concept.md, ../project-case/):
 - Best model: [name, metric, e.g. XGBoost — MAE 0.91 min, R² 0.74]
 -->
 
-<!-- ── DAN (DE + DA, kein ML) ───────────────────────────────────────────────── -->
-<!-- Uncomment when project type = DAN
+<!-- ── DA (DE + DA, kein ML) ────────────────────────────────────────────────── -->
+<!-- Uncomment when project type = DA
 
 ### Data Engineering
 - Extracted [X sources] via [method]
@@ -148,7 +148,7 @@ from [package] import [module]
 
 ## Results
 
-<!-- ── Für DAN/DSC: Findings-Tabelle ────────────────────────────────────── -->
+<!-- ── Für DA/DS: Findings-Tabelle ──────────────────────────────────────── -->
 <!-- 
 | Dimension | Key Finding | Evidence |
 | :--- | :--- | :--- |
@@ -157,7 +157,7 @@ from [package] import [module]
 | [e.g. Events] | [Finding with number] | [chart / notebook reference] |
 -->
 
-<!-- ── Für DSC: Modell-Tabelle + dann Findings ───────────────────────────── -->
+<!-- ── Für DS: Modell-Tabelle + dann Findings ────────────────────────────── -->
 <!--
 ### Model Comparison
 
@@ -187,7 +187,7 @@ from [package] import [module]
 | Data | Polars, Pandas |
 | Analysis | SciPy, statsmodels |
 | Visualization | Matplotlib, Seaborn |
-| ML *(DSC only)* | scikit-learn, XGBoost |
+| ML *(DS only)* | scikit-learn, XGBoost |
 | Packaging | uv, pyproject.toml |
 | Notebooks | JupyterLab |
 | Version Control | Git, GitHub |
@@ -204,7 +204,7 @@ from [package] import [module]
 │   ├── 02_preparation.ipynb        ← Cleaning & master dataset
 │   ├── 03_analysis_[topic].ipynb   ← [Analysis dimension 1]
 │   ├── 04_insights.ipynb           ← Synthesised findings
-│   └── 06_prediction.ipynb         ← ML model (DSC only)
+│   └── 06_prediction.ipynb         ← ML model (DS only)
 ├── public/
 │   ├── img/                       ← All exported charts (PNG)
 │   ├── json/                      ← Storyline data per view
@@ -215,14 +215,14 @@ from [package] import [module]
 │   └── techview.html              ← Technical deep-dive (slides)
 ├── src/[package]/                  ← Importable Python package
 │   ├── analytics/                  ← Analysis functions
-│   ├── features/                   ← Feature engineering (DSC)
+│   ├── features/                   ← Feature engineering (DS)
 │   ├── visualization/              ← Plot functions
 │   ├── config.py                   ← PATHS, constants
 │   └── settings.py                 ← Run-time settings
 ├── data/
 │   ├── raw/                        ← Original data — never modified
 │   ├── interim/                    ← After cleaning
-│   └── processed/                  ← ML-ready features (DSC)
+│   └── processed/                  ← ML-ready features (DS)
 ├── pyproject.toml                  ← Dependencies
 └── ROADMAP.md                      ← Project phases & status
 ```
@@ -266,7 +266,7 @@ python scripts/download_data.py
 | 02 | [02_preparation.ipynb](notebooks/02_preparation.ipynb) | Cleaning, transformation, master dataset |
 | 03 | [03_analysis_[topic].ipynb](notebooks/03_analysis_[topic].ipynb) | [Analysis dimension] |
 | 04 | [04_insights.ipynb](notebooks/04_insights.ipynb) | Synthesised findings across all dimensions |
-| 06 | [06_prediction.ipynb](notebooks/06_prediction.ipynb) | *(DSC only)* ML modelling and evaluation |
+| 06 | [06_prediction.ipynb](notebooks/06_prediction.ipynb) | *(DS only)* ML modelling and evaluation |
 
 ## Reports
 
@@ -303,9 +303,9 @@ SCAN-EBENE:
 DIVE-EBENE:
 [ ] Problem Statement in 3–5 Sätzen — was, warum, Leitfrage
 [ ] Dataset-Tabelle vollständig (Source, Size, Time Period, License, Known Issues)
-[ ] Approach-Section zum Projekttyp passend (DSC/DAN/DEV/SKL) — falsche Sections entfernt
+[ ] Approach-Section zum Projekttyp passend (DS/DA/DEV/SKL) — falsche Sections entfernt
 [ ] Results: Tabelle mit Findings + Zahlen
-[ ] DSC: Modell-Tabelle mit Baseline + Metriken
+[ ] DS: Modell-Tabelle mit Baseline + Metriken
 
 DEEP-DIVE-EBENE:
 [ ] Tech Stack: echte Tools mit Versionen — keine Buzzword-Liste

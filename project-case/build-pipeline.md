@@ -81,7 +81,7 @@ Struktur (das übernimmt `public/md/slides.yaml`, siehe 1b).
 ## Project
 name:       Zurich Tram Flow
 slug:       zh-tram-flow
-type:       DANSC
+type:       DS
 ...
 
 ## Storyline

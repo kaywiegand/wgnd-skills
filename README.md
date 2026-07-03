@@ -18,7 +18,7 @@ Part of the `wgnd-*` toolchain — pairs with [wgnd-scaffolding](https://github.
 
 | Skill | Purpose |
 | :--- | :--- |
-| `project-init/` | Bootstrap a new project. Asks for name/type, then either writes generic docs (`web`/`tool`/`general`) or delegates to `wgnd-scaffolding` (`data` → DAN/DSC). |
+| `project-init/` | Bootstrap a new project. Asks for name/type, then either writes generic docs (`web`/`tool`/`general`) or delegates to `wgnd-scaffolding` (`data` → DA/DS). |
 | `project-review/` | Read-only audit of an existing project — structure, README quality, MD-file coherence, git hygiene. |
 | `project-case/` | Builds a portfolio case study for a **data** project — story extraction, slide deck (`slides.yaml` → HTML), landing page hub. |
 

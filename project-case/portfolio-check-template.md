@@ -10,7 +10,7 @@ Persona-Tags: `[HR]` Recruiter · `[HM]` Hiring Manager · `[DS]` Data Scientist
 
 ## Projekt: _______________
 **Datum Check:** _______________
-**Typ:** DSC / DAN / DEV / SKL *(zutreffendes behalten)*
+**Typ:** DS / DA / DEV / SKL *(zutreffendes behalten)*
 **Status vor Check:** _______________
 
 ---

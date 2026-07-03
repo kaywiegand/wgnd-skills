@@ -31,7 +31,7 @@ Kurze Beschreibung (1 Satz, für PROJECTS.md)?
 
 Wenn Name vorhanden aber keine Beschreibung: kurz nachfragen.
 
-**Wenn Typ = `data`:** zusätzlich fragen: "DAN (Data Analytics) oder DSC (Data Science)?" — Default `DAN` falls unklar.
+**Wenn Typ = `data`:** zusätzlich fragen: "DA (Data Analysis) oder DS (Data Science)?" — Default `DA` falls unklar.
 
 Setze intern:
 - `PROJECT_NAME` = der angegebene Name
@@ -56,7 +56,7 @@ Wenn Ordner existiert: stoppe und frage Kay ob er überschreiben will. Nie blind
 **Wenn `PROJECT_TYPE` = `data`:** Dieses Projekt ist Data Analytics/Data Science — `wgnd-scaffolding` deckt das vollständig und passender ab als die generischen Templates hier (Notebooks, `src/`-Struktur, Data-Ordner, BACKLOG.md, Git-Init — alles bereits im Generator). Führe aus:
 
 ```bash
-python3 {SCAFFOLDING_ROOT}/generator.py --slug [PROJECT_NAME] --type [DAN|DSC] --path {WORKSPACE_ROOT} --name "[Lesbarer Name]"
+python3 {SCAFFOLDING_ROOT}/generator.py --slug [PROJECT_NAME] --type [DA|DS] --path {WORKSPACE_ROOT} --name "[Lesbarer Name]"
 ```
 
 Der Generator übernimmt Ordner, alle Docs, `.gitignore`, Notebooks/`src/`, sowie `git init` + Erstcommit selbstständig. **Weiter direkt mit Schritt 7** — Schritt 4–6 und 8 entfallen für diesen Pfad.
