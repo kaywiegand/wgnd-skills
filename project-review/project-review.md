@@ -45,23 +45,23 @@ pyproject.toml  (oder requirements.txt)
 ```
 notebooks/00_introduction.ipynb    ← Einstieg für externe Leser
 notebooks/01_*.ipynb               ← min. 1 Exploration-Notebook
-reports/                           ← Ordner existiert
-reports/img/                   ← mind. 3 PNG-Dateien
+public/                            ← Ordner existiert
+public/img/                    ← mind. 3 PNG-Dateien
 ```
 
 **Report-Pflicht (✅/❌ — kein Optional):**
 ```
-reports/index.html                ← Pflicht — primäres externes Leseartefakt
+public/index.html                 ← Pflicht — primäres externes Leseartefakt
 ```
 Prüfe zusätzlich:
-- Dateigröße > 50 KB (`ls -lh reports/index.html`) — zu klein = Inhalt fehlt
+- Dateigröße > 50 KB (`ls -lh public/index.html`) — zu klein = Inhalt fehlt
 - Enthält mind. 1 `<img`-Tag — Visualisierungen eingebettet?
 - Enthält Fließtext (mind. 3 `<p>`-Tags) — Befunde narrativ erklärt?
 
 **Optional aber wichtig (⚠️ wenn fehlt):**
 ```
-reports/presentation.html          ← Präsentation
-reports/mds/portfolio.md               ← Portfolio-Summary (Interface-File für /project-case story)
+public/presentation.html           ← Präsentation
+public/md/portfolio.md                 ← Portfolio-Summary (Interface-File für /project-case story)
 src/[paket]/                       ← Python-Paket
 tests/                             ← Test-Ordner
 ```
@@ -96,7 +96,7 @@ Lies `README.md`. Prüfe nach den drei Leseebenen (Zielgruppen-Definitionen → 
 |---|---|---|
 | Projektstruktur | ⚠️ | Ordnerbaum vorhanden und aktuell |
 | Notebooks-Tabelle | ✅ | Alle Notebooks verlinkt in Lesereihenfolge |
-| Reports-Links | ✅ | Link auf `reports/index.html` + `reports/presentation.html` |
+| Reports-Links | ✅ | Link auf `public/index.html` + `public/presentation.html` |
 | Autor / Kontakt | ⚠️ | Name + LinkedIn + GitHub |
 
 **Fehler-Muster die aktiv gesucht werden:**
@@ -205,8 +205,7 @@ Referenz: `../project-case/communication-concept.md` — definiert 8 Zielgruppen
 
 | Artefakt | Path | Zielgruppe | Prüfung |
 |:---------|:-----|:-----------|:--------|
-| Landing Page | `public/landingpage.html` | B (HR), E (Non-Data), F (Community) | existiert? |
-| Artifact Hub / Index | `public/index.html` | Alle außer G/H | existiert? |
+| Artifact Hub / Index | `public/index.html` | Alle (inkl. B HR, E Non-Data, F Community) | existiert? |
 | Dashboard / App | `apps/dashboard/` + `apps/dashboard/app.py` | B, D, E (visuell) | existiert? |
 | Obsidian Export | `docs/exports/*.md` | G (Second Brain) | existiert? |
 | PDF Exports | `docs/exports/*.pdf` | G (Obsidian), H (AI Tools) | existiert? |
@@ -214,7 +213,7 @@ Referenz: `../project-case/communication-concept.md` — definiert 8 Zielgruppen
 
 **Output-Zeile für Scorecard (beispiel):**
 ```
-📋 Communication: Landing ❌ | Dashboard ✅ | Exports ⚠️ | Obsidian ❌
+📋 Communication: Hub ❌ | Dashboard ✅ | Exports ⚠️ | Obsidian ❌
 ```
 
 **Wichtig:**

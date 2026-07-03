@@ -211,7 +211,7 @@ Wenn `public/index.html` existiert:
   - `public/index.html` (Report)
   - `apps/dashboard/` oder Link zu Live-App
   - Notebooks (GitHub-Links oder lokale `notebooks/` Links)
-  - Social Media One-Pager (falls vorhanden: `index.html`, `landingpage.html`)
+  - Social Media One-Pager (falls vorhanden: `index.html`)
 
 - ✅ Prüfe Linkgültigkeit:
   ```bash
@@ -459,11 +459,11 @@ Für jede Zielgruppe (A–H) prüfen ob die **Pflicht-Artefakte** vorhanden und 
 **A (Data Peer):**
 - README vorhanden? (English, technisch, Problem + Ergebnis)
 - Notebooks zugänglich? (alle 00_–06_ vorhanden + verlinkt?)
-- Full Report (`reports/index.html`) vorhanden?
+- Full Report (`public/index.html`) vorhanden?
 - Status: "Peer-ready?" JA / NEIN / PARTIAL
 
 **B (HR/Recruiter):**
-- Landing Page (`public/landingpage.html`) vorhanden?
+- Landing Page / Hub (`public/index.html`) vorhanden?
 - README hat 3 Leseebenen (Scan 30s / Dive 5min / DeepDive 30min)?
 - README: Projekttitel + Key Visuals + KPIs + Key Results präsent?
 - Status: "HR-ready?" JA / NEIN / PARTIAL
@@ -536,7 +536,7 @@ Liste auf:
 
 ```
 Nächste Actions:
-- [ ] Landing Page bauen (`public/landingpage.html`)
+- [ ] Landing Page / Hub bauen (`public/index.html`)
 - [ ] Dashboard aufsetzen (`apps/dashboard/app.py`)
 - [ ] PDFs exportieren (`scripts/export_artifacts.py`)
 - [ ] Obsidian Frontmatter erstellen
