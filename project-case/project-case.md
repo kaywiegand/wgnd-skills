@@ -207,7 +207,7 @@ Prüfe ob `public/index.html` existiert und alle relevanten Artefakte verlinkt s
 
 Wenn `public/index.html` existiert:
 - ✅ Überprüfe ob folgende Dateien verlinkt sind (via `href=` oder `<a>` Tags):
-  - `overview.html` oder `presentation.html` (Präsentationen)
+  - `overview.html` / `storyview.html` / `techview.html` (View-Präsentationen)
   - `public/index.html` (Report)
   - `apps/dashboard/` oder Link zu Live-App
   - Notebooks (GitHub-Links oder lokale `notebooks/` Links)
@@ -445,9 +445,9 @@ Für jede Zielgruppe (A–H) prüfen ob die **Pflicht-Artefakte** vorhanden und 
 
 | # | Zielgruppe | Pflicht-Artefakte | Vorhanden | Status |
 |:--|:-----------|:-----------------|:----------|:-------|
-| A | Data Peers | README + Notebooks + Full Report | ✓? | ✅/❌ |
+| A | Data Peers | README + Notebooks + StoryView | ✓? | ✅/❌ |
 | B | HR/Recruiter | Hub + README (3-tier) | ✓? | ✅/❌ |
-| C | Tech Lead | Full Report + Notebooks + GitHub | ✓? | ✅/❌ |
+| C | Tech Lead | StoryView + Notebooks + GitHub | ✓? | ✅/❌ |
 | D | Kunden | Hub + Dashboard + Presentation | ✓? | ✅/❌ |
 | E | Non-Data | Hub + Dashboard | ✓? | ✅/❌ |
 | F | Community | Hub + README + Notebooks + GitHub | ✓? | ✅/❌ |
@@ -459,7 +459,7 @@ Für jede Zielgruppe (A–H) prüfen ob die **Pflicht-Artefakte** vorhanden und 
 **A (Data Peer):**
 - README vorhanden? (English, technisch, Problem + Ergebnis)
 - Notebooks zugänglich? (alle 00_–06_ vorhanden + verlinkt?)
-- Full Report (`public/index.html`) vorhanden?
+- StoryView (`public/storyview.html`) vorhanden?
 - Status: "Peer-ready?" JA / NEIN / PARTIAL
 
 **B (HR/Recruiter):**
@@ -469,7 +469,7 @@ Für jede Zielgruppe (A–H) prüfen ob die **Pflicht-Artefakte** vorhanden und 
 - Status: "HR-ready?" JA / NEIN / PARTIAL
 
 **C (Tech Lead):**
-- Full Report vorhanden + ist > 100 KB + enthält Code-Snippets?
+- StoryView vorhanden + ist > 100 KB + enthält Code-Snippets?
 - Notebooks vorhanden + sind numeriert (00_–06_)?
 - GitHub Link im README?
 - Status: "Tech-Lead-ready?" JA / NEIN / PARTIAL
@@ -513,9 +513,9 @@ Datum: [heute]
 
 | Zielgruppe | Artefakte | Status | Lücke |
 |:-----------|:----------|:-------|:------|
-| A (Peer) | README + Notebooks + Report | ✅/⚠️/❌ | – |
+| A (Peer) | README + Notebooks + StoryView | ✅/⚠️/❌ | – |
 | B (HR) | Hub + README 3-tier | ✅/⚠️/❌ | – |
-| C (Tech) | Report + Notebooks + GitHub | ✅/⚠️/❌ | – |
+| C (Tech) | StoryView + Notebooks + GitHub | ✅/⚠️/❌ | – |
 | D (Kunden) | Hub + Dashboard + Slides | ✅/⚠️/❌ | – |
 | E (Non-Data) | Hub + Dashboard | ✅/⚠️/❌ | – |
 | F (Community) | Hub + README + Notebooks | ✅/⚠️/❌ | – |

@@ -49,18 +49,19 @@ public/                            ← Ordner existiert
 public/img/                    ← mind. 3 PNG-Dateien
 ```
 
-**Report-Pflicht (✅/❌ — kein Optional):**
+**Hub-Pflicht (✅/❌ — kein Optional):**
 ```
-public/index.html                 ← Pflicht — primäres externes Leseartefakt
+public/index.html                 ← Pflicht — Hub (Landing + Navigation zu den Views)
 ```
 Prüfe zusätzlich:
+- Enthält eine Projekt-Beschreibung (Pitch/Einstieg — nicht leer)
 - Dateigröße > 50 KB (`ls -lh public/index.html`) — zu klein = Inhalt fehlt
-- Enthält mind. 1 `<img`-Tag — Visualisierungen eingebettet?
-- Enthält Fließtext (mind. 3 `<p>`-Tags) — Befunde narrativ erklärt?
+- Enthält mind. 1 `<img`-Tag — Key Visual eingebettet?
+- Verlinkt die View-Seiten (storyview/overview/techview)
 
 **Optional aber wichtig (⚠️ wenn fehlt):**
 ```
-public/presentation.html           ← Präsentation
+public/{overview,storyview,techview}.html  ← View-Präsentationen (storyview = Narrative, ersetzt "Full Report") — via /project-case
 public/md/portfolio.md                 ← Portfolio-Summary (Interface-File für /project-case story)
 src/[paket]/                       ← Python-Paket
 tests/                             ← Test-Ordner
@@ -96,7 +97,7 @@ Lies `README.md`. Prüfe nach den drei Leseebenen (Zielgruppen-Definitionen → 
 |---|---|---|
 | Projektstruktur | ⚠️ | Ordnerbaum vorhanden und aktuell |
 | Notebooks-Tabelle | ✅ | Alle Notebooks verlinkt in Lesereihenfolge |
-| Reports-Links | ✅ | Link auf `public/index.html` + `public/presentation.html` |
+| Reports-Links | ✅ | Link auf `public/index.html` (Hub) + View-Seiten (`storyview`/`overview`/`techview`) |
 | Autor / Kontakt | ⚠️ | Name + LinkedIn + GitHub |
 
 **Fehler-Muster die aktiv gesucht werden:**

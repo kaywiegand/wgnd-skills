@@ -206,10 +206,13 @@ from [package] import [module]
 │   ├── 04_insights.ipynb           ← Synthesised findings
 │   └── 06_prediction.ipynb         ← ML model (DSC only)
 ├── public/
-│   ├── img/                    ← All exported charts (PNG)
+│   ├── img/                       ← All exported charts (PNG)
+│   ├── json/                      ← Storyline data per view
 │   ├── md/                        ← Exported markdown docs
-│   ├── index.html                 ← Full narrative report
-│   └── presentation.html           ← Slide deck (reveal.js)
+│   ├── index.html                 ← Portfolio hub (landing + navigation)
+│   ├── overview.html              ← Business-focused story (slides)
+│   ├── storyview.html             ← Full narrative + all findings (slides)
+│   └── techview.html              ← Technical deep-dive (slides)
 ├── src/[package]/                  ← Importable Python package
 │   ├── analytics/                  ← Analysis functions
 │   ├── features/                   ← Feature engineering (DSC)
@@ -271,8 +274,10 @@ python scripts/download_data.py
 
 | Report | Description |
 | :--- | :--- |
-| [Full Report](public/index.html) | Narrative HTML report with all findings and charts |
-| [Presentation](public/presentation.html) | Slide deck for stakeholder presentations |
+| [Hub](public/index.html) | Portfolio landing page + navigation to all views |
+| [StoryView](public/storyview.html) | Full narrative + all findings (slides) |
+| [Overview](public/overview.html) | Business-focused short story (slides) |
+| [TechView](public/techview.html) | Technical deep-dive (slides) |
 
 ---
 
@@ -307,7 +312,7 @@ DEEP-DIVE-EBENE:
 [ ] Projektstruktur: Ordner-Baum vorhanden und aktuell
 [ ] Setup: tatsächlich getestet — auf fremdem Rechner reproduzierbar
 [ ] Notebooks-Tabelle: alle existierenden Notebooks verlinkt
-[ ] Reports: index.html und presentation.html existieren und sind verlinkt
+[ ] Hub: index.html existiert, enthält Beschreibung + verlinkt die Views (storyview/overview/techview)
 
 KONSISTENZ:
 [ ] Zahlen im TL;DR stammen aus Notebooks — nicht erfunden
