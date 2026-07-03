@@ -89,6 +89,27 @@ def render_view_cards(registry: dict) -> str:
     return html
 
 
+def render_about(hub: dict) -> str:
+    """Render the '## Das Projekt'-Absätze aus hub.about (Liste von {label, text})."""
+    html = ""
+    for para in hub.get("about", []):
+        label = para.get("label", "")
+        text = para.get("text", "")
+        strong = f"<strong>{label}:</strong> " if label else ""
+        html += f'    <p class="section-intro">\n      {strong}{text}\n    </p>\n'
+    return html
+
+
+def render_quick_links(hub: dict, repo_url: str) -> str:
+    """GitHub-Repo immer zuerst, danach projektspezifische hub.quick_links ({href, label})."""
+    links = [{"href": repo_url, "label": "GitHub-Repo"}]
+    links += hub.get("quick_links", [])
+    html = ""
+    for link in links:
+        html += f'        <a href="{link["href"]}" class="quick-link">{link["label"]}</a>\n'
+    return html
+
+
 def main() -> None:
     if not MD_PATH.exists():
         raise SystemExit(f"❌ {MD_PATH} nicht gefunden.")
@@ -108,9 +129,16 @@ def main() -> None:
     repo_url = f"https://github.com/{GITHUB_USER}/{slug}" if slug else f"https://github.com/{GITHUB_USER}"
     user_url = f"https://github.com/{GITHUB_USER}"
 
+    hub = registry.get("hub", {})
+
     replacements = {
         "{{PROJECT_NAME}}":    name,
         "{{PERIOD}}":          period,
+        "{{TAGLINE}}":         hub.get("tagline", ""),
+        "{{SUBTITLE}}":        hub.get("subtitle", ""),
+        "{{FOOTER_TAGLINE}}":  hub.get("footer_tagline", hub.get("tagline", "")),
+        "{{ABOUT}}":           render_about(hub),
+        "{{QUICK_LINKS}}":     render_quick_links(hub, repo_url),
         "{{GITHUB_REPO_URL}}": repo_url,
         "{{GITHUB_USER_URL}}": user_url,
         "{{DASHBOARD_URL}}":   dash or repo_url,   # Fallback: Repo, falls kein Dashboard
