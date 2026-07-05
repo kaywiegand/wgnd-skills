@@ -289,6 +289,7 @@ def render_slide(
     github: str = "",
     is_last_chapter: bool = False,
     closing_links: List[Dict[str, str]] | None = None,
+    is_chapter_start: bool = False,
 ) -> str:
     """Render a single slide as HTML."""
     role = slide.get("role", "standard")
@@ -297,7 +298,9 @@ def render_slide(
     content = slide.get("content", [])
 
     data_ch = f' data-chapter="{chapter_idx}"'
-    data_lbl = f' data-chapter-label="{chapter_label}"' if chapter_label is not None else ""
+    # data-chapter-label markiert nur den KAPITEL-START (für die Navi). Der sichtbare Kicker
+    # (chapter_label) steht dagegen auf JEDER Slide des Kapitels.
+    data_lbl = f' data-chapter-label="{chapter_label}"' if (is_chapter_start and chapter_label) else ""
 
     if role == "title":
         html = f'<section class="title-slide" data-background="#1a3a5c"{data_ch}{data_lbl}>'
@@ -320,8 +323,6 @@ def render_slide(
         # Closing / CTA — dunkel, Titel + kurze Botschaft + Link-Reihe (Übersicht/GitHub/…),
         # bewusst KEINE KPI-Boxen.
         html = f'<section class="closing" data-background="#1a3a5c"{data_ch}{data_lbl}>'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
         if title:
             html += f'<h2>{title}</h2>'
         if subtitle:
@@ -389,9 +390,9 @@ def render_chapter(chapter: Dict[str, Any], chapter_idx: int = 0, github: str = 
 
     html = f'<!-- Chapter: {nav_label} -->\n'
     for j, slide in enumerate(slides):
-        label = nav_label if j == 0 else None
-        html += render_slide(slide, chapter_idx=chapter_idx, chapter_label=label, github=github,
-                             is_last_chapter=is_last, closing_links=closing_links)
+        html += render_slide(slide, chapter_idx=chapter_idx, chapter_label=nav_label, github=github,
+                             is_last_chapter=is_last, closing_links=closing_links,
+                             is_chapter_start=(j == 0))
     return html
 
 
