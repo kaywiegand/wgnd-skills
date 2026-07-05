@@ -102,7 +102,7 @@ def render_about(hub: dict) -> str:
 
 def render_quick_links(hub: dict, repo_url: str) -> str:
     """GitHub-Repo immer zuerst, danach projektspezifische hub.quick_links ({href, label})."""
-    links = [{"href": repo_url, "label": "GitHub-Repo"}]
+    links = [{"href": repo_url, "label": hub.get("repo_link_label", "GitHub-Repo")}]
     links += hub.get("quick_links", [])
     html = ""
     for link in links:
