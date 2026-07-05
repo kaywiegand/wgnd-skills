@@ -128,10 +128,32 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return html
 
     elif item_type == "sections":
-        # Project-frame cards → .pf-grid > .pf-card
-        html = '<div class="pf-grid">'
-        for sec in item.get("items", []):
-            html += f'<div class="pf-card"><div class="pf-title">{sec.get("label", "")}</div><ul>'
+        # sections: label + points. layout steuert die Darstellung (per Slide wählbar):
+        #   "columns" → N Spalten nebeneinander (optional numbered: 1/2/3 vor dem Label)
+        #   "text"    → Prosa-Variante (Label + Punkte als Fließtext, zweispaltiger Flow)
+        #   (default) → bisheriges 2-Spalten-Raster (Rückwärtskompatibilität)
+        items = item.get("items", [])
+        layout = item.get("layout", "")
+        numbered = item.get("numbered", False)
+
+        if layout == "text":
+            html = '<div class="sec-text">'
+            for sec in items:
+                html += '<div class="sec-text-block">'
+                html += f'<span class="sec-text-label">{sec.get("label", "")}</span> '
+                html += " ".join(sec.get("points", []))
+                html += '</div>'
+            html += '</div>'
+            return html
+
+        if layout == "columns":
+            grid_style = f' style="grid-template-columns: repeat({len(items)}, 1fr)"'
+        else:
+            grid_style = ""
+        html = f'<div class="pf-grid"{grid_style}>'
+        for i, sec in enumerate(items, 1):
+            num = f'<span class="pf-num">{i}</span>' if numbered else ""
+            html += f'<div class="pf-card"><div class="pf-title">{num}{sec.get("label", "")}</div><ul>'
             for point in sec.get("points", []):
                 html += f'<li>{point}</li>'
             html += '</ul></div>'
