@@ -26,11 +26,14 @@ _IMG_EXT_RE = re.compile(r"\.(png|jpe?g|svg|gif|webp|html)$", re.IGNORECASE)
 
 
 def _img_src(source: str) -> str:
-    """Normalize a chart source to an ../img/ path, appending .png when no extension."""
+    """Normalize a chart source to an img/ path, appending .png when no extension.
+
+    Relativ ohne '../' — die Views liegen in public/ neben public/img/ (wie css/).
+    Funktioniert lokal (file://) und deployt (public/ als Site-Root)."""
     source = source.strip()
     if not _IMG_EXT_RE.search(source):
         source = f"{source}.png"
-    return f"../img/{source}"
+    return f"img/{source}"
 
 
 def load_json(path: Path) -> Dict[str, Any]:
