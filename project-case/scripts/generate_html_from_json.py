@@ -265,13 +265,16 @@ def render_title_slide_content(content: List[Any]) -> str:
     return html
 
 
-def render_closing_links(github: str) -> str:
-    """Render the link row for the end-slide."""
-    links = []
+def render_closing_links(github: str, extra_links: List[Dict[str, str]] | None = None) -> str:
+    """Render the link row for the end-slide: Zur Übersicht + GitHub + projekt-spezifische Extras.
+
+    extra_links kommen aus slides.yaml hub.quick_links (via meta.closing_links) —
+    kein Hardcoding pro Projekt mehr."""
+    links = [("Zur Übersicht", "index.html")]
     if github:
         links.append(("GitHub-Repo", f"https://github.com/{github}"))
-    links.append(("Dashboard-Prototype", "https://zh-tram-flow.streamlit.app"))
-    links.append(("Netzwerk-Karte", "network-map.html"))
+    for lk in (extra_links or []):
+        links.append((lk.get("label", ""), lk.get("href", "")))
     html = '<div class="closing-links">'
     for label, href in links:
         html += f'<a href="{href}" class="c-link">{label}</a>'
@@ -285,6 +288,7 @@ def render_slide(
     chapter_label: str | None = None,
     github: str = "",
     is_last_chapter: bool = False,
+    closing_links: List[Dict[str, str]] | None = None,
 ) -> str:
     """Render a single slide as HTML."""
     role = slide.get("role", "standard")
@@ -307,11 +311,24 @@ def render_slide(
             html += f'<div class="sub">{sub_text}</div>'
         # KPI row from figures
         html += render_title_slide_content(content)
-        # Meta text only on opening slide, link row only on end-slide
+        # Link-Reihe nur auf der End-Slide (title-repeat). Opening-Titel trägt KEIN github mehr
+        # — der GitHub-Link lebt auf dem Closing (CTA).
         if is_last_chapter:
-            html += render_closing_links(github)
-        elif github:
-            html += f'<div class="meta">github.com/{github}</div>'
+            html += render_closing_links(github, closing_links)
+        html += '</section>'
+    elif role == "closing":
+        # Closing / CTA — dunkel, Titel + kurze Botschaft + Link-Reihe (Übersicht/GitHub/…),
+        # bewusst KEINE KPI-Boxen.
+        html = f'<section class="closing" data-background="#1a3a5c"{data_ch}{data_lbl}>'
+        if chapter_label:
+            html += f'<span class="slide-kicker">{chapter_label}</span>'
+        if title:
+            html += f'<h2>{title}</h2>'
+        if subtitle:
+            html += f'<p class="subline">{subtitle}</p>'
+        for item in content:
+            html += render_content_item(item)
+        html += render_closing_links(github, closing_links)
         html += '</section>'
     elif len(content) == 1 and content[0].get("type") == "agenda":
         # Table-of-contents slide → two columns: title block left, chapter list right
@@ -364,7 +381,8 @@ def render_slide(
     return html
 
 
-def render_chapter(chapter: Dict[str, Any], chapter_idx: int = 0, github: str = "", is_last: bool = False) -> str:
+def render_chapter(chapter: Dict[str, Any], chapter_idx: int = 0, github: str = "", is_last: bool = False,
+                   closing_links: List[Dict[str, str]] | None = None) -> str:
     """Render a chapter as flat reveal.js sections (1D, no nesting)."""
     nav_label = chapter.get("nav_label", "")
     slides = chapter.get("slides", [])
@@ -372,7 +390,8 @@ def render_chapter(chapter: Dict[str, Any], chapter_idx: int = 0, github: str = 
     html = f'<!-- Chapter: {nav_label} -->\n'
     for j, slide in enumerate(slides):
         label = nav_label if j == 0 else None
-        html += render_slide(slide, chapter_idx=chapter_idx, chapter_label=label, github=github, is_last_chapter=is_last)
+        html += render_slide(slide, chapter_idx=chapter_idx, chapter_label=label, github=github,
+                             is_last_chapter=is_last, closing_links=closing_links)
     return html
 
 
@@ -382,11 +401,13 @@ def build_html(json_data: Dict[str, Any], template: str, css_version: str = "1")
     chapters = json_data.get("chapters", [])
 
     github = meta.get("github", "")
+    closing_links = meta.get("closing_links", [])
     total = len(chapters)
     # Render all chapters (flat, 1D — no chapter nesting)
     slides_html = ""
     for i, chapter in enumerate(chapters):
-        slides_html += render_chapter(chapter, chapter_idx=i, github=github, is_last=(i == total - 1))
+        slides_html += render_chapter(chapter, chapter_idx=i, github=github,
+                                      is_last=(i == total - 1), closing_links=closing_links)
 
     # Replace placeholder in template
     html = template.replace("<!-- SLIDES_PLACEHOLDER -->", slides_html)

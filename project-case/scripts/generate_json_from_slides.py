@@ -51,7 +51,9 @@ def build_view_json(registry: dict, view: str, chapter_ids: list[str]) -> dict:
 
         chapters_out.append({"nav_label": nav_label, "slides": rendered_slides})
 
-    meta = registry.get("view_meta", {}).get(view, {})
+    meta = dict(registry.get("view_meta", {}).get(view, {}))
+    # Projekt-spezifische Closing-Links (kein Hardcoding im Renderer): aus hub.quick_links
+    meta["closing_links"] = registry.get("hub", {}).get("quick_links", [])
     return {"meta": meta, "chapters": chapters_out}
 
 
