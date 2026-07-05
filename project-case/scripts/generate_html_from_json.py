@@ -88,9 +88,9 @@ def render_content_item(item: Dict[str, Any]) -> str:
         html = '<div class="myth-rows">'
         for c in item.get("items", []):
             html += '<div class="myth-row-pair">'
-            html += f'<div class="myth-assume">{c.get("assumption", "")}</div>'
+            html += f'<div class="myth-assume"><span class="myth-label">Annahme</span><div class="myth-text">{c.get("assumption", "")}</div></div>'
             html += '<div class="myth-arrow">→</div>'
-            html += f'<div class="myth-finding">{c.get("finding", "")}</div>'
+            html += f'<div class="myth-finding"><span class="myth-label">Befund</span><div class="myth-text">{c.get("finding", "")}</div></div>'
             html += '</div>'
         html += '</div>'
         return html
