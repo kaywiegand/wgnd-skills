@@ -356,16 +356,12 @@ def render_slide(
     elif len(content) == 1 and content[0].get("type") == "agenda":
         # Table-of-contents slide → two columns: title block left, chapter list right
         agenda = content[0]
-        caption = chapter_label or title
         html = f'<section{data_ch}{data_lbl}>'
         html += '<div class="agenda-cols">'
         html += '<div class="agenda-head">'
-        if caption:
-            html += f'<span class="slide-kicker">{caption}</span>'
+        # Inhalt-Slide: bewusst ohne Kicker + ohne Subline (Kay), nur der Titel
         if title:
             html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
         html += '</div>'
         html += '<div class="agenda-list">'
         for i, entry in enumerate(agenda.get("items", [])):
@@ -388,6 +384,42 @@ def render_slide(
         html += '<div class="cols">'
         html += f'<div class="w45">{render_content_item(content[0])}</div>'
         html += f'<div class="w55">{render_content_item(content[1])}</div>'
+        html += '</div></section>'
+    elif content and all(c.get("type") == "statement" for c in content):
+        # Reine Text-Slides: 1 Aussage → zentrierte Lead (medium), 2–5 → zweispaltig light (randlos)
+        html = f'<section{data_ch}{data_lbl}>'
+        if chapter_label:
+            html += f'<span class="slide-kicker">{chapter_label}</span>'
+        if title:
+            html += f'<h2>{title}</h2>'
+        if subtitle:
+            html += f'<p class="subline">{subtitle}</p>'
+        if len(content) == 1:
+            html += f'<div class="statement-lead">{content[0].get("text", "")}</div>'
+        else:
+            html += '<div class="statement-cols">'
+            for c in content:
+                html += f'<p class="statement-col">{c.get("text", "")}</p>'
+            html += '</div>'
+        html += '</section>'
+    elif (len(content) == 1 and content[0].get("type") == "chart_refs"
+          and content[0].get("layout") == "image_right"):
+        # Zweispaltiges Bild-Layout (vertikale Bilder): Titel/Text links, Bild rechts
+        chart = content[0].get("items", [{}])[0]
+        src = _img_src(chart.get("source", ""))
+        html = f'<section{data_ch}{data_lbl}>'
+        html += '<div class="chart-cols">'
+        html += '<div class="chart-cols-head">'
+        if chapter_label:
+            html += f'<span class="slide-kicker">{chapter_label}</span>'
+        if title:
+            html += f'<h2>{title}</h2>'
+        if subtitle:
+            html += f'<p class="subline">{subtitle}</p>'
+        if chart.get("caption"):
+            html += f'<p class="chart-cols-caption">{chart.get("caption")}</p>'
+        html += '</div>'
+        html += f'<div class="chart-cols-img"><a href="{src}" target="_blank"><img src="{src}" alt="{chart.get("label", "")}"></a></div>'
         html += '</div></section>'
     else:
         html = f'<section{data_ch}{data_lbl}>'
