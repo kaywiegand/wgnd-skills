@@ -340,6 +340,9 @@ def render_slide(
         # — der GitHub-Link lebt auf dem Closing (CTA).
         if is_last_chapter:
             html += render_closing_links(github, closing_links)
+        else:
+            # Opening-Titel: Start-CTA, damit man vom Cover in die Präsentation kommt
+            html += '<div class="title-cta" onclick="Reveal.next()">Start &nbsp;&rarr;</div>'
         html += '</section>'
     elif role == "closing":
         # Closing / CTA — dunkel, Titel + kurze Botschaft + Link-Reihe (Übersicht/GitHub/…),

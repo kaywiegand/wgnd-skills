@@ -52,8 +52,13 @@ def build_view_json(registry: dict, view: str, chapter_ids: list[str]) -> dict:
         chapters_out.append({"nav_label": nav_label, "slides": rendered_slides})
 
     meta = dict(registry.get("view_meta", {}).get(view, {}))
-    # Projekt-spezifische Closing-Links (kein Hardcoding im Renderer): aus hub.quick_links
-    meta["closing_links"] = registry.get("hub", {}).get("quick_links", [])
+    # Closing-Links (kein Hardcoding im Renderer): LinkedIn wenn gesetzt, sonst hub.quick_links.
+    # Übersicht + GitHub werden im Renderer davor gesetzt.
+    linkedin = meta.get("linkedin", "")
+    if linkedin:
+        meta["closing_links"] = [{"label": "LinkedIn-Profil", "href": linkedin}]
+    else:
+        meta["closing_links"] = registry.get("hub", {}).get("quick_links", [])
     return {"meta": meta, "chapters": chapters_out}
 
 
