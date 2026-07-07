@@ -341,8 +341,8 @@ def render_slide(
         if is_last_chapter:
             html += render_closing_links(github, closing_links)
         else:
-            # Opening-Titel: Start-CTA (gleicher Button wie Closing-Links)
-            html += '<div class="title-cta"><span class="c-link" onclick="Reveal.next()">Start</span></div>'
+            # Opening-Titel: Start-CTA — exakt derselbe Baustein wie Closing (.closing-links > .c-link)
+            html += '<div class="closing-links title-cta"><span class="c-link" onclick="Reveal.next()">Start</span></div>'
         html += '</section>'
     elif role == "closing":
         # Closing / CTA — dunkel, Titel + kurze Botschaft + Link-Reihe (Übersicht/GitHub/…),
