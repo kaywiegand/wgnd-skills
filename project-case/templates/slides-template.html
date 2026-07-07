@@ -45,7 +45,7 @@ Reveal.initialize({
   transition: 'slide',
   transitionSpeed: 'fast',
   margin: 0.07,
-  width: 1280,
+  width: 1024,
   height: 720
 });
 
@@ -104,7 +104,7 @@ function updateNav() {
   });
   // Invert nav colors on dark title / closing slides
   const current = slides[idx];
-  document.body.classList.toggle('nav-invert', !!current && current.classList.contains('title-slide'));
+  document.body.classList.toggle('nav-invert', !!current && (current.classList.contains('title-slide') || current.classList.contains('closing')));
   // Only show the arrow that can actually navigate
   prevArrow.classList.toggle('nav-hidden', idx === 0);
   nextArrow.classList.toggle('nav-hidden', idx === total - 1);
