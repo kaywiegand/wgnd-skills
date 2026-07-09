@@ -12,12 +12,14 @@ in which view, without opening 3 HTML files and comparing by hand.
 Run: uv run python scripts/print_slide_matrix.py
 """
 
+import re
 from pathlib import Path
 
 import yaml
 
 BASE = Path.cwd()
 SLIDES_PATH = BASE / "public" / "md" / "slides.yaml"
+PORTFOLIO_PATH = BASE / "public" / "md" / "portfolio.md"
 OUT_PATH = BASE / "public" / "md" / "slides-matrix.md"
 
 VIEWS = ["storyview", "techview", "overview"]
@@ -55,6 +57,22 @@ def load_registry(path: Path) -> dict:
         return yaml.safe_load(f)
 
 
+def load_project_name(path: Path) -> str:
+    """Read 'name' from the '## Project'-Block in portfolio.md (same pattern as
+    generate_index_from_portfolio.py) so the matrix title matches the actual project."""
+    if not path.exists():
+        return "Portfolio Project"
+    m = re.search(r"## Project\s*```(.*?)```", path.read_text(encoding="utf-8"), re.DOTALL)
+    if not m:
+        return "Portfolio Project"
+    for line in m.group(1).strip().splitlines():
+        if ":" in line:
+            key, _, val = line.partition(":")
+            if key.strip() == "name":
+                return val.strip()
+    return "Portfolio Project"
+
+
 def chapter_label_for_row(chapter: dict, views_present: set) -> str:
     """Show the actual per-view nav_label — flags it when views disagree on the chapter name,
     which is exactly the kind of drift this matrix exists to catch."""
@@ -82,9 +100,9 @@ def build_rows(registry: dict) -> list[dict]:
     return rows
 
 
-def render_markdown(rows: list[dict]) -> str:
+def render_markdown(rows: list[dict], project_name: str) -> str:
     lines = [
-        "# Slide-Matrix — zh-tram-flow",
+        f"# Slide-Matrix — {project_name}",
         "",
         "Automatisch generiert aus `public/md/slides.yaml` via `scripts/print_slide_matrix.py`. "
         "Nicht von Hand editieren — bei jeder Registry-Änderung neu ausführen.",
@@ -109,7 +127,8 @@ def render_markdown(rows: list[dict]) -> str:
 def main() -> None:
     registry = load_registry(SLIDES_PATH)
     rows = build_rows(registry)
-    markdown = render_markdown(rows)
+    project_name = load_project_name(PORTFOLIO_PATH)
+    markdown = render_markdown(rows, project_name)
 
     print(markdown)
 
