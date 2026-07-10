@@ -500,6 +500,7 @@ def render_slide(
             html += f'<h2>{title}</h2>'
         if subtitle:
             html += f'<p class="subline">{subtitle}</p>'
+        html += '<div class="content-zone">'
         if len(content) == 1 and content[0].get("layout") == "lead_copy":
             # E17: große These oben, erklärender Absatz darunter, zentriert als ein Block
             html += '<div class="text-lead-copy">'
@@ -527,6 +528,7 @@ def render_slide(
             for c in content:
                 html += f'<p class="statement-col">{c.get("text", "")}</p>'
             html += '</div>'
+        html += '</div>'
         html += '</section>'
     elif (len(content) == 1 and content[0].get("type") == "chart_refs"
           and content[0].get("layout") == "image_right"):
@@ -555,8 +557,12 @@ def render_slide(
             html += f'<h2>{title}</h2>'
         if subtitle:
             html += f'<p class="subline">{subtitle}</p>'
+        # Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal
+        # in der Inhaltszone (Styleguide v2 Prinzip 3) — .content-zone übernimmt das per CSS.
+        html += '<div class="content-zone">'
         for item in content:
             html += render_content_item(item)
+        html += '</div>'
         html += '</section>'
 
     return html
