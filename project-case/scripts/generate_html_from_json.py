@@ -129,8 +129,7 @@ def render_content_item(item: Dict[str, Any]) -> str:
     elif item_type == "rings":
         # E4 Rings — Donut-Ringe, nur für echte Anteile, spaltenweise verteilt
         items = item.get("items", [])
-        max_width = len(items) * 220
-        html = f'<div class="rings" style="grid-template-columns: repeat({len(items)}, 1fr); max-width: {max_width}px;">'
+        html = f'<div class="rings" style="grid-template-columns: repeat({len(items)}, 1fr);">'
         for ring in items:
             pct = ring.get("percent", 0)
             html += '<div class="ring-wrap">'

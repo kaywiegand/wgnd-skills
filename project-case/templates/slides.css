@@ -84,7 +84,6 @@
 /* Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal in der
    Inhaltszone (Styleguide v2 Prinzip 3) — einzige Ausnahme ist E1 KPI-Reihe (volle Höhe). */
 .content-zone { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
-.content-zone > .metric-row { flex: 1; }
 
 /* Tables: no cell borders, rounded header row (border-collapse: separate) */
 .reveal table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.82em; margin: 0.4em 0; }
@@ -446,14 +445,14 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .sec-text-label { display: block; font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.82em; letter-spacing: 0.05em; margin-bottom: 2px; }
 
 /* ── E4 — Rings (Donut-Ringe, nur echte Anteile) ── */
-.rings { display: grid; gap: 28px; justify-items: center; align-items: center; margin: 0 auto; }
+.rings { display: grid; gap: 28px; justify-items: center; align-items: center; }
 .ring-wrap { text-align: center; }
 .ring { width: 132px; height: 132px; border-radius: 50%; margin: 0 auto 14px; display: flex; align-items: center; justify-content: center; }
 .ring-inner { width: 126px; height: 126px; border-radius: 50%; background: #fff; display: flex; align-items: center; justify-content: center; font-weight: 100; font-size: 2em; color: var(--ink); }
 .ring-wrap .l { font-size: 0.72em; font-weight: 700; color: var(--ink); }
 
 /* ── E5 — Ring + Value (gleichwertig nebeneinander) ── */
-.combo { display: grid; gap: 28px; justify-items: center; align-items: center; margin: 0 auto; }
+.combo { display: grid; gap: 28px; justify-items: center; align-items: center; }
 .value-peer { text-align: center; }
 .value-peer .v { font-size: 2.4em; font-weight: 500; color: var(--ink); line-height: 1; }
 .value-peer .l { font-size: 0.72em; font-weight: 700; margin-top: 0.4em; color: var(--ink); }
@@ -472,7 +471,7 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .arrow-chip { flex: 1; background: var(--card); border: 1px solid var(--card-border); padding: 18px 22px; text-align: center; font-weight: 800; font-size: 0.88em; color: var(--ink); clip-path: polygon(0 0, 92% 0, 100% 50%, 92% 100%, 0 100%, 8% 50%); }
 
 /* ── E12 — Value-Row (große Zahlen, optional Zitat) ── */
-.value-row { display: grid; gap: 28px; justify-items: center; margin: 0 auto; }
+.value-row { display: grid; gap: 28px; justify-items: center; }
 .value-item { text-align: center; }
 .value-item .v { font-size: 3em; font-weight: 500; color: var(--accent); line-height: 1; }
 .value-item .l { font-size: 0.72em; font-weight: 700; margin-top: 0.35em; color: var(--ink); }
