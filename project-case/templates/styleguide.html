@@ -23,34 +23,34 @@
     * { box-sizing: border-box; }
     body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #eef2f6; color: #333; line-height: 1.6; }
     .sr-wrap { max-width: 1000px; margin: 0 auto; padding: 44px 24px 100px; }
-    .sr-title { font-size: 1.9rem; font-weight: 700; color: var(--color-primary); }
+    .sr-title { font-size: 1.9rem; font-weight: 700; color: var(--navy); }
     .sr-intro { color: #667; margin: 6px 0 8px; font-size: 0.95rem; }
-    .sr-cat { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 44px 0 6px; border-top: 1px solid #d6e2ec; padding-top: 30px; }
+    .sr-cat { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 44px 0 6px; border-top: 1px solid #d6e2ec; padding-top: 30px; }
     .sr-demo { background: #fff; border: 1px solid #dde8f0; border-radius: 8px; margin: 14px 0; overflow: hidden; }
     .sr-bar { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; background: #f5f9fc; border-bottom: 1px solid #e3edf4; padding: 8px 14px; }
-    .sr-bar b { color: var(--color-primary); font-size: 0.84rem; }
-    .sr-bar code { color: var(--color-accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.76rem; }
+    .sr-bar b { color: var(--navy); font-size: 0.84rem; }
+    .sr-bar code { color: var(--accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.76rem; }
     .sr-stage { padding: 20px 18px; }
     .sr-stage.flush { padding: 0; }
-    .sr-stage.dark { background: var(--color-primary); padding: 24px 18px; }
+    .sr-stage.dark { background: var(--navy); padding: 24px 18px; }
 
     /* ── Hub-Elemente (aus index-template.html) ── */
-    .hub-header { background: var(--color-primary); color: #fff; padding: 2.4rem 2rem; }
+    .hub-header { background: var(--navy); color: #fff; padding: 2.4rem 2rem; }
     .hub-header h1 { font-size: 2rem; font-weight: 700; margin: 0 0 0.35rem; }
     .hub-header .tagline { font-size: 1rem; opacity: 0.85; margin: 0 0 0.15rem; }
     .hub-header .subtitle { font-size: 1rem; opacity: 0.85; margin: 0; }
     .hub-kpi-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 1.4rem; }
     .hub-kpi { background: #fff; border: 1px solid #dde8f0; border-radius: var(--radius-card); padding: 10px 18px; text-align: center; min-width: 110px; }
-    .hub-kpi .v { font-size: 1.5rem; font-weight: 700; color: var(--color-primary); }
+    .hub-kpi .v { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
     .hub-kpi .l { font-size: 0.68rem; color: #888; letter-spacing: 0.04em; margin-top: 2px; }
-    .hub-kpi.positive .v { color: var(--color-positive); }  .hub-kpi.negative .v { color: var(--color-negative); }
-    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; color: var(--color-accent); margin-bottom: 0.5rem; }
-    .hub-h2 { font-size: 1.35rem; font-weight: 700; color: var(--color-primary); margin: 0 0 0.5rem; }
+    .hub-kpi.positive .v { color: var(--positive); }  .hub-kpi.negative .v { color: var(--negative); }
+    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; color: var(--accent); margin-bottom: 0.5rem; }
+    .hub-h2 { font-size: 1.35rem; font-weight: 700; color: var(--navy); margin: 0 0 0.5rem; }
     .section-intro { font-size: 0.92rem; color: #555; margin-bottom: 0.5rem; }
     .view-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-    .view-card { background: #fff; border: 1px solid #dde8f0; padding: 22px; border-top: 4px solid var(--color-accent); border-radius: var(--radius-card); display: flex; flex-direction: column; }
-    .view-label { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 8px; color: var(--color-accent); }
-    .view-card h3 { font-size: 1.1rem; color: var(--color-primary); margin: 0 0 6px; }
+    .view-card { background: #fff; border: 1px solid #dde8f0; padding: 22px; border-top: 4px solid var(--accent); border-radius: var(--radius-card); display: flex; flex-direction: column; }
+    .view-label { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 8px; color: var(--accent); }
+    .view-card h3 { font-size: 1.1rem; color: var(--navy); margin: 0 0 6px; }
     .view-desc { font-size: 0.85rem; color: #555; margin-bottom: 14px; flex-grow: 1; }
     .view-meta { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
     .view-time { font-size: 0.75rem; color: #888; font-weight: 500; }
@@ -68,11 +68,11 @@
     .demo-stk-wrap.is-chapter .demo-stk { height: 28px; }
     .demo-stk-wrap.is-past .demo-stk { background: rgba(26,58,92,0.45); }
     .demo-stk-wrap.is-past .demo-stk-num { color: rgba(26,58,92,0.45); }
-    .demo-stk-wrap.is-current .demo-stk { width: 2px; height: 30px; background: var(--color-primary); }
-    .demo-stk-wrap.is-current .demo-stk-num { color: var(--color-primary); font-weight: 700; }
-    .demo-stk-wrap.is-chapter.is-current .demo-stk-ch-label { color: var(--color-primary); font-weight: 700; }
+    .demo-stk-wrap.is-current .demo-stk { width: 2px; height: 30px; background: var(--navy); }
+    .demo-stk-wrap.is-current .demo-stk-num { color: var(--navy); font-weight: 700; }
+    .demo-stk-wrap.is-chapter.is-current .demo-stk-ch-label { color: var(--navy); font-weight: 700; }
     .demo-progress { height: 8px; background: rgba(26,58,92,0.1); margin: 0; }
-    .demo-progress-fill { height: 100%; background: var(--color-primary); }
+    .demo-progress-fill { height: 100%; background: var(--navy); }
     /* prev/next arrows flanking the tick bar */
     .demo-navrow { display: flex; align-items: flex-end; }
     .demo-navrow .demo-ticks { flex: 1; }
@@ -81,7 +81,7 @@
     .demo-hover .demo-stk { background: rgba(26,58,92,0.6); }      /* hover state shown statically */
     .demo-hover .demo-stk-num { color: rgba(26,58,92,0.7); }
     /* inverted variant — title / closing slide */
-    .nav-demo-wrap.dark { background: var(--color-primary); }
+    .nav-demo-wrap.dark { background: var(--navy); }
     .nav-demo-wrap.dark .nav-demo-slide { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
     .nav-demo-wrap.dark .demo-stk { background: rgba(255,255,255,0.4); }
     .nav-demo-wrap.dark .demo-stk-num { color: rgba(255,255,255,0.55); }
@@ -100,7 +100,7 @@
     .swatch-info { padding: 8px 10px; background: #fff; }
     .swatch-name { font-size: 0.78rem; font-weight: 600; color: #333; }
     .swatch-hex { font-size: 0.72rem; color: #888; font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 1px; }
-    .swatch-var { font-size: 0.68rem; color: var(--color-accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 2px; }
+    .swatch-var { font-size: 0.68rem; color: var(--accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 2px; }
     .palette-group-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin: 16px 0 6px; }
   </style>
 </head>
@@ -335,14 +335,148 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Evidence-Chain</b> <code>.ev-chain · .ev-step (.climax) · .ev-circle · .ev-body · .ev-arrow</code> — <code>sequence</code></div>
+    <div class="sr-bar"><b>E8 · Timeline</b> <code>.timeline · .tl-item (.climax) · .tl-num · h4 · p</code> — <code>sequence</code>, Verbindungslinie per CSS</div>
     <div class="sr-stage"><div class="reveal">
-      <div class="ev-chain">
-        <div class="ev-step"><div class="ev-circle">1</div><div class="ev-body"><strong>Erster Schritt</strong><span>Beobachtung oder Befund.</span></div></div>
-        <div class="ev-arrow">↓</div>
-        <div class="ev-step"><div class="ev-circle">2</div><div class="ev-body"><strong>Zweiter Schritt</strong><span>Ableitung daraus.</span></div></div>
-        <div class="ev-arrow">↓</div>
-        <div class="ev-step climax"><div class="ev-circle">3</div><div class="ev-body"><strong>Ergebnis (climax)</strong><span>Die Schlussfolgerung — grün hervorgehoben.</span></div></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-num">1</div><div><h4>Erster Schritt</h4><p>Beobachtung oder Befund.</p></div></div>
+        <div class="tl-item"><div class="tl-num">2</div><div><h4>Zweiter Schritt</h4><p>Ableitung daraus.</p></div></div>
+        <div class="tl-item climax"><div class="tl-num">3</div><div><h4>Ergebnis (climax)</h4><p>Die Schlussfolgerung — grün hervorgehoben.</p></div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E4 · Rings</b> <code>.rings · .ring-wrap · .ring (conic-gradient) · .ring-inner · .l</code> — <code>rings</code>, nur für echte Anteile</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="rings" style="grid-template-columns: repeat(3, 1fr); max-width: 660px; margin: 0 auto;">
+        <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Anteil A</div></div>
+        <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 68%, var(--card) 0);"><div class="ring-inner">68%</div></div><div class="l">Anteil B</div></div>
+        <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 20%, var(--card) 0);"><div class="ring-inner">20%</div></div><div class="l">Anteil C</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E5 · Ring + Value</b> <code>.combo · .ring-wrap · .value-peer</code> — <code>ring_value</code>, Ring und Zahlen gleichwertig</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="combo" style="grid-template-columns: repeat(3, 1fr); max-width: 660px; margin: 0 auto;">
+        <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Anteil A</div></div>
+        <div class="value-peer"><div class="v">00,0</div><div class="l">Kennzahl B</div></div>
+        <div class="value-peer"><div class="v">00</div><div class="l">Kennzahl C</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E6 · Box-Grid</b> <code>.box-grid · .box-item (.highlight)</code> — <code>box_grid</code>, 3 neutral + 1 hervorgehoben</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="box-grid">
+        <div class="box-item">Erster Punkt</div>
+        <div class="box-item">Zweiter Punkt</div>
+        <div class="box-item">Dritter Punkt</div>
+        <div class="box-item highlight">Vierter Punkt — hervorgehoben</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E9 · Horizontale Timeline</b> <code>.h-timeline · .ht-line-row · .ht-dot · .ht-labels · .ht-label</code> — <code>h_timeline</code>, für Roadmap/Phasen</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="h-timeline">
+        <div class="ht-line-row">
+          <div class="ht-dot-wrap"><div class="ht-dot"></div></div>
+          <div class="ht-dot-wrap"><div class="ht-dot"></div></div>
+          <div class="ht-dot-wrap"><div class="ht-dot"></div></div>
+        </div>
+        <div class="ht-labels">
+          <div class="ht-label"><h4>Phase A</h4><p>Kurzbeschreibung.</p></div>
+          <div class="ht-label"><h4>Phase B</h4><p>Kurzbeschreibung.</p></div>
+          <div class="ht-label"><h4>Phase C</h4><p>Kurzbeschreibung.</p></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E10 · Funnel</b> <code>.funnel · .fu-step</code> — <code>funnel</code>, nur für echte Verengung/Filterung</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="funnel">
+        <div class="fu-step" style="width: 100%;">Stufe 1 — Ausgangsmenge</div>
+        <div class="fu-step" style="width: 73%;">Stufe 2 — gefiltert</div>
+        <div class="fu-step" style="width: 46%;">Stufe 3 — Zielmenge</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E11 · Process Arrows</b> <code>.arrows · .arrow-chip</code> — <code>process_arrows</code>, kompakt ohne Erklärtext</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="arrows">
+        <div class="arrow-chip">Schritt 1</div>
+        <div class="arrow-chip">Schritt 2</div>
+        <div class="arrow-chip">Schritt 3</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E12 · Value-Row</b> <code>.value-row · .value-item (.v/.l/.d) · .quote</code> — <code>value_row</code>, optional Zitat darunter</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="value-row" style="grid-template-columns: repeat(3, 1fr); max-width: 660px; margin: 0 auto;">
+        <div class="value-item"><div class="v">00,0</div><div class="l">Kennzahl A</div><div class="d">Zusatzinfo</div></div>
+        <div class="value-item"><div class="v">00</div><div class="l">Kennzahl B</div><div class="d">Zusatzinfo</div></div>
+        <div class="value-item"><div class="v">00%</div><div class="l">Kennzahl C</div><div class="d">Zusatzinfo</div></div>
+      </div>
+      <div class="extra-text" style="text-align: center;"><p class="quote">„Optionales Zitat als Fließtext, keine Box.“</p></div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E13 · Fact-Grid</b> <code>.fact-grid · .fact-cell (.v/.l)</code> — <code>fact_grid</code>, dichtes Raster für Detail-/Anhang-Slides</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="fact-grid">
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt A</div></div>
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt B</div></div>
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt C</div></div>
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt D</div></div>
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt E</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E15 · Statement, prominent</b> <code>.statement-lead</code> — reine Text-Slide, 1 Aussage, zentriert</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="statement-lead">Ein Gedanke, groß gesetzt, maximal drei Zeilen — für die eine Aussage, die hängen bleiben soll.</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E14 · Copy 2-spaltig mit Headline</b> <code>.text-cols-head · h4 · p</code> — reine Text-Slide, 2 Aussagen mit <code>heading</code>-Feld</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="text-cols-head">
+        <div><h4>Warum A</h4><p>Kurzer erklärender Absatz zur ersten Spalte.</p></div>
+        <div><h4>Warum B</h4><p>Kurzer erklärender Absatz zur zweiten Spalte.</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E16 · Copy, zwei Absätze</b> <code>.text-stack · p</code> — reine Text-Slide, Aussagen mit <code>layout: stack</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="text-stack">
+        <p>Erster Absatz — normaler Fließtext, zwei bis vier Zeilen.</p>
+        <p>Zweiter Absatz — schließt inhaltlich an den ersten an.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E17 · Statement + Copy gemischt</b> <code>.text-lead-copy · .lead · .copy</code> — reine Text-Slide, <code>layout: lead_copy</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="text-lead-copy">
+        <p class="lead">Die große These, zentriert und hervorgehoben.</p>
+        <p class="copy">Der erklärende Absatz direkt darunter, normale Textgröße.</p>
       </div>
     </div></div>
   </div>
@@ -430,11 +564,18 @@
     <div class="sr-stage">
       <div class="palette-group-label">Primärfarben</div>
       <div class="palette-grid">
-        <div class="swatch"><div class="swatch-color" style="background: #1a3a5c;"></div><div class="swatch-info"><div class="swatch-name">Primary</div><div class="swatch-hex">#1a3a5c</div><div class="swatch-var">--color-primary</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #2E86AB;"></div><div class="swatch-info"><div class="swatch-name">Accent</div><div class="swatch-hex">#2E86AB</div><div class="swatch-var">--color-accent</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #27ae60;"></div><div class="swatch-info"><div class="swatch-name">Positive</div><div class="swatch-hex">#27ae60</div><div class="swatch-var">--color-positive</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #e67e22;"></div><div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#e67e22</div><div class="swatch-var">--color-warning</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #c0392b;"></div><div class="swatch-info"><div class="swatch-name">Negative</div><div class="swatch-hex">#c0392b</div><div class="swatch-var">--color-negative</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #1a3a5c;"></div><div class="swatch-info"><div class="swatch-name">Navy</div><div class="swatch-hex">#1a3a5c</div><div class="swatch-var">--navy</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #C9873F;"></div><div class="swatch-info"><div class="swatch-name">Accent</div><div class="swatch-hex">#C9873F</div><div class="swatch-var">--accent</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #3E4A5C;"></div><div class="swatch-info"><div class="swatch-name">Ink</div><div class="swatch-hex">#3E4A5C</div><div class="swatch-var">--ink</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #66707D;"></div><div class="swatch-info"><div class="swatch-name">Ink-Body</div><div class="swatch-hex">#66707D</div><div class="swatch-var">--ink-body</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #8A93A0;"></div><div class="swatch-info"><div class="swatch-name">Ink-Soft</div><div class="swatch-hex">#8A93A0</div><div class="swatch-var">--ink-soft</div></div></div>
+      </div>
+
+      <div class="palette-group-label">Status</div>
+      <div class="palette-grid">
+        <div class="swatch"><div class="swatch-color" style="background: #4C9C7B;"></div><div class="swatch-info"><div class="swatch-name">Positive</div><div class="swatch-hex">#4C9C7B</div><div class="swatch-var">--positive</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #d98a3d;"></div><div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#d98a3d</div><div class="swatch-var">--warning</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #c0392b;"></div><div class="swatch-info"><div class="swatch-name">Negative</div><div class="swatch-hex">#c0392b</div><div class="swatch-var">--negative</div></div></div>
       </div>
 
       <div class="palette-group-label">Auf dunklem Hintergrund (Title / End Slide)</div>
@@ -445,12 +586,10 @@
         <div class="swatch"><div class="swatch-color" style="background: #ffc66d;"></div><div class="swatch-info"><div class="swatch-name">KPI Warning</div><div class="swatch-hex">#ffc66d</div><div class="swatch-var">--color-kpi-warning</div></div></div>
       </div>
 
-      <div class="palette-group-label">Hintergründe &amp; Rahmen</div>
+      <div class="palette-group-label">Card-Oberflächen (austauschbar: Beige/Blau/Grün, nur diese zwei Werte)</div>
       <div class="palette-grid">
-        <div class="swatch"><div class="swatch-color" style="background: #f5f9fc; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Card BG</div><div class="swatch-hex">#f5f9fc</div><div class="swatch-var">--bg-card</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #f0f7fb; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Box Default BG</div><div class="swatch-hex">#f0f7fb</div><div class="swatch-var">--bg-box-default</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #f2faf5; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Box Positive BG</div><div class="swatch-hex">#f2faf5</div><div class="swatch-var">--bg-box-positive</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #d0e8f5;"></div><div class="swatch-info"><div class="swatch-name">Border Card</div><div class="swatch-hex">#d0e8f5</div><div class="swatch-var">--border-card</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #F3F1EC; border: 1px solid #E4E0D6;"></div><div class="swatch-info"><div class="swatch-name">Card</div><div class="swatch-hex">#F3F1EC</div><div class="swatch-var">--card</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #E4E0D6;"></div><div class="swatch-info"><div class="swatch-name">Card Border</div><div class="swatch-hex">#E4E0D6</div><div class="swatch-var">--card-border</div></div></div>
       </div>
     </div>
   </div>
