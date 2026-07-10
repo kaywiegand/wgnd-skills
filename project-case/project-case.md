@@ -135,6 +135,7 @@ Pflicht-Sections (✅/❌):
 - `Approach` — Sections mit Notebook-Links · Dimensionen-Tabelle · Modell-Tabelle?
 - `Results` — Recommendations vorhanden (nicht nur Findings)?
 - `Notebooks` — volle Dateinamen als Link-Text?
+- `Tech Stack` — konkrete Tools mit Version, keine Buzzword-Liste?
 - `Setup` — max. 4 Zeilen + Link zu SETUP.md?
 - `Status Badge` — aktueller Projektstatus im Badge?
 
