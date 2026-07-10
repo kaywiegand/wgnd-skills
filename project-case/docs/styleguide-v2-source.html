@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<title>Styleguide — Zurich Tram Data / Workspace Portfolio</title>
+<style>
+:root{
+  --navy:#1a3a5c; --accent:#C9873F; --ink:#3E4A5C; --ink-body:#66707D; --ink-soft:#8A93A0;
+  --positive:#4C9C7B; --card:#F3F1EC; --card-border:#E4E0D6;
+  --leading-body:1.5; --leading-head:1.3;
+}
+*{ box-sizing:border-box; }
+body{ margin:0; padding:0 0 140px; background:#FBFBFB; font-family:-apple-system,'Segoe UI',sans-serif; color:var(--ink); }
+code{ font-family:'SF Mono','Courier New',monospace; background:#fff; padding:2px 8px; border-radius:4px; border:1px solid var(--card-border); font-size:.95em; }
+
+.toc{ position:sticky; top:0; z-index:100; background:var(--navy); color:#fff; padding:16px 28px; display:flex; gap:18px; flex-wrap:wrap; font-size:13.5px; box-shadow:0 4px 14px rgba(0,0,0,.15); }
+.toc a{ color:#D9D6CD; text-decoration:none; font-weight:600; }
+.toc a:hover{ color:#fff; text-decoration:underline; }
+.toc .grp{ color:#8FB6CC; text-transform:uppercase; letter-spacing:.05em; font-size:11.5px; margin-right:-4px; }
+
+.wrap{ max-width:1100px; margin:0 auto; padding:0 28px; }
+.section-head{ margin:88px auto 26px; max-width:1100px; padding:0 28px; }
+.section-head .kicker{ font-size:13px; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:10px; }
+.section-head h2{ font-size:30px; margin:0 0 12px; color:var(--navy); }
+.section-head p{ font-size:16.5px; color:var(--ink-soft); line-height:1.6; margin:0; max-width:80ch; }
+
+.spec-table{ width:100%; border-collapse:collapse; background:#fff; border-radius:8px; overflow:hidden; margin:22px 0; box-shadow:0 6px 20px -10px rgba(0,0,0,.15); }
+.spec-table th{ text-align:left; font-size:13px; font-weight:700; letter-spacing:.05em; text-transform:uppercase; color:#fff; background:var(--navy); padding:16px 22px; }
+.spec-table td{ padding:18px 22px; border-bottom:1px solid var(--card-border); font-size:15.5px; line-height:1.5; }
+.spec-table tr:last-child td{ border-bottom:none; }
+.spec-table td.name{ font-weight:700; color:var(--ink); white-space:nowrap; }
+
+.principles{ background:#fff; border-radius:10px; padding:8px 28px; box-shadow:0 6px 20px -10px rgba(0,0,0,.15); margin:22px 0; }
+.principles li{ font-size:16px; line-height:1.65; padding:18px 0; border-bottom:1px solid var(--card-border); color:var(--ink-body); }
+.principles li:last-child{ border-bottom:none; }
+.principles b{ color:var(--ink); }
+
+.deck{ max-width:1100px; margin:0 auto; display:flex; flex-direction:column; gap:44px; padding:0 28px; }
+.row2{ display:grid; grid-template-columns:1fr 1fr; gap:28px; }
+.item-meta{ font-size:14.5px; color:var(--ink-soft); margin:10px 0 0; line-height:1.55; }
+
+.slide{ width:100%; aspect-ratio:1024/720; position:relative; background:#fff; border-radius:10px; font-size:17px; }
+.frame{ position:absolute; inset:5.5% 5.5% 4%; display:flex; flex-direction:column; }
+.head{ flex:0 0 170px; border-bottom:1px solid #ECE9E2; padding-bottom:18px; margin-bottom:18px; }
+.cap-label{ font-size:.68em; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); margin-bottom:.6em; }
+.h2{ font-size:1.85em; font-weight:500; margin:0 0 .4em; line-height:var(--leading-head); }
+.subline{ font-size:.86em; color:var(--ink-body); line-height:var(--leading-body); max-width:68ch; margin:0; }
+.content{ flex:1; display:flex; flex-direction:column; min-height:0; justify-content:center; }
+.content.centered{ justify-content:center; }
+.g12{ display:grid; grid-template-columns:repeat(12,1fr); }
+
+.kpi{ display:flex; flex-direction:column; justify-content:center; border-left:3px solid var(--card-border); padding-left:18px; }
+.kpi.good{ border-left-color:var(--positive); }
+.kpi .v{ font-size:2em; font-weight:800; line-height:1; }
+.kpi.good .v{ color:var(--positive); }
+.kpi .l{ font-size:1em; color:var(--ink-soft); margin-top:8px; line-height:1.4; }
+
+.pf-card{ background:#F8F6F2; border-radius:5px; padding:22px 24px; }
+.pf-title{ font-size:.68em; font-weight:500; letter-spacing:.05em; text-transform:uppercase; color:var(--accent); margin-bottom:1em; }
+.pf-card p{ font-size:.82em; color:var(--ink-body); line-height:var(--leading-body); margin:0; }
+
+.rings{ display:grid; gap:28px; justify-items:center; align-items:center; }
+.ring-wrap{ text-align:center; }
+.ring{ width:162px;height:162px; border-radius:50%; margin:0 auto 14px; display:flex; align-items:center; justify-content:center; }
+.ring-inner{ width:156px;height:156px; border-radius:50%; background:#fff; display:flex; align-items:center; justify-content:center; font-weight:100; font-size:2.5em; }
+.ring-wrap .l{ font-size:1em; font-weight:700; }
+
+.combo{ display:grid; gap:28px; justify-items:center; align-items:center; }
+.value-peer{ text-align:center; }
+.value-peer .v{ font-size:2.6em; font-weight:800; color:var(--ink); line-height:1; }
+.value-peer .l{ font-size:1em; font-weight:700; margin-top:.4em; }
+
+.box-grid{ display:grid; grid-template-columns:1fr 1fr; gap:22px; }
+.box-item{ border:1px solid var(--card-border); border-left:3px solid var(--ink); border-radius:5px; padding:18px 22px; font-size:.85em; font-weight:600; }
+.box-item.highlight{ border:1.5px solid var(--accent); }
+
+.step{ position:relative; padding-top:2.6em; padding-left:20px; text-align:left; border-left:1px solid var(--card-border); }
+.step .n{ position:absolute; top:0; left:20px; width:1.8em; height:1.8em; border-radius:50%; background:var(--navy); color:#fff; font-size:.8em; font-weight:800; display:flex; align-items:center; justify-content:center; }
+.step h4{ font-size:.85em; font-weight:700; margin:0 0 .3em; }
+.step p{ font-size:.72em; color:var(--ink-body); margin:0; line-height:var(--leading-body); }
+.steps-row{ display:grid; gap:24px; }
+
+.timeline{ position:relative; display:flex; flex-direction:column; gap:20px; padding-left:4px; }
+.timeline::before{ content:""; position:absolute; left:22px; top:8px; bottom:8px; width:1px; background:var(--card-border); }
+.tl-item{ position:relative; display:flex; gap:18px; align-items:flex-start; z-index:1; }
+.tl-num{ width:44px;height:44px;border-radius:11px; background:#fff; border:2px solid var(--accent); display:flex; align-items:center; justify-content:center; font-weight:800; font-size:.85em; color:var(--accent); flex:none; }
+.tl-item h4{ font-size:.88em; font-weight:700; margin:0 0 .25em; }
+.tl-item p{ font-size:.76em; color:var(--ink-body); margin:0; line-height:var(--leading-body); }
+
+.h-timeline{ display:flex; flex-direction:column; gap:20px; }
+.ht-line-row{ position:relative; display:flex; }
+.ht-line-row::before{ content:""; position:absolute; top:7px; left:0; right:0; height:1px; background:var(--card-border); }
+.ht-dot-wrap{ flex:1; display:flex; justify-content:center; }
+.ht-dot{ width:14px;height:14px;border-radius:50%; background:var(--navy); position:relative; z-index:1; }
+.ht-labels{ display:flex; }
+.ht-label{ flex:1; text-align:center; padding:0 10px; }
+.ht-label h4{ font-size:.85em; font-weight:700; margin:0 0 .35em; }
+.ht-label p{ font-size:.72em; color:var(--ink-body); margin:0; line-height:var(--leading-body); }
+
+.funnel{ display:flex; flex-direction:column; gap:3px; }
+.fu-step{ background:var(--card); border:1px solid var(--card-border); display:flex; align-items:center; justify-content:center; font-size:.85em; font-weight:700; padding:16px; }
+.fu-step:nth-child(1){ width:100%; } .fu-step:nth-child(2){ width:82%; margin:0 auto; }
+.fu-step:nth-child(3){ width:64%; margin:0 auto; } .fu-step:nth-child(4){ width:46%; margin:0 auto; }
+
+.arrows{ display:flex; gap:14px; }
+.arrow-chip{ flex:1; background:var(--card); border:1px solid var(--card-border); padding:18px 22px; text-align:center; font-weight:800; font-size:.88em; clip-path:polygon(0 0,92% 0,100% 50%,92% 100%,0 100%,8% 50%); }
+
+.value-row{ display:grid; gap:28px; justify-items:center; }
+.value-item{ text-align:center; }
+.value-item .v{ font-size:3em; font-weight:100; color:var(--accent); line-height:1; }
+.value-item .l{ font-size:1em; font-weight:700; margin-top:.35em; }
+.value-item .d{ font-size:.68em; color:var(--ink-soft); margin-top:.25em; line-height:var(--leading-body); }
+.quote{ font-style:italic; color:var(--ink-body); font-size:.88em; line-height:var(--leading-body); }
+
+.fact-grid15{ display:grid; grid-template-columns:repeat(5,1fr); grid-template-rows:repeat(2,1fr); gap:2px; background:var(--card-border); }
+.fact-cell{ background:#fff; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; padding:16px 6px; }
+.fact-cell .v{ font-size:1.4em; font-weight:800; color:var(--accent); }
+.fact-cell .l{ font-size:.55em; color:var(--ink-soft); text-align:center; line-height:1.25; }
+
+.extra-text{ margin-top:40px; }
+.extra-text p{ font-size:.9em; color:var(--ink-body); line-height:var(--leading-body); margin:0 0 1em; max-width:72ch; }
+.extra-text-2col{ margin-top:40px; display:grid; grid-template-columns:1fr 1fr; gap:48px; }
+.extra-text-2col p{ font-size:.9em; color:var(--ink-body); line-height:var(--leading-body); margin:0; }
+.extra-text-3col{ margin-top:40px; display:grid; grid-template-columns:1fr 1fr 1fr; gap:36px; }
+.extra-text-3col p{ font-size:.85em; color:var(--ink-body); line-height:var(--leading-body); margin:0; }
+
+.swatch-row{ display:flex; gap:18px; }
+.swatch{ flex:1; border-radius:10px; padding:22px; border:1px solid #ddd; }
+.swatch .pf-title{ font-size:12.5px; margin-bottom:.7em; }
+.swatch p{ font-size:14px; margin:0; line-height:1.55; }
+.sw-beige{ background:#F3F1EC; border-color:#E4E0D6; } .sw-beige .pf-title{ color:#C9873F; } .sw-beige p{ color:#66707D; }
+.sw-blue{ background:#EDEFF2; border-color:#DCE2E8; } .sw-blue .pf-title{ color:#4B5768; } .sw-blue p{ color:#6B7684; }
+.sw-green{ background:#EEF3EE; border-color:#DCE6DC; } .sw-green .pf-title{ color:#4C7C5C; } .sw-green p{ color:#66746A; }
+</style>
+</head>
+<body>
+
+<div class="toc">
+  <span class="grp">Basis</span><a href="#prinzipien">Prinzipien</a><a href="#raster">Raster</a><a href="#typo">Typografie</a><a href="#abstand">Abstände</a><a href="#farbe">Farbe</a>
+  <span class="grp">Layouts</span><a href="#L1">L1</a><a href="#L2">L2</a><a href="#L3">L3</a><a href="#L4">L4</a><a href="#L5">L5</a><a href="#L6">L6</a><a href="#L7">L7</a>
+  <span class="grp">Elemente</span><a href="#E1">E1</a><a href="#E2">E2</a><a href="#E3">E3</a><a href="#E4">E4</a><a href="#E5">E5</a><a href="#E6">E6</a><a href="#E7">E7</a><a href="#E8">E8</a><a href="#E9">E9</a><a href="#E10">E10</a><a href="#E11">E11</a><a href="#E12">E12</a><a href="#E13">E13</a>
+  <span class="grp">Regeln</span><a href="#kombi">Kombination</a>
+</div>
+
+<div class="wrap" style="padding-top:56px;">
+  <div class="section-head" style="margin-top:0; padding:0;">
+    <div class="kicker">Styleguide v2</div>
+    <h2 style="font-size:36px;">Zurich Tram Data — Slide-System</h2>
+    <p>Ein Raster, sieben benannte Layouts, dreizehn benannte Elemente. Jede Slide lässt sich beschreiben als <code>Layout L… + Element E…</code>. Titel und Subline in jedem Beispiel unten zeigen direkt, welches Muster gerade zu sehen ist.</p>
+  </div>
+</div>
+
+<div class="section-head" id="prinzipien"><div class="kicker">01</div><h2>Prinzipien</h2></div>
+<div class="wrap">
+  <ul class="principles">
+    <li><b>Feste Kopfzone.</b> Eyebrow, Titel und Subline sitzen immer in den ersten 170px — der Titel landet auf jeder Slide an derselben Stelle.</li>
+    <li><b>Kein Full-Bleed.</b> Rand 56px oben/seitlich, 40px unten, auch bei großen Fenstern.</li>
+    <li><b>Elemente schrumpfen auf ihren Inhalt.</b> Standard ist "so hoch wie nötig" statt "so hoch wie möglich" — einzige Ausnahme ist die KPI-Reihe (E1), die bewusst volle Höhe nutzt.</li>
+    <li><b>Eine Akzentfarbe aktiv pro Slide.</b> Der Rest bleibt neutral in Ink, Card und Border.</li>
+    <li><b>Jedes Element verträgt Zusatztext</b> — darüber als Subline in der Kopfzone, oder darunter als 1 bis 3 Absätze, wahlweise untereinander oder in mehreren Spalten.</li>
+    <li><b>Farbe ist austauschbar.</b> Zwei Variablen (<code>--card</code>, <code>--card-border</code>) bestimmen die ganze Palette — Beige, Blau, Grün, ohne ein Stück neues CSS.</li>
+  </ul>
+</div>
+
+<div class="section-head" id="raster"><div class="kicker">02</div><h2>Raster</h2><p>Canvas, Ränder, Spalten — die Basis für jedes Layout.</p></div>
+<div class="wrap">
+  <table class="spec-table">
+    <tr><th>Eigenschaft</th><th>Wert</th></tr>
+    <tr><td class="name">Canvas</td><td>1024 × 720px — die bestehende Reveal-Konfiguration, wird nicht angetastet</td></tr>
+    <tr><td class="name">Rand oben / seitlich</td><td>56px</td></tr>
+    <tr><td class="name">Rand unten</td><td>40px</td></tr>
+    <tr><td class="name">Kopfzone</td><td>fix 170px, unabhängig davon was im Inhalt folgt</td></tr>
+    <tr><td class="name">Spalten</td><td>12, Gutter 20–32px je nach Layout (siehe Abstände)</td></tr>
+  </table>
+
+  <div style="max-width:1200px; margin:32px auto 0; background:#fff; border-radius:10px; overflow:hidden; box-shadow:0 20px 50px -20px rgba(0,0,0,.2);">
+    <div style="background:#E9E7E2; padding:10px 14px; display:flex; align-items:center; gap:8px;">
+      <span style="width:10px;height:10px;border-radius:50%;background:#D6D2C8;display:inline-block;"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:#D6D2C8;display:inline-block;"></span>
+      <span style="width:10px;height:10px;border-radius:50%;background:#D6D2C8;display:inline-block;"></span>
+      <span style="margin-left:14px;background:#fff;border-radius:5px;padding:5px 14px;font-size:12px;color:var(--ink-soft);">workspace-portfolio.local/overview.html</span>
+    </div>
+    <div style="background:#E4E0D6; padding:60px 40px; display:flex; align-items:center; justify-content:center; min-height:600px;">
+      <div style="width:1024px; height:720px; max-width:100%; background:#fff; border-radius:10px; position:relative; zoom:0.62;">
+        <div style="position:absolute; inset:56px; display:grid; grid-template-columns:repeat(12,1fr); gap:20px; pointer-events:none;">
+          <div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div>
+        </div>
+        <div style="position:absolute; inset:0; pointer-events:none; display:flex; flex-direction:column;">
+          <div style="flex:0 0 56px; background:rgba(0,0,0,.03); border-bottom:1px dashed rgba(201,135,63,.55); position:relative;"><span style="position:absolute;left:8px;top:6px;font-size:11px;font-weight:700;color:var(--ink-soft);background:#fff;padding:1px 6px;border-radius:3px;font-family:monospace;">Rand 56px</span></div>
+          <div style="flex:0 0 170px; border-bottom:1px dashed rgba(201,135,63,.55); position:relative;"><span style="position:absolute;left:8px;top:6px;font-size:11px;font-weight:700;color:var(--accent);background:#fff;padding:1px 6px;border-radius:3px;font-family:monospace;">Kopfzone 170px</span></div>
+          <div style="flex:1; position:relative;"><span style="position:absolute;left:8px;top:6px;font-size:11px;font-weight:700;color:var(--accent);background:#fff;padding:1px 6px;border-radius:3px;font-family:monospace;">Inhaltszone — Rest</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="item-meta" style="text-align:center; margin-top:14px;">Position der Slide im Browserfenster — 1024×720 Canvas, zentriert, mit Sicherheitsrand.</p>
+
+  <div class="deck" style="padding:0; margin-top:36px;">
+    <div>
+      <div class="slide"><div class="frame">
+        <div style="position:absolute; inset:0; display:grid; grid-template-columns:repeat(12,1fr); gap:20px; pointer-events:none;">
+          <div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div><div style="background:rgba(46,134,171,.06); outline:1px dashed rgba(46,134,171,.4);"></div>
+        </div>
+        <div class="head"><div class="cap-label">Grundraster</div><div class="h2">12 Spalten, feste Kopfzone</div><p class="subline">Zur Übersicht ohne Inhalt — das Skelett, auf dem jedes Layout und jedes Element aufsetzt.</p></div>
+        <div class="content" style="position:relative;">
+          <div style="position:absolute; top:0; left:0; right:0; bottom:0; border:1px dashed rgba(201,135,63,.4); border-radius:4px; display:flex; align-items:center; justify-content:center; font-family:monospace; font-size:12px; color:var(--ink-soft);">Inhaltszone</div>
+        </div>
+      </div></div>
+    </div>
+  </div>
+</div>
+
+<div class="section-head" id="typo"><div class="kicker">03</div><h2>Typografie</h2><p>Alle Größen relativ zur Slide-Grundschrift.</p></div>
+<div class="wrap">
+  <table class="spec-table">
+    <tr><th>Rolle</th><th>Größe</th><th>Zeilenhöhe</th><th>Sonstiges</th></tr>
+    <tr><td class="name">Eyebrow / Caption</td><td>.68em</td><td>1.3</td><td>700, Versalien, .1em Letterspacing, Akzentfarbe</td></tr>
+    <tr><td class="name">H2 / Slide-Titel</td><td>1.85em</td><td>1.3</td><td>800, hält auch zweizeilig in der 170px-Kopfzone</td></tr>
+    <tr><td class="name">Subline</td><td>.86em</td><td>1.5</td><td>max-width 68ch, immer sichtbar</td></tr>
+    <tr><td class="name">Body / Fließtext</td><td>.85–.9em</td><td>1.5</td><td>Standard in Karten, Zusatztext-Blöcken</td></tr>
+    <tr><td class="name">Body — groß</td><td>1.1–1.15em</td><td>1.5</td><td>Für einzelne Insights mit mehr Gewicht</td></tr>
+    <tr><td class="name">Große Kennzahl</td><td>2–2.6em</td><td>1</td><td>Bewusst eng — einzige Ausnahme von der 1.3/1.5-Regel</td></tr>
+  </table>
+</div>
+
+<div class="section-head" id="abstand"><div class="kicker">04</div><h2>Abstände</h2><p>Feste Werte statt beliebiger Zwischenräume.</p></div>
+<div class="wrap">
+  <table class="spec-table">
+    <tr><th>Wert</th><th>Verwendung</th></tr>
+    <tr><td class="name">20–24px</td><td>Standard-Gutter im 12-Spalten-Grid, Gap bei L6/L7, Steps</td></tr>
+    <tr><td class="name">28px</td><td>Gap bei Karten (2–3 Spalten), Rings/Value-Gruppen</td></tr>
+    <tr><td class="name">32px</td><td>Gap bei L2/L3-Layouts, Value-Row</td></tr>
+    <tr><td class="name">40px</td><td>Abstand Element → Zusatztext, immer, egal welches Element</td></tr>
+    <tr><td class="name">48–72px</td><td>Gap bei mehrspaltigem Zusatztext</td></tr>
+  </table>
+</div>
+
+<div class="section-head" id="farbe"><div class="kicker">05</div><h2>Farbe</h2><p>Zwei Variablen bestimmen die Palette. Akzent, Ink und Status-Farben bleiben fix.</p></div>
+<div class="wrap">
+  <div class="swatch-row">
+    <div class="swatch sw-beige"><div class="pf-title">Beige — Standard</div><p><code>--card:#F3F1EC</code><br><code>--card-border:#E4E0D6</code></p></div>
+    <div class="swatch sw-blue"><div class="pf-title">Blau-Grau</div><p><code>--card:#EDEFF2</code><br><code>--card-border:#DCE2E8</code></p></div>
+    <div class="swatch sw-green"><div class="pf-title">Grün</div><p><code>--card:#EEF3EE</code><br><code>--card-border:#DCE6DC</code></p></div>
+  </div>
+  <table class="spec-table">
+    <tr><th>Rolle</th><th>Wert</th></tr>
+    <tr><td class="name">Navy</td><td><code>#1a3a5c</code></td></tr>
+    <tr><td class="name">Accent</td><td><code>#C9873F</code></td></tr>
+    <tr><td class="name">Ink</td><td><code>#3E4A5C</code></td></tr>
+    <tr><td class="name">Ink-Body</td><td><code>#66707D</code></td></tr>
+    <tr><td class="name">Positive</td><td><code>#4C9C7B</code></td></tr>
+  </table>
+</div>
+<div class="section-head"><div class="kicker">06</div><h2>Layouts (L1–L7)</h2><p>Die Aufteilung der Inhaltszone — unabhängig davon, welches Element hineinkommt.</p></div><div class="deck">
+  <div id="L1">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 01</div><div class="h2">Layout L1 — Volle Fläche</div><p class="subline">Ein Element ohne Unterteilung — für Diagramme, große Zitate oder Einzeltabellen, wenn nichts sich sinnvoll aufteilen lässt.</p></div>
+      <div class="content centered"><div class="g12"><div class="pf-card" style="grid-column:span 12; text-align:center;"><p style="font-family:monospace;">span 12</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div id="L2">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 02</div><div class="h2">Layout L2 — Zweispaltig</div><p class="subline">Zwei gleich gewichtete Argumente nebeneinander — Vergleich, Vorher/Nachher, zwei parallele Aussagen. 6+6, Gap 32px.</p></div>
+      <div class="content centered"><div class="g12" style="gap:32px;"><div class="pf-card" style="grid-column:span 6;text-align:center;"><p>span 6</p></div><div class="pf-card" style="grid-column:span 6;text-align:center;"><p>span 6</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div id="L3">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 03</div><div class="h2">Layout L3 — Dreispaltig</div><p class="subline">Der Standard für Karten-Trios: Rolle, Kategorie, Punkt — alles gleich wichtig, gleich breit. 4+4+4, Gap 28px.</p></div>
+      <div class="content centered"><div class="g12" style="gap:28px;"><div class="pf-card" style="grid-column:span 4;text-align:center;"><p>span 4</p></div><div class="pf-card" style="grid-column:span 4;text-align:center;"><p>span 4</p></div><div class="pf-card" style="grid-column:span 4;text-align:center;"><p>span 4</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div id="L4">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 04</div><div class="h2">Layout L4 — Vierspaltig</div><p class="subline">Vier Werte nebeneinander mit sichtbarem Abstand dazwischen — der Standard-Rahmen für die KPI-Reihe. 3+3+3+3, Gap 24px (vorher fehlte hier der Abstand — jetzt korrigiert).</p></div>
+      <div class="content centered"><div class="g12" style="gap:24px;"><div class="pf-card" style="grid-column:span 3;text-align:center;"><p>span 3</p></div><div class="pf-card" style="grid-column:span 3;text-align:center;"><p>span 3</p></div><div class="pf-card" style="grid-column:span 3;text-align:center;"><p>span 3</p></div><div class="pf-card" style="grid-column:span 3;text-align:center;"><p>span 3</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div id="L5">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 05</div><div class="h2">Layout L5 — Fünfspaltig (Sonderfall)</div><p class="subline">Fünf gleich breite Felder über Flex statt Grid, weil 12 Spalten sich nicht sauber durch 5 teilen lassen. Nur für 5-Schritt-Prozesse.</p></div>
+      <div class="content centered"><div style="display:flex; gap:20px;"><div class="pf-card" style="flex:1;text-align:center;"><p>1/5</p></div><div class="pf-card" style="flex:1;text-align:center;"><p>1/5</p></div><div class="pf-card" style="flex:1;text-align:center;"><p>1/5</p></div><div class="pf-card" style="flex:1;text-align:center;"><p>1/5</p></div><div class="pf-card" style="flex:1;text-align:center;"><p>1/5</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div id="L6">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 06</div><div class="h2">Layout L6 — Schmal + Breit</div><p class="subline">Eine schmale Spalte für Grafik oder Kennzahlen links, viel Raum für Copy oder ein Diagramm rechts über die volle Höhe. 4+8, Gap 24px.</p></div>
+      <div class="content centered"><div class="g12" style="gap:24px;"><div class="pf-card" style="grid-column:span 4;text-align:center;"><p>span 4</p></div><div class="pf-card" style="grid-column:span 8;text-align:center;"><p>span 8</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div id="L7">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 07</div><div class="h2">Layout L7 — Breit + Schmal</div><p class="subline">Hauptinhalt links, eine schmale Spalte rechts für die eine Zahl oder Info, die zusätzlich zählt. 8+4, Gap 24px.</p></div>
+      <div class="content centered"><div class="g12" style="gap:24px;"><div class="pf-card" style="grid-column:span 8;text-align:center;"><p>span 8</p></div><div class="pf-card" style="grid-column:span 4;text-align:center;"><p>span 4</p></div></div></div>
+    </div></div>
+  </div>
+</div><div class="section-head"><div class="kicker">07</div><h2>Elemente (E1–E13)</h2><p>Bausteine, die in eine Layout-Zone eingesetzt werden. Ab E1 immer mindestens ein Beispiel mit Zusatztext.</p></div><div class="deck">
+  <div id="E1">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 08</div><div class="h2">Element E1 — KPI-Reihe</div><p class="subline">Nutzt bewusst volle Höhe, Standard-Layout L4. Maximal vier Werte, jeder mit eigenem Farbakzent möglich (neutral oder positiv).</p></div>
+      <div class="content centered"><div class="g12" style="gap:24px;"><div class="kpi" style="grid-column:span 3;"><div class="v">94,4 M</div><div class="l">Halt-Ereignisse</div></div><div class="kpi good" style="grid-column:span 3;"><div class="v">26</div><div class="l">Spalten aus 5 Quellen</div></div><div class="kpi" style="grid-column:span 3;"><div class="v">9</div><div class="l">Notebooks, 00–08</div></div><div class="kpi good" style="grid-column:span 3;"><div class="v">100 %</div><div class="l">reproduzierbar</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 09</div><div class="h2">Element E1 — KPI-Reihe + Text</div><p class="subline">Direkt unter der Reihe steht Raum für 1–2 erklärende Sätze, 40px Abstand — für den Kontext, den die nackten Zahlen allein nicht liefern.</p></div>
+      <div class="content centered"><div class="g12" style="gap:24px;"><div class="kpi" style="grid-column:span 3;"><div class="v">94,4 M</div><div class="l">Halt-Ereignisse</div></div><div class="kpi good" style="grid-column:span 3;"><div class="v">26</div><div class="l">Spalten aus 5 Quellen</div></div><div class="kpi" style="grid-column:span 3;"><div class="v">9</div><div class="l">Notebooks, 00–08</div></div><div class="kpi good" style="grid-column:span 3;"><div class="v">100 %</div><div class="l">reproduzierbar</div></div></div><div class="extra-text"><p>vbz_master.parquet — eine Zeile pro Halt (~230 je Fahrt), angereichert mit Fahrplan, Wetter, Events und Stadtkreis. 1:1 reproduzierbar über die 9 Notebooks, validiert und deckungsgleich mit dem Original.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E2">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 10</div><div class="h2">Element E2 — Karten, gleiche Höhe</div><p class="subline">align-items:center, schrumpft auf Inhalt und zentriert sich als Gruppe. Layout L2 oder L3.</p></div>
+      <div class="content centered"><div class="g12" style="gap:28px;"><div class="pf-card" style="grid-column:span 6;"><div class="pf-title">Ziel</div><p>Ein sauberer Master-Datensatz der realen VBZ-Tram-Halte.</p></div><div class="pf-card" style="grid-column:span 6;"><div class="pf-title">Fokus</div><p>Recherche, Filterung, Zusammenführung, Qualitätssicherung.</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 11</div><div class="h2">Element E2 — Karten + Text</div><p class="subline">Zusatztext unter den Karten erklärt, warum genau diese zwei Punkte den Rahmen bilden.</p></div>
+      <div class="content centered"><div class="g12" style="gap:28px;"><div class="pf-card" style="grid-column:span 6;"><div class="pf-title">Ziel</div><p>Ein sauberer Master-Datensatz der realen VBZ-Tram-Halte.</p></div><div class="pf-card" style="grid-column:span 6;"><div class="pf-title">Fokus</div><p>Recherche, Filterung, Zusammenführung, Qualitätssicherung.</p></div></div><div class="extra-text"><p>Beide Karten sind bewusst kurz gehalten — Details zu Scope und Abgrenzung folgen in den nächsten Kapiteln.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E3">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 12</div><div class="h2">Element E3 — Karten, natürliche Höhe</div><p class="subline">align-items:flex-start, Karten wachsen individuell mit ihrem Inhalt statt sich anzugleichen. Layout L3.</p></div>
+      <div class="content centered"><div class="g12" style="gap:28px; align-items:flex-start;"><div class="pf-card" style="grid-column:span 4;"><div class="pf-title">Rückgrat</div><p>GTFS Soll-Fahrplan.</p></div><div class="pf-card" style="grid-column:span 4;"><div class="pf-title">Wahrheit</div><p>IST-Daten mit den realen Ankunfts- und Abfahrtszeiten je Halt und Fahrt, inklusive Ausfällen.</p></div><div class="pf-card" style="grid-column:span 4;"><div class="pf-title">Kontext</div><p>Meteo, Events, Feiertage.</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 13</div><div class="h2">Element E3 — Karten + Text</div><p class="subline">Auch bei ungleich hohen Karten bleibt unter der Reihe Platz für eine zusammenfassende Zeile.</p></div>
+      <div class="content centered"><div class="g12" style="gap:28px; align-items:flex-start;"><div class="pf-card" style="grid-column:span 4;"><div class="pf-title">Rückgrat</div><p>GTFS Soll-Fahrplan.</p></div><div class="pf-card" style="grid-column:span 4;"><div class="pf-title">Wahrheit</div><p>IST-Daten mit den realen Ankunfts- und Abfahrtszeiten je Halt und Fahrt, inklusive Ausfällen.</p></div><div class="pf-card" style="grid-column:span 4;"><div class="pf-title">Kontext</div><p>Meteo, Events, Feiertage.</p></div></div><div class="extra-text"><p>Alle drei Rollen zusammen ergeben den vollständigen Merge-Schlüssel für den Master-Datensatz.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E4">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 14</div><div class="h2">Element E4 — Rings, 2-spaltig</div><p class="subline">Zwei Ringe, mittig über zwei Spalten verteilt. Nur für echte Anteile, nicht als Zahlen-Deko.</p></div>
+      <div class="content centered"><div class="rings" style="grid-template-columns:repeat(2,1fr); max-width:440px; margin:0 auto;"><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Reproduzierbar</div></div><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 68%, var(--card) 0);"><div class="ring-inner">26</div></div><div class="l">Spalten im Master</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 15</div><div class="h2">Element E4 — Rings, 3-spaltig</div><p class="subline">Drei Ringe, zentriert über drei Spalten.</p></div>
+      <div class="content centered"><div class="rings" style="grid-template-columns:repeat(3,1fr); max-width:660px; margin:0 auto;"><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Reproduzierbar</div></div><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 68%, var(--card) 0);"><div class="ring-inner">26</div></div><div class="l">Spalten im Master</div></div><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 20%, var(--card) 0);"><div class="ring-inner">2</div></div><div class="l">Bekannte Lücken</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 16</div><div class="h2">Element E4 — Rings, 4-spaltig</div><p class="subline">Vier Ringe — ab hier wird die Einzelgröße etwas kleiner gehalten, damit es nicht zu breit läuft.</p></div>
+      <div class="content centered"><div class="rings" style="grid-template-columns:repeat(4,1fr); max-width:880px; margin:0 auto;"><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Reproduzierbar</div></div><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 68%, var(--card) 0);"><div class="ring-inner">26</div></div><div class="l">Spalten</div></div><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 20%, var(--card) 0);"><div class="ring-inner">2</div></div><div class="l">Lücken</div></div><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 44%, var(--card) 0);"><div class="ring-inner">9</div></div><div class="l">Notebooks</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 17</div><div class="h2">Element E4 — Rings + Text</div><p class="subline">Ring-Gruppe plus einordnender Absatz darunter, 40px Abstand.</p></div>
+      <div class="content centered"><div class="rings" style="grid-template-columns:repeat(3,1fr); max-width:660px; margin:0 auto;"><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Reproduzierbar</div></div><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 68%, var(--card) 0);"><div class="ring-inner">26</div></div><div class="l">Spalten im Master</div></div><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 20%, var(--card) 0);"><div class="ring-inner">2</div></div><div class="l">Bekannte Lücken</div></div></div><div class="extra-text"><p>Die 100% beziehen sich auf die durchgängige Reproduzierbarkeit über alle 9 Notebooks. Die zwei bekannten Lücken (trip_id-Matching, UMLAUF_ID) sind bewusst dokumentiert, nicht übersehen.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E5">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 18</div><div class="h2">Element E5 — Ring + Value, 3-spaltig</div><p class="subline">Ring und nackte Zahlen gleich gewichtet — keiner dominiert visuell den anderen. Größer als in der ersten Fassung.</p></div>
+      <div class="content centered"><div class="combo" style="grid-template-columns:repeat(3,1fr);"><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Reproduzierbar</div></div><div class="value-peer"><div class="v">94,4M</div><div class="l">Zeilen</div></div><div class="value-peer"><div class="v">26</div><div class="l">Spalten</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 19</div><div class="h2">Element E5 — Ring + Value, 4-spaltig</div><p class="subline">Gleiches Prinzip, vier Elemente.</p></div>
+      <div class="content centered"><div class="combo" style="grid-template-columns:repeat(4,1fr);"><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Reproduzierbar</div></div><div class="value-peer"><div class="v">94,4M</div><div class="l">Zeilen</div></div><div class="value-peer"><div class="v">26</div><div class="l">Spalten</div></div><div class="value-peer"><div class="v">9</div><div class="l">Notebooks</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 20</div><div class="h2">Element E5 — Ring + Value + Text</div><p class="subline">Zahlen jetzt im Value-Row-Stil (größer, dünn) statt der kleineren Value-Peer-Variante.</p></div>
+      <div class="content centered"><div class="combo" style="grid-template-columns:repeat(3,1fr);"><div class="ring-wrap"><div class="ring" style="background:conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Reproduzierbar</div></div><div class="value-item"><div class="v">94,4M</div><div class="l">Zeilen</div></div><div class="value-item"><div class="v">26</div><div class="l">Spalten</div></div></div><div class="extra-text"><p>Der Ring zeigt den Reifegrad, die Zahlen daneben den Umfang — bewusst gleich gewichtet, keine Zahl dominiert visuell die andere.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E6">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 21</div><div class="h2">Element E6 — Box-Grid</div><p class="subline">3 neutrale Boxen (Linksrand), 1 hervorgehoben (voller Akzentrand). Layout L1 oder L6.</p></div>
+      <div class="content centered"><div class="box-grid"><div class="box-item">Strategische Insights für fundierte Entscheidungen</div><div class="box-item">Operative Effizienz durch schlankere Abläufe</div><div class="box-item">Erweiterte Kapazitäten für das Team</div><div class="box-item highlight">Messbarer Fortschritt Richtung Langfristziel</div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 22</div><div class="h2">Element E6 — Box-Grid + Text</div><p class="subline">Zusatztext ordnet die vier Punkte in den größeren Zusammenhang ein.</p></div>
+      <div class="content centered"><div class="box-grid"><div class="box-item">Strategische Insights für fundierte Entscheidungen</div><div class="box-item">Operative Effizienz durch schlankere Abläufe</div><div class="box-item">Erweiterte Kapazitäten für das Team</div><div class="box-item highlight">Messbarer Fortschritt Richtung Langfristziel</div></div><div class="extra-text"><p>Alle vier Punkte sind direkt aus dem Retainer-Scope abgeleitet und werden im nächsten Review-Zyklus einzeln mit Kennzahlen unterlegt.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E7">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 23</div><div class="h2">Element E7 — Steps, 3-spaltig</div><p class="subline">Prozess-Schritte, größer als zuvor, gleichmäßig über die Spalten verteilt.</p></div>
+      <div class="content centered"><div class="steps-row" style="grid-template-columns:repeat(3,1fr);"><div class="step"><div class="n">1</div><h4>Sammeln</h4><p>38 GB IST-Rohdaten</p></div><div class="step"><div class="n">2</div><h4>Bereinigen</h4><p>Left-Join-Standard</p></div><div class="step"><div class="n">3</div><h4>Anreichern</h4><p>Meteo, Events, Geo</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 24</div><div class="h2">Element E7 — Steps, 4-spaltig</div><p class="subline">Vier Schritte über L4.</p></div>
+      <div class="content centered"><div class="steps-row" style="grid-template-columns:repeat(4,1fr);"><div class="step"><div class="n">1</div><h4>Sammeln</h4><p>38 GB Rohdaten</p></div><div class="step"><div class="n">2</div><h4>Filtern</h4><p>Nur VBZ Tram</p></div><div class="step"><div class="n">3</div><h4>Anreichern</h4><p>Meteo, Events</p></div><div class="step"><div class="n">4</div><h4>Validieren</h4><p>Export als Master</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 25</div><div class="h2">Element E7 — Steps, 5-spaltig</div><p class="subline">Fünf Schritte über L5 (Flex-Sonderfall).</p></div>
+      <div class="content centered"><div class="steps-row" style="grid-template-columns:repeat(5,1fr);"><div class="step"><div class="n">1</div><h4>Sammeln</h4><p>38 GB Rohdaten</p></div><div class="step"><div class="n">2</div><h4>Filtern</h4><p>Nur VBZ Tram</p></div><div class="step"><div class="n">3</div><h4>Bereinigen</h4><p>Left-Join</p></div><div class="step"><div class="n">4</div><h4>Anreichern</h4><p>Meteo, Events</p></div><div class="step"><div class="n">5</div><h4>Validieren</h4><p>Export</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 26</div><div class="h2">Element E7 — Steps + Text</div><p class="subline">Mit erklärendem Absatz darunter, 40px Abstand.</p></div>
+      <div class="content centered"><div class="steps-row" style="grid-template-columns:repeat(4,1fr);"><div class="step"><div class="n">1</div><h4>Sammeln</h4><p>38 GB Rohdaten</p></div><div class="step"><div class="n">2</div><h4>Filtern</h4><p>Nur VBZ Tram</p></div><div class="step"><div class="n">3</div><h4>Anreichern</h4><p>Meteo, Events</p></div><div class="step"><div class="n">4</div><h4>Validieren</h4><p>Export als Master</p></div></div><div class="extra-text"><p>Jeder Schritt läuft als eigenes Notebook (00–08), damit sich einzelne Stufen isoliert nachvollziehen und testen lassen.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E8">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 27</div><div class="h2">Element E8 — Timeline, 5 Schritte</div><p class="subline">Mehr Elemente als zuvor (5 statt 3) — mehr Erklärtext je Schritt als bei Steps.</p></div>
+      <div class="content centered"><div class="timeline"><div class="tl-item"><div class="tl-num">1</div><div><h4>GTFS laden</h4><p>Soll-Fahrplan als Referenzstruktur einlesen.</p></div></div><div class="tl-item"><div class="tl-num">2</div><div><h4>Left Join IST</h4><p>Fehlende Werte bleiben sichtbar statt Zeile zu verlieren.</p></div></div><div class="tl-item"><div class="tl-num">3</div><div><h4>Meteo anreichern</h4><p>Stundengenaue Wetterdaten je Halt.</p></div></div><div class="tl-item"><div class="tl-num">4</div><div><h4>Events anreichern</h4><p>Von Hand recherchiert, kein Open Data.</p></div></div><div class="tl-item"><div class="tl-num">5</div><div><h4>Validieren & Export</h4><p>Qualitätsprüfung vor vbz_master.parquet.</p></div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 28</div><div class="h2">Element E8 — Timeline (L6) + Copy rechts</div><p class="subline">Layout L6: Timeline links kompakt (nur Titel), rechts die volle Spalte für ausführlichen Text.</p></div>
+      <div class="content centered"><div class="g12" style="gap:24px;"><div style="grid-column:span 4;"><div class="timeline"><div class="tl-item"><div class="tl-num">1</div><h4 style="margin:0;">GTFS laden</h4></div><div class="tl-item"><div class="tl-num">2</div><h4 style="margin:0;">Left Join IST</h4></div><div class="tl-item"><div class="tl-num">3</div><h4 style="margin:0;">Meteo</h4></div><div class="tl-item"><div class="tl-num">4</div><h4 style="margin:0;">Events</h4></div><div class="tl-item"><div class="tl-num">5</div><h4 style="margin:0;">Validieren</h4></div></div></div><div class="extra-text" style="grid-column:span 8; margin-top:0;"><p>Vier Quellen über vier Joins zum validierten Master. Left Join als Standard, damit kein Halt durch fehlende Werte verloren geht — Sensorausfälle werden zu Nullwerten, nicht zu gestrichenen Zeilen.</p><p>Die Validierung prüft Schema, Zeitstempel-Konsistenz und Deckungsgleichheit mit dem Original vor dem Export nach vbz_master.parquet.</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div id="E9">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 29</div><div class="h2">Element E9 — Horizontale Timeline</div><p class="subline">Meilenstein-Punkte auf einer Linie. Für Roadmap-/Phasen-Slides. Layout L1.</p></div>
+      <div class="content centered"><div class="h-timeline"><div class="ht-line-row"><div class="ht-dot-wrap"><div class="ht-dot"></div></div><div class="ht-dot-wrap"><div class="ht-dot"></div></div><div class="ht-dot-wrap"><div class="ht-dot"></div></div><div class="ht-dot-wrap"><div class="ht-dot"></div></div></div><div class="ht-labels"><div class="ht-label"><h4>Initiieren</h4><p>Scope definieren.</p></div><div class="ht-label"><h4>Umsetzen</h4><p>Services bauen.</p></div><div class="ht-label"><h4>Prüfen</h4><p>Performance optimieren.</p></div><div class="ht-label"><h4>Liefern</h4><p>Ergebnisse erzielen.</p></div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 30</div><div class="h2">Element E9 — H-Timeline + Text</div><p class="subline">Mit einordnendem Satz darunter.</p></div>
+      <div class="content centered"><div class="h-timeline"><div class="ht-line-row"><div class="ht-dot-wrap"><div class="ht-dot"></div></div><div class="ht-dot-wrap"><div class="ht-dot"></div></div><div class="ht-dot-wrap"><div class="ht-dot"></div></div><div class="ht-dot-wrap"><div class="ht-dot"></div></div></div><div class="ht-labels"><div class="ht-label"><h4>Initiieren</h4><p>Scope definieren.</p></div><div class="ht-label"><h4>Umsetzen</h4><p>Services bauen.</p></div><div class="ht-label"><h4>Prüfen</h4><p>Performance optimieren.</p></div><div class="ht-label"><h4>Liefern</h4><p>Ergebnisse erzielen.</p></div></div></div><div class="extra-text"><p>Die vier Phasen laufen nicht strikt sequenziell — Review &amp; Refine beginnt bereits während der Umsetzung der ersten Kernservices.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E10">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 31</div><div class="h2">Element E10 — Funnel</div><p class="subline">Nur für echte Verengung/Filterung in Stufen, nicht für beliebige Aufzählungen. Layout L1.</p></div>
+      <div class="content centered"><div class="funnel"><div class="fu-step">Schweizweite IST-Rohdaten — 38 GB</div><div class="fu-step">~400 Transportunternehmen</div><div class="fu-step">Öffentlicher Nahverkehr Zürich</div><div class="fu-step">VBZ Tram Zürich — 1 Betreiber</div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 32</div><div class="h2">Element E10 — Funnel + Text</div><p class="subline">Zweispaltiger Zusatztext unter dem Funnel.</p></div>
+      <div class="content centered"><div class="funnel"><div class="fu-step">Schweizweite IST-Rohdaten — 38 GB</div><div class="fu-step">~400 Transportunternehmen</div><div class="fu-step">Öffentlicher Nahverkehr Zürich</div><div class="fu-step">VBZ Tram Zürich — 1 Betreiber</div></div><div class="extra-text-2col"><p>Jede Stufe entspricht einem echten Filterschritt im Notebook, keiner rein illustrativen Vereinfachung.</p><p>Der letzte Schritt ist zugleich der Ausgangspunkt für alle weiteren Anreicherungen im Projekt.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E11">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 33</div><div class="h2">Element E11 — Process Arrows</div><p class="subline">Kompakt, ohne Erklärtext je Schritt — nur die Reihenfolge zählt. Layout L1 oder L4.</p></div>
+      <div class="content centered"><div class="arrows"><div class="arrow-chip">Sammeln</div><div class="arrow-chip">Bereinigen</div><div class="arrow-chip">Anreichern</div><div class="arrow-chip">Validieren</div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 34</div><div class="h2">Element E11 — Arrows + Text</div><p class="subline">Mit kurzer Notiz darunter.</p></div>
+      <div class="content centered"><div class="arrows"><div class="arrow-chip">Sammeln</div><div class="arrow-chip">Bereinigen</div><div class="arrow-chip">Anreichern</div><div class="arrow-chip">Validieren</div></div><div class="extra-text"><p>Vier Stufen, die exakt den Notebook-Gruppen 00–02, 03–04, 05–06 und 07–08 entsprechen.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E12">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 35</div><div class="h2">Element E12 — Value-Row, 3-spaltig</div><p class="subline">Wie Rings behandelt: größer, gleichmäßig über die Spalten verteilt statt frei fließend.</p></div>
+      <div class="content centered"><div class="value-row" style="grid-template-columns:repeat(3,1fr);"><div class="value-item"><div class="v">94,4M</div><div class="l">Zeilen</div><div class="d">1 pro Halt und Fahrt</div></div><div class="value-item"><div class="v">26</div><div class="l">Spalten</div><div class="d">gemergte Quellen</div></div><div class="value-item"><div class="v">100%</div><div class="l">reproduzierbar</div><div class="d">über 9 Notebooks</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 36</div><div class="h2">Element E12 — Value-Row, 4-spaltig</div><p class="subline">Vier Werte, gleiches Prinzip.</p></div>
+      <div class="content centered"><div class="value-row" style="grid-template-columns:repeat(4,1fr);"><div class="value-item"><div class="v">94,4M</div><div class="l">Zeilen</div><div class="d">je Halt/Fahrt</div></div><div class="value-item"><div class="v">26</div><div class="l">Spalten</div><div class="d">gemergt</div></div><div class="value-item"><div class="v">100%</div><div class="l">reproduzierbar</div><div class="d">9 Notebooks</div></div><div class="value-item"><div class="v">9</div><div class="l">Notebooks</div><div class="d">00–08</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 37</div><div class="h2">Element E12 — Value-Row + Zitat</div><p class="subline">Zitat als Fließtext direkt unter der Reihe, keine Box, keine Anführungszeichen-Grafik.</p></div>
+      <div class="content centered"><div class="value-row" style="grid-template-columns:repeat(3,1fr);"><div class="value-item"><div class="v">94,4M</div><div class="l">Zeilen</div><div class="d">1 pro Halt und Fahrt</div></div><div class="value-item"><div class="v">26</div><div class="l">Spalten</div><div class="d">gemergte Quellen</div></div><div class="value-item"><div class="v">100%</div><div class="l">reproduzierbar</div><div class="d">über 9 Notebooks</div></div></div><div class="extra-text" style="text-align:center;"><p class="quote">"Bewusst dokumentierte Grenzen statt übersehene Fehler — Transparenz über Known Issues gehört zu sauberem Data Engineering."</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E13">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 38</div><div class="h2">Element E13 — Fact-Grid</div><p class="subline">Dichte Detail-/Anhang-Slides, kein Fließtext, reine Übersicht. Layout L1.</p></div>
+      <div class="content centered"><div class="fact-grid15"><div class="fact-cell"><div class="v">38 GB</div><div class="l">IST-Rohdaten</div></div><div class="fact-cell"><div class="v">~400</div><div class="l">Betreiber vorher</div></div><div class="fact-cell"><div class="v">1</div><div class="l">Betreiber danach</div></div><div class="fact-cell"><div class="v">4×</div><div class="l">Polars schneller</div></div><div class="fact-cell"><div class="v">4</div><div class="l">Kontextquellen</div></div><div class="fact-cell"><div class="v">94,4 M</div><div class="l">Halt-Ereignisse</div></div><div class="fact-cell"><div class="v">9</div><div class="l">Notebooks</div></div><div class="fact-cell"><div class="v">100%</div><div class="l">reproduzierbar</div></div><div class="fact-cell"><div class="v">2</div><div class="l">bekannte Lücken</div></div><div class="fact-cell"><div class="v">v1</div><div class="l">IST-Format-Version</div></div></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 39</div><div class="h2">Element E13 — Fact-Grid + Text</div><p class="subline">Auch hier: Zusatztext möglich, wenn eine Slide Einordnung zusätzlich zu den reinen Werten braucht.</p></div>
+      <div class="content centered"><div class="fact-grid15"><div class="fact-cell"><div class="v">38 GB</div><div class="l">IST-Rohdaten</div></div><div class="fact-cell"><div class="v">~400</div><div class="l">Betreiber vorher</div></div><div class="fact-cell"><div class="v">1</div><div class="l">Betreiber danach</div></div><div class="fact-cell"><div class="v">4×</div><div class="l">Polars schneller</div></div><div class="fact-cell"><div class="v">4</div><div class="l">Kontextquellen</div></div><div class="fact-cell"><div class="v">94,4 M</div><div class="l">Halt-Ereignisse</div></div><div class="fact-cell"><div class="v">9</div><div class="l">Notebooks</div></div><div class="fact-cell"><div class="v">100%</div><div class="l">reproduzierbar</div></div><div class="fact-cell"><div class="v">2</div><div class="l">bekannte Lücken</div></div><div class="fact-cell"><div class="v">v1</div><div class="l">IST-Format-Version</div></div></div><div class="extra-text"><p>Für die vollständigen 15 Werte siehe Anhang — hier nur die Kennzahlen mit direkter Relevanz für dieses Kapitel.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E14">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 40</div><div class="h2">Element E14 — Copy, 2-spaltig mit Headline</div><p class="subline">Reiner Fließtext, kein Diagramm/keine Zahl — zwei Spalten, je mit eigenem kurzen Titel. Gap 72px hält die Zeilen kurz.</p></div>
+      <div class="content centered"><div style="display:grid; grid-template-columns:1fr 1fr; gap:72px;"><div><h4 style="font-size:1em; font-weight:700; margin:0 0 .5em;">Warum der Wechsel</h4><p style="font-size:.85em; color:var(--ink-body); line-height:var(--leading-body); margin:0;">Full-Join über 94,4 Mio. Zeilen war mit Pandas spürbar langsamer und RAM-hungriger — per Benchmark belegt.</p></div><div><h4 style="font-size:1em; font-weight:700; margin:0 0 .5em;">Wo Pandas bleibt</h4><p style="font-size:.85em; color:var(--ink-body); line-height:var(--leading-body); margin:0;">Für kleine Kontextquellen und als Lernreferenz im Notebook weiterhin im Einsatz.</p></div></div></div>
+    </div></div>
+  </div>
+
+  <div id="E15">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 41</div><div class="h2">Element E15 — Statement, prominent</div><p class="subline">Ein Gedanke, groß gesetzt, maximal drei Zeilen — für die eine Aussage, die hängen bleiben soll. Kein Zitatzeichen, keine Box. War zuvor unbeabsichtigt linksbündig (fehlendes margin:auto) — jetzt über die volle Breite zentriert.</p></div>
+      <div class="content centered"><div style="text-align:center;"><p style="font-size:1.7em; font-weight:600; color:var(--ink); line-height:1.35; max-width:26ch; margin:0 auto;">Bewusst dokumentierte Grenzen statt übersehene Fehler — Transparenz gehört zu sauberem Data Engineering.</p></div></div>
+    </div></div>
+  </div>
+
+  <div>
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 42</div><div class="h2">Element E17 — Statement + Copy gemischt</div><p class="subline">Die große These oben, direkt darunter der erklärende Absatz in normaler Textgröße — beides zentriert, ein Block.</p></div>
+      <div class="content centered"><div style="text-align:center; max-width:76ch; margin:0 auto;"><p style="font-size:1.45em; font-weight:600; color:var(--ink); line-height:1.35; margin:0 0 .7em;">Links Join als Standard hält jeden Halt sichtbar — Vollständigkeit schlägt Fehlerlosigkeit.</p><p style="font-size:.88em; color:var(--ink-body); line-height:1.5; margin:0;">Sensorausfälle oder fehlende Wetterwerte werden so zu Nullwerten statt zu gestrichenen Zeilen — ein bewusster Kompromiss zwischen Vollständigkeit und Datenqualität, im Anhang dokumentiert.</p></div></div>
+    </div></div>
+  </div>
+
+  <div id="E16">
+    <div class="slide"><div class="frame">
+      <div class="head"><div class="cap-label">Beispiel 43</div><div class="h2">Element E16 — Copy, zwei Absätze</div><p class="subline">Normaler Fließtext, untereinander, je 2–4 Zeilen — für Slides, die tatsächlich etwas zu erklären haben statt nur Werte zu zeigen.</p></div>
+      <div class="content centered"><div style="max-width:64ch;"><p style="font-size:.92em; color:var(--ink-body); line-height:var(--leading-body); margin:0 0 1.1em;">Der Master-Datensatz reduziert 38 GB schweizweite IST-Rohdaten auf einen einzigen Betreiber — VBZ Tram Zürich — und bringt damit die Datenmenge auf ein Maß, das sich mit Polars in Sekunden statt Minuten verarbeiten lässt.</p><p style="font-size:.92em; color:var(--ink-body); line-height:var(--leading-body); margin:0;">Vier Kontextquellen reichern den reduzierten Datensatz anschließend wieder an: Fahrplan, Wetter, Events und Stadtkreis, über insgesamt drei Joins zum validierten vbz_master.parquet.</p></div></div>
+    </div></div>
+  </div>
+</div>
+<div class="section-head" id="kombi"><div class="kicker">08</div><h2>Kombinationsregeln</h2></div>
+<div class="wrap">
+  <ul class="principles">
+    <li><b>Element + Zusatztext darunter:</b> 40px Abstand, 1–3 Absätze, wahlweise untereinander oder in mehreren Spalten. Gilt für E2–E13.</li>
+    <li><b>Element + Subline darüber:</b> Subline steht in der Kopfzone, nicht im Element selbst — funktioniert mit jedem Element.</li>
+    <li><b>Rings, Ring+Value und Value-Row verteilen sich über Spalten:</b> 2 Elemente → 2-spaltig zentriert, 3 → 3-spaltig, 4 → 4-spaltig, usw. Gleiche Logik wie bei Steps.</li>
+    <li><b>Zwei Elemente nebeneinander:</b> über L2/L3/L6/L7 — jedes Element bekommt seinen Spaltenbereich.</li>
+    <li><b>Notation:</b> Eine Slide wird beschrieben als <code>Layout + Element(e)</code>, z. B. <code>L6 · E8 + Copy</code> oder <code>L4 · E1</code> oder <code>L3 · E3</code>.</li>
+  </ul>
+</div>
+
+</body>
+</html>
