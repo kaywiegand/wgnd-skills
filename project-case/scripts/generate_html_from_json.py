@@ -99,9 +99,10 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return f'<blockquote class="statement">{item.get("text", "")}</blockquote>'
 
     elif item_type == "steps":
-        # Numbered process steps → .steps > .step (.sn/.sl/p)
-        html = '<div class="steps">'
-        for step in item.get("items", []):
+        # Numbered process steps → .steps > .step (.sn badge/.sl/p), 3/4/5-spaltig
+        items = item.get("items", [])
+        html = f'<div class="steps" style="grid-template-columns: repeat({len(items)}, 1fr)">'
+        for step in items:
             html += '<div class="step">'
             html += f'<div class="sn">{step.get("step", "")}</div>'
             html += f'<span class="sl">{step.get("label", "")}</span>'
@@ -113,17 +114,119 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return html
 
     elif item_type == "sequence":
-        # Chain of reasoning → .ev-chain > .ev-step, arrows between
+        # Chain of reasoning → E8 Timeline: .timeline > .tl-item (.tl-num/h4/p), Verbindungslinie per CSS
         items = item.get("items", [])
-        html = '<div class="ev-chain">'
+        html = '<div class="timeline">'
         for i, step in enumerate(items):
             climax = " climax" if (step.get("sentiment") == "positive" or i == len(items) - 1) else ""
-            html += f'<div class="ev-step{climax}">'
-            html += f'<div class="ev-circle">{i + 1}</div>'
-            html += f'<div class="ev-body"><strong>{step.get("label", "")}</strong>'
-            html += f'<span>{step.get("text", "")}</span></div></div>'
-            if i < len(items) - 1:
-                html += '<div class="ev-arrow">↓</div>'
+            html += f'<div class="tl-item{climax}">'
+            html += f'<div class="tl-num">{i + 1}</div>'
+            html += f'<div><h4>{step.get("label", "")}</h4><p>{step.get("text", "")}</p></div>'
+            html += '</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "rings":
+        # E4 Rings — Donut-Ringe, nur für echte Anteile, spaltenweise verteilt
+        items = item.get("items", [])
+        max_width = len(items) * 220
+        html = f'<div class="rings" style="grid-template-columns: repeat({len(items)}, 1fr); max-width: {max_width}px;">'
+        for ring in items:
+            pct = ring.get("percent", 0)
+            html += '<div class="ring-wrap">'
+            html += f'<div class="ring" style="background: conic-gradient(var(--accent) {pct}%, var(--card) 0);">'
+            html += f'<div class="ring-inner">{ring.get("value", "")}</div></div>'
+            html += f'<div class="l">{ring.get("label", "")}</div>'
+            html += '</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "ring_value":
+        # E5 Ring + Value — Ring und Zahlen gleichwertig nebeneinander
+        items = item.get("items", [])
+        html = f'<div class="combo" style="grid-template-columns: repeat({len(items)}, 1fr);">'
+        for entry in items:
+            if entry.get("kind") == "ring":
+                pct = entry.get("percent", 0)
+                html += '<div class="ring-wrap">'
+                html += f'<div class="ring" style="background: conic-gradient(var(--accent) {pct}%, var(--card) 0);">'
+                html += f'<div class="ring-inner">{entry.get("value", "")}</div></div>'
+                html += f'<div class="l">{entry.get("label", "")}</div>'
+                html += '</div>'
+            else:
+                html += f'<div class="value-peer"><div class="v">{entry.get("value", "")}</div>'
+                html += f'<div class="l">{entry.get("label", "")}</div></div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "box_grid":
+        # E6 Box-Grid — neutrale Boxen (Linksrand) + hervorgehobene (voller Akzentrand)
+        html = '<div class="box-grid">'
+        for box in item.get("items", []):
+            cls = "box-item highlight" if box.get("highlight") else "box-item"
+            html += f'<div class="{cls}">{box.get("text", "")}</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "h_timeline":
+        # E9 Horizontale Timeline — Meilenstein-Punkte auf einer Linie
+        items = item.get("items", [])
+        html = '<div class="h-timeline"><div class="ht-line-row">'
+        for _ in items:
+            html += '<div class="ht-dot-wrap"><div class="ht-dot"></div></div>'
+        html += '</div><div class="ht-labels">'
+        for entry in items:
+            html += f'<div class="ht-label"><h4>{entry.get("label", "")}</h4><p>{entry.get("text", "")}</p></div>'
+        html += '</div></div>'
+        return html
+
+    elif item_type == "funnel":
+        # E10 Funnel — echte Verengung/Filterung in Stufen, Breite linear gestaffelt
+        items = item.get("items", [])
+        n = len(items)
+        html = '<div class="funnel">'
+        for i, step in enumerate(items):
+            text = step.get("text", "") if isinstance(step, dict) else step
+            width = step.get("width_pct") if isinstance(step, dict) else None
+            if width is None:
+                width = 100 if n <= 1 else round(100 - i * (54 / (n - 1)))
+            html += f'<div class="fu-step" style="width: {width}%;">{text}</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "process_arrows":
+        # E11 Process Arrows — kompakt, ohne Erklärtext je Schritt
+        html = '<div class="arrows">'
+        for step in item.get("items", []):
+            text = step.get("text", "") if isinstance(step, dict) else step
+            html += f'<div class="arrow-chip">{text}</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "value_row":
+        # E12 Value-Row — große Zahlen, spaltenweise, optional Zitat als Fließtext darunter
+        items = item.get("items", [])
+        html = f'<div class="value-row" style="grid-template-columns: repeat({len(items)}, 1fr);">'
+        for val in items:
+            html += '<div class="value-item">'
+            html += f'<div class="v">{val.get("value", "")}</div>'
+            html += f'<div class="l">{val.get("label", "")}</div>'
+            detail = val.get("detail", "")
+            if detail:
+                html += f'<div class="d">{detail}</div>'
+            html += '</div>'
+        html += '</div>'
+        quote = item.get("quote", "")
+        if quote:
+            html += f'<div class="extra-text" style="text-align: center;"><p class="quote">{quote}</p></div>'
+        return html
+
+    elif item_type == "fact_grid":
+        # E13 Fact-Grid — dichtes Zahlen-Raster für Detail-/Anhang-Slides
+        html = '<div class="fact-grid">'
+        for fact in item.get("items", []):
+            html += f'<div class="fact-cell"><div class="v">{fact.get("value", "")}</div>'
+            html += f'<div class="l">{fact.get("label", "")}</div></div>'
         html += '</div>'
         return html
 
@@ -397,9 +500,29 @@ def render_slide(
             html += f'<h2>{title}</h2>'
         if subtitle:
             html += f'<p class="subline">{subtitle}</p>'
-        if len(content) == 1:
+        if len(content) == 1 and content[0].get("layout") == "lead_copy":
+            # E17: große These oben, erklärender Absatz darunter, zentriert als ein Block
+            html += '<div class="text-lead-copy">'
+            html += f'<p class="lead">{content[0].get("text", "")}</p>'
+            html += f'<p class="copy">{content[0].get("copy", "")}</p>'
+            html += '</div>'
+        elif len(content) == 1:
+            # E15: ein Gedanke, zentriert, max. 3 Zeilen
             html += f'<div class="statement-lead">{content[0].get("text", "")}</div>'
+        elif any(c.get("heading") for c in content):
+            # E14: Copy 2-spaltig mit Headline je Spalte, Gap 72px
+            html += '<div class="text-cols-head">'
+            for c in content:
+                html += f'<div><h4>{c.get("heading", "")}</h4><p>{c.get("text", "")}</p></div>'
+            html += '</div>'
+        elif content[0].get("layout") == "stack":
+            # E16: normaler Fließtext, Absätze untereinander
+            html += '<div class="text-stack">'
+            for c in content:
+                html += f'<p>{c.get("text", "")}</p>'
+            html += '</div>'
         else:
+            # Default (bestehend): 2-5 Aussagen zweispaltig light, randlos
             html += '<div class="statement-cols">'
             for c in content:
                 html += f'<p class="statement-col">{c.get("text", "")}</p>'
