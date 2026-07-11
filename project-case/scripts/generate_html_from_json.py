@@ -48,6 +48,25 @@ def load_slides_template(path: Path) -> str:
         return f.read()
 
 
+def render_head(chapter_label: str | None, title: str, subtitle: str) -> str:
+    """Kicker + h2 + subline, gemeinsam in .slide-head gewrappt.
+
+    .slide-head reserviert per CSS die feste 170px-Kopfzone (Styleguide v2 §2) —
+    Subline sitzt dadurch immer direkt unter dem Titel, unabhängig davon, wie
+    lang/kurz der Titel ist. Ohne diesen Wrapper hing die Subline-Position am
+    h2-min-height und driftete Richtung Content-Zone ab, statt am Titel zu kleben.
+    """
+    html = '<div class="slide-head">'
+    if chapter_label:
+        html += f'<span class="slide-kicker">{chapter_label}</span>'
+    if title:
+        html += f'<h2>{title}</h2>'
+    if subtitle:
+        html += f'<p class="subline">{subtitle}</p>'
+    html += '</div>'
+    return html
+
+
 def render_content_item(item: Dict[str, Any]) -> str:
     """Render a single content item to styleguide-conformant HTML.
 
@@ -480,12 +499,7 @@ def render_slide(
     elif [c.get("type") for c in content] == ["statement", "scenarios"]:
         # Title row on top, then two columns: text left, KPI/scenario boxes right
         html = f'<section{data_ch}{data_lbl}>'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
+        html += render_head(chapter_label, title, subtitle)
         html += '<div class="cols">'
         html += f'<div class="w45">{render_content_item(content[0])}</div>'
         html += f'<div class="w55">{render_content_item(content[1])}</div>'
@@ -493,12 +507,7 @@ def render_slide(
     elif content and all(c.get("type") == "statement" for c in content):
         # Reine Text-Slides: 1 Aussage → zentrierte Lead (medium), 2–5 → zweispaltig light (randlos)
         html = f'<section{data_ch}{data_lbl}>'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
+        html += render_head(chapter_label, title, subtitle)
         html += '<div class="content-zone">'
         if len(content) == 1 and content[0].get("layout") == "lead_copy":
             # E17: große These oben, erklärender Absatz darunter, zentriert als ein Block
@@ -537,12 +546,7 @@ def render_slide(
         html = f'<section{data_ch}{data_lbl}>'
         html += '<div class="chart-cols">'
         html += '<div class="chart-cols-head">'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
+        html += render_head(chapter_label, title, subtitle)
         if chart.get("caption"):
             html += f'<p class="chart-cols-caption">{chart.get("caption")}</p>'
         html += '</div>'
@@ -550,12 +554,7 @@ def render_slide(
         html += '</div></section>'
     else:
         html = f'<section{data_ch}{data_lbl}>'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
+        html += render_head(chapter_label, title, subtitle)
         # Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal
         # in der Inhaltszone (Styleguide v2 Prinzip 3) — .content-zone übernimmt das per CSS.
         html += '<div class="content-zone">'

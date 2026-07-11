@@ -76,11 +76,20 @@
 
 /* Content slides: fixed 56/56/40 frame around the content, so every slide sits
    in the same canvas position regardless of what's inside (Styleguide v2 §2). */
-.reveal .slides > section { text-align: left; padding: var(--frame-side) var(--frame-side) var(--frame-bottom); box-sizing: border-box; display: flex; flex-direction: column; }
+.reveal .slides > section { text-align: left; padding: var(--frame-side) var(--frame-side) var(--frame-bottom); box-sizing: border-box; }
+/* display:flex nur auf der aktiven Slide setzen — sonst überschreibt es Reveal.js'
+   eigenes display:none für inaktive Slides und alle Slides werden gleichzeitig sichtbar.
+   !important nötig, weil Reveal.js beim Wechsel display:block INLINE auf die aktive
+   Slide setzt (per JS) — das schlägt jede normale Stylesheet-Regel, exakt das gleiche
+   Problem, das .title-slide/.closing weiter unten schon mit !important lösen. */
+.reveal .slides > section.present { display: flex !important; flex-direction: column; }
 .reveal .slides > section.title-slide,
 .reveal .slides > section.closing { text-align: center; padding: 0; }
-/* Head zone: title + subline reserve a consistent vertical rhythm before content starts */
-.reveal .slides > section h2 { min-height: calc(var(--head-zone) - 56px - 18px); }
+/* Head zone: kicker + h2 + subline stack naturally at the top of .slide-head, which
+   reserves the fixed 170px zone — subline always sits directly under the title,
+   regardless of title length (was previously min-height on h2 alone, which pushed
+   subline down towards the content zone instead of anchoring it to the title). */
+.slide-head { min-height: var(--head-zone); }
 /* Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal in der
    Inhaltszone (Styleguide v2 Prinzip 3) — einzige Ausnahme ist E1 KPI-Reihe (volle Höhe).
    Trennlinie sitzt hier (nicht an .subline), damit sie an derselben Stelle steht, egal
