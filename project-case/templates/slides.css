@@ -29,11 +29,12 @@
   --color-kpi-warning:  #ffc66d;   /* bright amber on dark bg */
 
   /* Card surfaces — swap these two to retheme (Beige/Blau/Grün, siehe Styleguide §5) */
-  --card:               #F3F1EC;
-  --card-border:        #E4E0D6;
+  --card:               #EDEFF2;
+  --card-border:        #DCE2E8;
 
-  /* Sentiment-tinted surfaces (boxes, facts) */
-  --bg-box-default:     #F8F6F2;
+  /* Sentiment-tinted surfaces (boxes, facts) — default folgt --card, damit die zwei
+     Swap-Variablen wirklich die ganze Palette bestimmen (Styleguide v2 §5) */
+  --bg-box-default:     var(--card);
   --bg-box-positive:    #eef6f0;
   --bg-box-negative:    #fbeeec;
   --bg-box-warning:     #faf0e3;
