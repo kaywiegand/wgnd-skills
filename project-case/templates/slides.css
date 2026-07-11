@@ -80,10 +80,11 @@
 .reveal .slides > section.closing { text-align: center; padding: 0; }
 /* Head zone: title + subline reserve a consistent vertical rhythm before content starts */
 .reveal .slides > section h2 { min-height: calc(var(--head-zone) - 56px - 18px); }
-.reveal .slides > section .subline { padding-bottom: 18px; border-bottom: 1px solid var(--card-border); }
 /* Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal in der
-   Inhaltszone (Styleguide v2 Prinzip 3) — einzige Ausnahme ist E1 KPI-Reihe (volle Höhe). */
-.content-zone { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; }
+   Inhaltszone (Styleguide v2 Prinzip 3) — einzige Ausnahme ist E1 KPI-Reihe (volle Höhe).
+   Trennlinie sitzt hier (nicht an .subline), damit sie an derselben Stelle steht, egal
+   ob eine Subline vorhanden ist oder nicht. */
+.content-zone { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; border-top: 1px solid #f5f5f5; padding-top: 18px; }
 
 /* Tables: no cell borders, rounded header row (border-collapse: separate) */
 .reveal table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.82em; margin: 0.4em 0; }
