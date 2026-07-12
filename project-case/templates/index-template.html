@@ -57,16 +57,21 @@
     h2 { font-size: 1.35rem; font-weight: 500; color: var(--navy); margin-bottom: 0.5rem; }
     .section-intro { font-size: 0.92rem; color: var(--ink-body); margin-bottom: 0.5rem; line-height: 1.6; }
 
-    /* "Das Projekt" — zweispaltig, wie E14 im Slide-System (Headline + Absatz je Spalte) */
+    /* "Das Projekt" — zweispaltiger Textfluss (wie .sec-text im Slide-System): jede
+       Spalte folgt ihrer eigenen Höhe statt Zeilen zu erzwingen, die nicht zum
+       Textfluss passen (kein CSS-Grid mit gleich hohen Reihen). */
     .about-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 3rem;
+      column-count: 2; column-gap: 3rem;
       margin-top: 1.2rem;
     }
     @media (max-width: 760px) {
-      .about-grid { grid-template-columns: 1fr; }
+      .about-grid { column-count: 1; }
     }
-    .about-item { font-size: 0.92rem; color: var(--ink-body); line-height: 1.6; }
-    .about-item strong { display: block; color: var(--navy); font-weight: 500; margin-bottom: 0.4em; }
+    .about-item {
+      font-size: 0.92rem; color: var(--ink-body); line-height: 1.7;
+      break-inside: avoid; margin-bottom: 1.5rem;
+    }
+    .about-item strong { display: block; color: var(--navy); font-weight: 500; margin-bottom: 0.2em; }
 
     /* ─── View Cards Grid (3 columns) — wie E2/E3 Karten: gefüllte Fläche, kein Rahmen ── */
     .view-grid {

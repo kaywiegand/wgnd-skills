@@ -90,13 +90,15 @@ def render_view_cards(registry: dict) -> str:
 
 
 def render_about(hub: dict) -> str:
-    """Render die 'Das Projekt'-Absätze aus hub.about (Liste von {label, text}) als
-    2-spaltiges Grid — fette Zwischenüberschrift ohne Doppelpunkt, Zeilenumbruch, Text."""
+    """Render die 'Das Projekt'-Absätze aus hub.about (Liste von {label, text}) im
+    zweispaltigen Textfluss — fette Zwischenüberschrift (block, kein <br> nötig), Text
+    normal darunter. Kein <br> mehr: display:block auf .about-item strong reicht für
+    den Zeilenumbruch, ein zusätzliches <br> hätte den Abstand verdoppelt."""
     html = '    <div class="about-grid">\n'
     for para in hub.get("about", []):
         label = para.get("label", "")
         text = para.get("text", "")
-        strong = f"<strong>{label}</strong><br>" if label else ""
+        strong = f"<strong>{label}</strong>" if label else ""
         html += f'      <div class="about-item">{strong}{text}</div>\n'
     html += '    </div>\n'
     return html
