@@ -88,8 +88,14 @@
 /* Head zone: kicker + h2 + subline stack naturally at the top of .slide-head, which
    reserves the fixed 170px zone — subline always sits directly under the title,
    regardless of title length (was previously min-height on h2 alone, which pushed
-   subline down towards the content zone instead of anchoring it to the title). */
-.slide-head { min-height: var(--head-zone); }
+   subline down towards the content zone instead of anchoring it to the title).
+   flex:0 0 var(--head-zone) statt min-height — exakt wie STYLEGUIDE.html .head
+   (flex:0 0 170px): eine STARRE Höhe, die nie wächst. min-height hätte die Zone bei
+   zweizeiligen Titeln wachsen lassen, wodurch die Content-Zone pro Slide
+   unterschiedlich hoch startete (Kay-Feedback: "springt immer noch"). Konsequenz:
+   Titel/Subline müssen in 170px passen (Typografie ist dafür ausgelegt, siehe
+   Styleguide-Spec "hält auch zweizeilig in der 170px-Kopfzone") — kein Überlauf-Fallback. */
+.slide-head { flex: 0 0 var(--head-zone); overflow: hidden; }
 /* Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal in der
    Inhaltszone (Styleguide v2 Prinzip 3) — einzige Ausnahme ist E1 KPI-Reihe (volle Höhe).
    Trennlinie sitzt hier (nicht an .subline), damit sie an derselben Stelle steht, egal
