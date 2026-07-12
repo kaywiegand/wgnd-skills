@@ -446,16 +446,15 @@ def render_slide(
     data_lbl = f' data-chapter-label="{chapter_label}"' if (is_chapter_start and chapter_label) else ""
 
     if role == "title":
+        # Gleiche Kopfzone/Content-Zone-Struktur wie jede andere Slide (Kay: "quasi ganz
+        # gleich, nur farblich invertiert") — kein Sonderlayout mehr für Title-Slides.
         html = f'<section class="title-slide" data-background="#1a3a5c"{data_ch}{data_lbl}>'
-        html += f'<h1>{title}</h1>'
-        # Subtitle: join list with <br> into one .sub div
         if isinstance(subtitle, list):
             sub_text = "<br>".join(s for s in subtitle if s)
         else:
             sub_text = subtitle or ""
-        if sub_text:
-            html += f'<div class="sub">{sub_text}</div>'
-        # KPI row from figures
+        html += render_head(None, title, sub_text)
+        html += '<div class="content-zone">'
         html += render_title_slide_content(content)
         # Link-Reihe nur auf der End-Slide (title-repeat). Opening-Titel trägt KEIN github mehr
         # — der GitHub-Link lebt auf dem Closing (CTA).
@@ -464,18 +463,17 @@ def render_slide(
         else:
             # Opening-Titel: Start-CTA — exakt derselbe Baustein wie Closing (.closing-links > .c-link)
             html += '<div class="closing-links title-cta"><span class="c-link" onclick="Reveal.next()">Start</span></div>'
+        html += '</div>'
         html += '</section>'
     elif role == "closing":
-        # Closing / CTA — dunkel, Titel + kurze Botschaft + Link-Reihe (Übersicht/GitHub/…),
-        # bewusst KEINE KPI-Boxen.
+        # Closing / CTA — dunkel, sonst gleiche Kopfzone/Content-Zone-Struktur wie überall.
         html = f'<section class="closing" data-background="#1a3a5c"{data_ch}{data_lbl}>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
+        html += render_head(None, title, subtitle if isinstance(subtitle, str) else "")
+        html += '<div class="content-zone">'
         for item in content:
             html += render_content_item(item)
         html += render_closing_links(github, closing_links)
+        html += '</div>'
         html += '</section>'
     elif len(content) == 1 and content[0].get("type") == "agenda":
         # Table-of-contents slide → two columns: title block left, chapter list right
