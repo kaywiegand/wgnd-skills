@@ -55,7 +55,7 @@
   /* Raster (Styleguide v2 §2): Canvas 1024×720, Rand 56/56/40, feste Kopfzone 170px */
   --frame-side:         56px;
   --frame-bottom:       40px;
-  --head-zone:          170px;
+  --head-zone:          150px;
 }
 
 /* ── Base ─────────────────────────────────── */
@@ -100,7 +100,7 @@
    Inhaltszone (Styleguide v2 Prinzip 3) — einzige Ausnahme ist E1 KPI-Reihe (volle Höhe).
    Trennlinie sitzt hier (nicht an .subline), damit sie an derselben Stelle steht, egal
    ob eine Subline vorhanden ist oder nicht. */
-.content-zone { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; border-top: 1px solid #f5f5f5; padding-top: 18px; }
+.content-zone { flex: 1; display: flex; flex-direction: column; justify-content: center; min-height: 0; border-top: 1px solid #f5f5f5; }
 
 /* Tables: no cell borders, rounded header row (border-collapse: separate) */
 .reveal table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.82em; margin: 0.4em 0; }
