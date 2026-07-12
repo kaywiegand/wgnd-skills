@@ -115,6 +115,14 @@
     .swatch-hex { font-size: 0.72rem; color: #888; font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 1px; }
     .swatch-var { font-size: 0.68rem; color: var(--accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 2px; }
     .palette-group-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin: 16px 0 6px; }
+
+    /* ── Raster & Layouts (L1–L7) ── */
+    .spec-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .spec-table th { text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; background: var(--navy); padding: 8px 12px; }
+    .spec-table td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+    .spec-table td.name { font-weight: 700; color: var(--navy); white-space: nowrap; }
+    .layout-demo { background: #fff; }
+    .layout-demo .box { grid-column: span var(--span); background: var(--card); border-radius: var(--radius-card); padding: 14px 0; text-align: center; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.78rem; color: var(--ink-soft); }
   </style>
 </head>
 <body>
@@ -254,6 +262,101 @@
         </div>
         <div class="demo-progress"><div class="demo-progress-fill" style="width: 6%"></div></div>
       </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════ RASTER & LAYOUTS (L1–L7) ═══════════════
+       Fehlte bisher komplett in dieser Referenz (Kay-Feedback 2026-07-12) — nur die
+       Elemente (E1–E17) waren dokumentiert, nicht das Raster/die Layouts, obwohl genau
+       diese Namen (z.B. "L3 · E7") für Slide-Briefings genutzt werden sollen. -->
+  <div class="sr-cat">Raster &amp; Layouts (L1–L7) — Namen für Slide-Briefings</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Raster</b> — Canvas, Ränder, Spalten (Basis für jedes Layout)</div>
+    <div class="sr-stage">
+      <table class="spec-table">
+        <tr><th>Eigenschaft</th><th>Wert</th></tr>
+        <tr><td class="name">Canvas</td><td>1024 × 720px</td></tr>
+        <tr><td class="name">Rand oben / seitlich</td><td>56px (<code>--frame-side</code>)</td></tr>
+        <tr><td class="name">Rand unten</td><td>40px (<code>--frame-bottom</code>)</td></tr>
+        <tr><td class="name">Kopfzone</td><td>fix 170px (<code>--head-zone</code>), unabhängig vom Inhalt darunter</td></tr>
+        <tr><td class="name">Spalten</td><td>12 (<code>.g12</code>), Gutter 20–32px je nach Layout</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Abstände</b> — feste Werte statt beliebiger Zwischenräume</div>
+    <div class="sr-stage">
+      <table class="spec-table">
+        <tr><th>Wert</th><th>Verwendung</th></tr>
+        <tr><td class="name">20–24px</td><td>Standard-Gutter im 12-Spalten-Grid, Gap bei L6/L7, Steps</td></tr>
+        <tr><td class="name">28px</td><td>Gap bei Karten (2–3 Spalten), Rings/Value-Gruppen</td></tr>
+        <tr><td class="name">32px</td><td>Gap bei L2/L3-Layouts, Value-Row</td></tr>
+        <tr><td class="name">40px</td><td>Abstand Element → Zusatztext, immer, egal welches Element</td></tr>
+        <tr><td class="name">48–72px</td><td>Gap bei mehrspaltigem Zusatztext</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L1 · Volle Fläche</b> <code>.g12, span 12</code> — Diagramme, Einzeltabellen, ein Element ohne Unterteilung</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:20px;">
+      <div class="box" style="--span:12;">span 12</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L2 · Zweispaltig</b> <code>.g12, 6+6, Gap 32px</code> — Vergleich, zwei parallele Argumente</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:32px;">
+      <div class="box" style="--span:6;">span 6</div><div class="box" style="--span:6;">span 6</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L3 · Dreispaltig</b> <code>.g12, 4+4+4, Gap 28px</code> — Karten-Trios, der Standard für 3 gleich wichtige Punkte</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:28px;">
+      <div class="box" style="--span:4;">span 4</div><div class="box" style="--span:4;">span 4</div><div class="box" style="--span:4;">span 4</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L4 · Vierspaltig</b> <code>.g12, 3+3+3+3, Gap 24px</code> — Standard für die KPI-Reihe (E1)</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:24px;">
+      <div class="box" style="--span:3;">span 3</div><div class="box" style="--span:3;">span 3</div><div class="box" style="--span:3;">span 3</div><div class="box" style="--span:3;">span 3</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L5 · Fünfspaltig</b> <code>Flex-Sonderfall</code> — 12 nicht durch 5 teilbar, deshalb Flex statt Grid. Nur für 5-Schritt-Prozesse</div>
+    <div class="sr-stage layout-demo"><div style="display:flex; gap:20px;">
+      <div class="box" style="flex:1;">1/5</div><div class="box" style="flex:1;">1/5</div><div class="box" style="flex:1;">1/5</div><div class="box" style="flex:1;">1/5</div><div class="box" style="flex:1;">1/5</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L6 · Schmal + Breit</b> <code>.g12, 4+8, Gap 24px</code> — Grafik/Steps links, Copy oder Diagramm rechts über volle Höhe</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:24px;">
+      <div class="box" style="--span:4;">span 4</div><div class="box" style="--span:8;">span 8</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L7 · Breit + Schmal</b> <code>.g12, 8+4, Gap 24px</code> — Hauptinhalt links, Zusatzinfo/Zahl rechts</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:24px;">
+      <div class="box" style="--span:8;">span 8</div><div class="box" style="--span:4;">span 4</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Kombinationsregeln</b></div>
+    <div class="sr-stage">
+      <ul style="margin:0; padding-left:1.2em; font-size:0.88rem; color:#444; line-height:1.9;">
+        <li><b>Element + Zusatztext darunter:</b> 40px Abstand, 1–3 Absätze, untereinander oder mehrspaltig.</li>
+        <li><b>Element + Subline darüber:</b> Subline steht in der Kopfzone (<code>.slide-head</code>), nicht im Element — funktioniert mit jedem Element.</li>
+        <li><b>Rings/Ring+Value/Value-Row verteilen sich über Spalten:</b> 2 Elemente → 2-spaltig, 3 → 3-spaltig, 4 → 4-spaltig — gleiche Logik wie Steps.</li>
+        <li><b>Notation für Slide-Briefings:</b> <code>Layout · Element</code>, z. B. <code>L6 · E8 + Copy</code> oder <code>L4 · E1</code> oder <code>L3 · E3</code>.</li>
+      </ul>
     </div>
   </div>
 
