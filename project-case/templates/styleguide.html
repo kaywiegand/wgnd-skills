@@ -34,27 +34,40 @@
     .sr-stage.flush { padding: 0; }
     .sr-stage.dark { background: var(--navy); padding: 24px 18px; }
 
-    /* ── Hub-Elemente (aus index-template.html) ── */
-    .hub-header { background: var(--navy); color: #fff; padding: 2.4rem 2rem; }
-    .hub-header h1 { font-size: 2rem; font-weight: 700; margin: 0 0 0.35rem; }
+    /* ── Hub-Elemente — 1:1 aus templates/index-template.html kopiert (gleiche
+       Klassennamen, gleiche Werte). Bei Änderungen an index-template.html IMMER
+       auch hier nachziehen — sonst driftet diese Demo wieder von der echten
+       Datei weg (genau das ist am 2026-07-12 passiert). ── */
+    .hub-header { background: var(--ink); color: #fff; padding: 2.4rem 2rem; }
+    .hub-header h1 { font-size: 2.6rem; font-weight: 100; margin: 0 0 1rem; }
     .hub-header .tagline { font-size: 1rem; opacity: 0.85; margin: 0 0 0.15rem; }
     .hub-header .subtitle { font-size: 1rem; opacity: 0.85; margin: 0; }
-    .hub-kpi-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 1.4rem; }
-    .hub-kpi { background: #fff; border: 1px solid #dde8f0; border-radius: var(--radius-card); padding: 10px 18px; text-align: center; min-width: 110px; }
-    .hub-kpi .v { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
-    .hub-kpi .l { font-size: 0.68rem; color: #888; letter-spacing: 0.04em; margin-top: 2px; }
-    .hub-kpi.positive .v { color: var(--positive); }  .hub-kpi.negative .v { color: var(--negative); }
-    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; color: var(--accent); margin-bottom: 0.5rem; }
-    .hub-h2 { font-size: 1.35rem; font-weight: 700; color: var(--navy); margin: 0 0 0.5rem; }
-    .section-intro { font-size: 0.92rem; color: #555; margin-bottom: 0.5rem; }
+    .hub-kpi-row { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 2.4rem; }
+    .hub-kpi { border-left: 3px solid rgba(255,255,255,0.25); padding-left: 14px; text-align: left; }
+    .hub-kpi .v { font-size: 1.6rem; font-weight: 500; color: #fff; line-height: 1; }
+    .hub-kpi .l { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; margin-top: 6px; }
+    .hub-kpi.positive { border-left-color: var(--color-kpi-positive); } .hub-kpi.positive .v { color: var(--color-kpi-positive); }
+    .hub-kpi.negative { border-left-color: var(--color-kpi-negative); } .hub-kpi.negative .v { color: var(--color-kpi-negative); }
+    .section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6em; }
+    .hub-h2 { font-size: 1.35rem; font-weight: 500; color: var(--navy); margin: 0 0 0.5rem; }
+    .section-intro { font-size: 0.92rem; color: var(--ink-body); margin-bottom: 0.5rem; line-height: 1.6; }
+    /* "Das Projekt" — zwei Spalten-Blöcke, linke Spalte immer >= rechte (Python-seitig
+       aufgeteilt, kein CSS-Balancing) */
+    .about-grid { display: flex; gap: 2rem; margin-top: 1rem; }
+    .about-col { flex: 1; min-width: 0; }
+    .about-item { font-size: 0.85rem; color: var(--ink-body); line-height: 1.7; margin-bottom: 1rem; }
+    .about-item:last-child { margin-bottom: 0; }
+    .about-item > strong:first-child { display: block; color: var(--navy); font-weight: 500; margin-bottom: 0.2em; }
     .view-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-    .view-card { background: #fff; border: 1px solid #dde8f0; padding: 22px; border-top: 4px solid var(--accent); border-radius: var(--radius-card); display: flex; flex-direction: column; }
-    .view-label { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 8px; color: var(--accent); }
-    .view-card h3 { font-size: 1.1rem; color: var(--navy); margin: 0 0 6px; }
-    .view-desc { font-size: 0.85rem; color: #555; margin-bottom: 14px; flex-grow: 1; }
+    .view-card { background: var(--card); padding: 18px 20px; border-radius: var(--radius-card); display: flex; flex-direction: column; }
+    .view-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.8em; color: var(--accent); }
+    .view-card h3 { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin: 0 0 6px; }
+    .view-desc { font-size: 0.82rem; color: var(--ink-body); margin-bottom: 14px; flex-grow: 1; }
     .view-meta { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
-    .view-time { font-size: 0.75rem; color: #888; font-weight: 500; }
-    .view-badge { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-box); background: #e6f3ff; color: #0066cc; }
+    .view-time { font-size: 0.75rem; color: var(--ink-soft); font-weight: 500; }
+    .view-badge { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-box); background: #fff; color: var(--navy); }
+    .hub-footer { background: var(--bg-box-default); border-top: 1px solid var(--card-border); padding: 1.6rem; text-align: center; color: var(--ink-soft); font-size: 0.85rem; }
+    .hub-footer a { color: var(--accent); text-decoration: none; }
 
     /* ── Navigation-Demo (statisch) ── */
     .nav-demo-wrap { background: #f0f4f8; padding: 24px 0 0; border-radius: 0 0 6px 6px; }
@@ -117,7 +130,7 @@
   <div class="sr-cat">Hub-Elemente (index.html)</div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Header</b> <code>.hub-header · h1 · .tagline · .subtitle · .hub-kpi-row</code></div>
+    <div class="sr-bar"><b>Header</b> <code>header · .header-inner · h1 · .tagline · .subtitle · .kpi-row · .kpi</code></div>
     <div class="sr-stage flush">
       <header class="hub-header">
         <h1>Projekt-Titel</h1>
@@ -133,7 +146,7 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Text-Block</b> <code>.section-label · .hub-h2 · .section-intro</code></div>
+    <div class="sr-bar"><b>Text-Block</b> <code>.section-label · h2 · .section-intro</code></div>
     <div class="sr-stage">
       <div class="section-label">Caption / Kicker</div>
       <div class="hub-h2">Abschnitts-Titel</div>
@@ -142,7 +155,22 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Info-Karten</b> <code>.view-grid · .view-card · .view-label · .view-badge</code></div>
+    <div class="sr-bar"><b>"Das Projekt" — zwei Spalten</b> <code>.about-grid · .about-col · .about-item · strong:first-child</code> — linke Spalte immer &gt;= rechte (Python-Split, kein CSS-Balancing)</div>
+    <div class="sr-stage">
+      <div class="about-grid">
+        <div class="about-col">
+          <div class="about-item"><strong>Motivation</strong>Beispiel-Absatz — die Überschrift ist block, kein <code>&lt;br&gt;</code> danach nötig.</div>
+          <div class="about-item"><strong>Kernfrage</strong>Zweiter Absatz in derselben Spalte, normale Zeilenhöhe.</div>
+        </div>
+        <div class="about-col">
+          <div class="about-item"><strong>Ergebnisse</strong>Rechte Spalte, ein Absatz weniger als links.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Info-Karten</b> <code>.view-grid · .view-card · .view-label · .view-badge</code> — gefüllte <code>--card</code>-Fläche, kein Rahmen</div>
     <div class="sr-stage">
       <div class="view-grid">
         <div class="view-card">
@@ -164,6 +192,20 @@
           <div class="view-meta"><span class="view-time">⏱ 00 Min</span><span class="view-badge">Badge</span></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Footer</b> <code>footer · .hub-footer</code> — zweite Zeile immer fix: "Kay Wiegand | LinkedIn | GitHub", externe Links <code>target=_blank</code> (auch Quick-Links oben)</div>
+    <div class="sr-stage flush">
+      <footer class="hub-footer">
+        <p>
+          Projekt-Titel — Eine Zeile Footer-Tagline<br>
+          Kay Wiegand |
+          <a href="https://www.linkedin.com/in/kaywiegand/" target="_blank">LinkedIn</a> |
+          <a href="https://github.com/kaywiegand" target="_blank">GitHub</a>
+        </p>
+      </footer>
     </div>
   </div>
 
@@ -215,44 +257,66 @@
     </div>
   </div>
 
-  <div class="sr-demo">
-    <div class="sr-bar"><b>Title-Slide</b> <code>.title-slide · h1 · .sub · .kpi-row · .kpi (.red/.amber/.green) · .meta</code></div>
-    <div class="sr-stage dark flush"><div class="reveal">
-      <div class="title-slide">
-        <h1>Projekt-Titel</h1>
-        <div class="sub">Tagline-Zeile<br>Zeitraum · Umfang · Stack</div>
-        <div class="kpi-row">
-          <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
-          <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
-          <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
-        </div>
-        <div class="meta">github.com/user/repo</div>
-      </div>
-    </div></div>
-  </div>
+  <!-- ═══════════════ SLIDE-FORMATE ═══════════════
+       Drei Formate, EIN Skelett: .slide-head (feste 170px-Kopfzone, Titel+Subline+
+       Trennlinie, immer oben) + .content-zone (restliche Höhe, Inhalt zentriert sich
+       als Gruppe). Title-Slide und Closing sind strukturell identisch zur
+       Content-Slide — nur Farben invertiert (heller Text auf --navy statt umgekehrt).
+       Einzige bewusste Ausnahme: die Agenda-Slide (eigenes Zwei-Spalten-Layout ohne
+       Kicker/Subline). Jede <section> füllt immer exakt den 1024×720-Canvas
+       (height:100%) — das verhindert, dass der Content je nach Slide "springt". -->
+  <div class="sr-cat">Slide-Formate — ein Skelett, drei Einfärbungen</div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>End-Slide</b> <code>.title-slide · h1 · .sub · .closing-links · .c-link — letzte Slide</code></div>
-    <div class="sr-stage dark flush"><div class="reveal">
-      <div class="title-slide">
-        <h1>Projekt-Titel</h1>
-        <div class="sub">Der Bogen zurück zur Ausgangsfrage</div>
-        <div class="closing-links">
-          <a href="#" class="c-link">GitHub-Repo</a>
-          <a href="#" class="c-link">Dashboard-Prototype</a>
-          <a href="#" class="c-link">Netzwerk-Karte</a>
-        </div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="sr-demo">
-    <div class="sr-bar"><b>Slide-Titel</b> <code>.slide-kicker (Kapitel) · h2 · .subline (subtitle)</code></div>
+    <div class="sr-bar"><b>1 · Content-Slide (Standard)</b> <code>.slide-head (h2 · .subline) + .content-zone</code> — helle Fläche, das Baseline-Format</div>
     <div class="sr-stage"><div class="reveal">
-      <span class="slide-kicker">Kapitel-Titel</span>
-      <h2>Abschnitts-Überschrift</h2>
-      <p class="subline">Optionale Subline — präzisiert das Thema der Folie in einem Satz.</p>
-      <p>Fließtext unter der Überschrift — Standardabsatz im Slide-Kontext.</p>
+      <div class="slide-head">
+        <span class="slide-kicker">Kapitel-Titel</span>
+        <h2>Abschnitts-Überschrift</h2>
+        <p class="subline">Optionale Subline — präzisiert das Thema der Folie in einem Satz.</p>
+      </div>
+      <div class="content-zone">
+        <p>Content zentriert sich als Gruppe in der verbleibenden Höhe — hier stünde z.B. eine KPI-Reihe oder Karten-Grid.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>2 · Title-Slide</b> <code>gleiches Skelett, dunkel · h2 auf 2.6em · .kpi-row (E1-Optik) · Start-CTA</code></div>
+    <div class="sr-stage dark flush"><div class="reveal">
+      <div class="title-slide">
+        <div class="slide-head">
+          <h2>Projekt-Titel</h2>
+          <p class="subline">Tagline-Zeile<br>Zeitraum · Umfang · Stack</p>
+        </div>
+        <div class="content-zone">
+          <div class="kpi-row">
+            <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
+            <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
+            <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
+          </div>
+          <div class="closing-links title-cta"><span class="c-link">Start</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>3 · Closing-Slide</b> <code>gleiches Skelett, dunkel · h2 auf 1.75em · beliebiger Content-Typ · .closing-links</code> — strukturell identisch zu Title, nur andere Inhalte</div>
+    <div class="sr-stage dark flush"><div class="reveal">
+      <div class="closing">
+        <div class="slide-head">
+          <h2>Was vorhersagbar ist, ist steuerbar.</h2>
+          <p class="subline">Der Bogen zurück zur Ausgangsfrage.</p>
+        </div>
+        <div class="content-zone">
+          <div class="closing-links">
+            <a href="#" class="c-link">GitHub-Repo</a>
+            <a href="#" class="c-link">Dashboard-Prototype</a>
+            <a href="#" class="c-link">Netzwerk-Karte</a>
+          </div>
+        </div>
+      </div>
     </div></div>
   </div>
 
