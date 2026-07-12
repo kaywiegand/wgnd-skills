@@ -123,6 +123,16 @@
     .spec-table td.name { font-weight: 700; color: var(--navy); white-space: nowrap; }
     .layout-demo { background: #fff; }
     .layout-demo .box { grid-column: span var(--span); background: var(--card); border-radius: var(--radius-card); padding: 14px 0; text-align: center; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.78rem; color: var(--ink-soft); }
+
+    /* Echte 1024×720-Canvas für die Slide-Formate-Demos — genau wie Reveal.js selbst:
+       bei echter Größe rendern (echte 17px-Basis, echte 56/170/40px-Werte), dann per
+       transform:scale gleichmäßig runterskalieren. Nur so bleibt die 170px-Kopfzone im
+       korrekten Größenverhältnis zur Slide sichtbar (feste px-Werte skalieren nicht
+       automatisch mit, wenn man nur die Breite ändert). */
+    .slide-canvas-wrap { width: 640px; height: 450px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 10px 30px -12px rgba(0,0,0,.25); }
+    .slide-canvas-wrap .reveal { position: absolute; top: 0; left: 0; width: 1024px; height: 720px; transform: scale(0.625); transform-origin: top left; background: #fff; }
+    .slide-canvas-wrap.dark .reveal { background: var(--navy); }
+    .slide-canvas-wrap .slides { position: absolute; inset: 0; }
   </style>
 </head>
 <body>
@@ -371,8 +381,8 @@
   <div class="sr-cat">Slide-Formate — ein Skelett, drei Einfärbungen</div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>1 · Content-Slide (Standard)</b> <code>.slide-head (h2 · .subline) + .content-zone</code> — helle Fläche, das Baseline-Format</div>
-    <div class="sr-stage"><div class="reveal">
+    <div class="sr-bar"><b>1 · Content-Slide (Standard)</b> <code>.slide-head (h2 · .subline) + .content-zone</code> — helle Fläche, das Baseline-Format. Maßstabsgetreue 1024×720-Canvas, exakt die echte <code>.reveal &gt; .slides &gt; section</code>-Kette.</div>
+    <div class="sr-stage"><div class="slide-canvas-wrap"><div class="reveal"><div class="slides"><section class="present">
       <div class="slide-head">
         <span class="slide-kicker">Kapitel-Titel</span>
         <h2>Abschnitts-Überschrift</h2>
@@ -381,46 +391,42 @@
       <div class="content-zone">
         <p>Content zentriert sich als Gruppe in der verbleibenden Höhe — hier stünde z.B. eine KPI-Reihe oder Karten-Grid.</p>
       </div>
-    </div></div>
+    </section></div></div></div></div>
   </div>
 
   <div class="sr-demo">
     <div class="sr-bar"><b>2 · Title-Slide</b> <code>gleiches Skelett, dunkel · h2 auf 2.6em · .kpi-row (E1-Optik) · Start-CTA</code></div>
-    <div class="sr-stage dark flush"><div class="reveal">
-      <div class="title-slide">
-        <div class="slide-head">
-          <h2>Projekt-Titel</h2>
-          <p class="subline">Tagline-Zeile<br>Zeitraum · Umfang · Stack</p>
-        </div>
-        <div class="content-zone">
-          <div class="kpi-row">
-            <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
-            <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
-            <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
-          </div>
-          <div class="closing-links title-cta"><span class="c-link">Start</span></div>
-        </div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="title-slide present">
+      <div class="slide-head">
+        <h2>Projekt-Titel</h2>
+        <p class="subline">Tagline-Zeile<br>Zeitraum · Umfang · Stack</p>
       </div>
-    </div></div>
+      <div class="content-zone">
+        <div class="kpi-row">
+          <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
+          <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
+          <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
+        </div>
+        <div class="closing-links title-cta"><span class="c-link">Start</span></div>
+      </div>
+    </section></div></div></div></div>
   </div>
 
   <div class="sr-demo">
     <div class="sr-bar"><b>3 · Closing-Slide</b> <code>gleiches Skelett, dunkel · h2 auf 1.75em · beliebiger Content-Typ · .closing-links</code> — strukturell identisch zu Title, nur andere Inhalte</div>
-    <div class="sr-stage dark flush"><div class="reveal">
-      <div class="closing">
-        <div class="slide-head">
-          <h2>Was vorhersagbar ist, ist steuerbar.</h2>
-          <p class="subline">Der Bogen zurück zur Ausgangsfrage.</p>
-        </div>
-        <div class="content-zone">
-          <div class="closing-links">
-            <a href="#" class="c-link">GitHub-Repo</a>
-            <a href="#" class="c-link">Dashboard-Prototype</a>
-            <a href="#" class="c-link">Netzwerk-Karte</a>
-          </div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="closing present">
+      <div class="slide-head">
+        <h2>Was vorhersagbar ist, ist steuerbar.</h2>
+        <p class="subline">Der Bogen zurück zur Ausgangsfrage.</p>
+      </div>
+      <div class="content-zone">
+        <div class="closing-links">
+          <a href="#" class="c-link">GitHub-Repo</a>
+          <a href="#" class="c-link">Dashboard-Prototype</a>
+          <a href="#" class="c-link">Netzwerk-Karte</a>
         </div>
       </div>
-    </div></div>
+    </section></div></div></div></div>
   </div>
 
   <div class="sr-demo">
