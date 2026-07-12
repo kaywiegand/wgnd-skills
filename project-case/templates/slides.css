@@ -309,11 +309,16 @@ body.nav-invert #progress-fill                    { background: #fff; }
 
 /* ── Title slide ──────────────────────────────── */
 .title-slide { display: flex !important; flex-direction: column; align-items: center; justify-content: center; text-align: center; }
+.reveal h1 { font-weight: 100; }
 .title-slide .sub { color: rgba(255,255,255,0.78); font-size: 0.98em; line-height: 1.5; margin-top: 0.6em; }
-.title-slide .kpi-row { display: flex; gap: 14px; margin-top: 1.8em; justify-content: center; }
-.title-slide .kpi { background: rgba(255,255,255,0.12); border-radius: var(--radius-card); padding: 12px 20px; text-align: center; }
-.title-slide .kpi .v { font-size: 1.8em; font-weight: 700; color: var(--color-title-text); }
-.title-slide .kpi .l { font-size: 0.62em; color: rgba(255,255,255,0.6); margin-top: 4px; line-height: 1.4; }
+/* KPI-Reihe wie E1 im Slide-System: Border-Left-Akzent statt Box-Pille */
+.title-slide .kpi-row { display: flex; gap: 28px; margin-top: 1.8em; justify-content: center; }
+.title-slide .kpi { border-left: 3px solid rgba(255,255,255,0.25); padding-left: 14px; text-align: left; }
+.title-slide .kpi .v { font-size: 1.8em; font-weight: 500; color: var(--color-title-text); line-height: 1; }
+.title-slide .kpi .l { font-size: 0.62em; color: rgba(255,255,255,0.6); margin-top: 6px; line-height: 1.4; }
+.title-slide .kpi.red   { border-left-color: var(--color-kpi-negative); }
+.title-slide .kpi.amber { border-left-color: var(--color-kpi-warning); }
+.title-slide .kpi.green { border-left-color: var(--color-kpi-positive); }
 /* Start-CTA: nutzt .closing-links als Wrapper (gleiche Skalierung), nur der margin-top ist eigen */
 .title-cta { margin-top: 2.4em; }
 .title-cta .c-link { cursor: pointer; }
@@ -581,11 +586,12 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .closing .subline { color: rgba(255,255,255,0.7); text-align: center; border-bottom: none; padding-bottom: 0; }
 .closing blockquote.statement { color: rgba(255,255,255,0.92); max-width: 720px; font-weight: 500; margin: 0.5em auto 0; }
 .closing .arrow-row { display: flex; gap: 18px; margin-top: 1.8em; justify-content: center; align-items: center; }
-.closing .kpi-box { background: rgba(255,255,255,0.12); border-radius: var(--radius-card); padding: 14px 24px; text-align: center; min-width: 120px; }
-.closing .kpi-box .v { font-size: 2.1em; font-weight: 700; color: #fff; }
-.closing .kpi-box.red   .v { color: var(--color-kpi-negative); }
-.closing .kpi-box.green .v { color: var(--color-kpi-positive); }
-.closing .kpi-box .l { font-size: 0.64em; color: rgba(255,255,255,0.55); margin-top: 4px; }
+/* KPI-Box wie E1 im Slide-System: Border-Left-Akzent statt Box-Pille */
+.closing .kpi-box { border-left: 3px solid rgba(255,255,255,0.25); padding-left: 14px; text-align: left; min-width: 0; }
+.closing .kpi-box .v { font-size: 2.1em; font-weight: 500; color: #fff; line-height: 1; }
+.closing .kpi-box.red   { border-left-color: var(--color-kpi-negative); }
+.closing .kpi-box.green { border-left-color: var(--color-kpi-positive); }
+.closing .kpi-box .l { font-size: 0.64em; color: rgba(255,255,255,0.55); margin-top: 6px; }
 
 /* ── Highlighted best row (comparison table) ──── */
 tr.hl-green td { background: var(--bg-box-positive) !important; font-weight: 700; }
