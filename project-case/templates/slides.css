@@ -555,8 +555,14 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .extra-text-2col p { font-size: 0.9em; color: var(--ink-body); line-height: 1.5; margin: 0; }
 
 /* ── Zweispaltiges Bild-Layout (vertikale Bilder): Text links, Bild rechts ── */
-.chart-cols { display: flex; align-items: center; gap: 2.5em; }
+/* L6-Layout (schmal+breit): Bild und Kopf stehen NEBENEINANDER, nicht übereinander —
+   folgt bewusst nicht dem Kopfzone/Content-Zone-Vertrag (170px starr), weil es
+   strukturell kein Stapel-Layout ist. .slide-head bekommt hier flex-basis:auto statt
+   170px, sonst würde die feste Höhe hier bedeutungslos ignoriert (kein column-flex-
+   Kontext) und nur verwirren. */
+.chart-cols { display: flex; align-items: center; gap: 2.5em; flex: 1; }
 .chart-cols-head { flex: 0 0 40%; }
+.chart-cols-head .slide-head { flex-basis: auto; }
 .chart-cols-caption { font-size: 0.82em; color: var(--ink-soft); line-height: 1.55; margin-top: 0.4em; }
 .chart-cols-img { flex: 1; display: flex; justify-content: center; }
 .chart-cols-img img { max-width: 100%; max-height: 62vh; }
