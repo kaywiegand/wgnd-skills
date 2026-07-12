@@ -90,13 +90,15 @@ def render_view_cards(registry: dict) -> str:
 
 
 def render_about(hub: dict) -> str:
-    """Render the '## Das Projekt'-Absätze aus hub.about (Liste von {label, text})."""
-    html = ""
+    """Render die 'Das Projekt'-Absätze aus hub.about (Liste von {label, text}) als
+    2-spaltiges Grid — fette Zwischenüberschrift ohne Doppelpunkt, Zeilenumbruch, Text."""
+    html = '    <div class="about-grid">\n'
     for para in hub.get("about", []):
         label = para.get("label", "")
         text = para.get("text", "")
-        strong = f"<strong>{label}:</strong> " if label else ""
-        html += f'    <p class="section-intro">\n      {strong}{text}\n    </p>\n'
+        strong = f"<strong>{label}</strong><br>" if label else ""
+        html += f'      <div class="about-item">{strong}{text}</div>\n'
+    html += '    </div>\n'
     return html
 
 
@@ -106,7 +108,7 @@ def render_quick_links(hub: dict, repo_url: str) -> str:
     links += hub.get("quick_links", [])
     html = ""
     for link in links:
-        html += f'        <a href="{link["href"]}" class="quick-link">{link["label"]}</a>\n'
+        html += f'        <a href="{link["href"]}" class="quick-link" target="_blank">{link["label"]}</a>\n'
     return html
 
 

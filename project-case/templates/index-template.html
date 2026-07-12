@@ -25,16 +25,16 @@
 
     /* ─── Header ─────────────────────────────── */
     header {
-      background: var(--navy);
+      background: var(--ink);
       color: white; padding: 4rem 2rem 3.5rem;
     }
     .header-inner { max-width: 900px; margin: 0 auto; }
-    header h1 { font-size: 2.2rem; font-weight: 500; margin-bottom: 0.35rem; }
+    header h1 { font-size: 2.2rem; font-weight: 500; margin-bottom: 1.35rem; }
     header .tagline  { font-size: 1rem; opacity: 0.85; margin-bottom: 0.15rem; }
     header .subtitle { font-size: 1rem; opacity: 0.85; margin-bottom: 0; }
 
     /* KPI-Reihe wie E1 im Slide-System: Border-Left-Akzent, kein Kasten */
-    .kpi-row { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 2rem; }
+    .kpi-row { display: flex; gap: 28px; flex-wrap: wrap; margin-top: 5rem; }
     .kpi { border-left: 3px solid rgba(255,255,255,0.25); padding-left: 14px; text-align: left; }
     .kpi .v { font-size: 1.6rem; font-weight: 500; color: #fff; line-height: 1; }
     .kpi .l { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; margin-top: 6px; }
@@ -56,6 +56,17 @@
     }
     h2 { font-size: 1.35rem; font-weight: 500; color: var(--navy); margin-bottom: 0.5rem; }
     .section-intro { font-size: 0.92rem; color: var(--ink-body); margin-bottom: 0.5rem; line-height: 1.6; }
+
+    /* "Das Projekt" — zweispaltig, wie E14 im Slide-System (Headline + Absatz je Spalte) */
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem 3rem;
+      margin-top: 1.2rem;
+    }
+    @media (max-width: 760px) {
+      .about-grid { grid-template-columns: 1fr; }
+    }
+    .about-item { font-size: 0.92rem; color: var(--ink-body); line-height: 1.6; }
+    .about-item strong { display: block; color: var(--navy); font-weight: 500; margin-bottom: 0.4em; }
 
     /* ─── View Cards Grid (3 columns) — wie E2/E3 Karten: gefüllte Fläche, kein Rahmen ── */
     .view-grid {
@@ -171,9 +182,9 @@
 <footer>
   <p>
     {{PROJECT_NAME}} — {{FOOTER_TAGLINE}}<br>
-    <a href="{{GITHUB_USER_URL}}">Kay Wiegand</a> |
-    <a href="{{GITHUB_REPO_URL}}">GitHub</a> |
-    {{PERIOD}}
+    Kay Wiegand |
+    <a href="https://www.linkedin.com/in/kaywiegand/" target="_blank">LinkedIn</a> |
+    <a href="https://github.com/kaywiegand" target="_blank">GitHub</a>
   </p>
   <p style="margin-top: 1rem; font-size: 0.75rem; opacity: 0.7;">
     Portfolio-Pipeline mechanisiert (2026-06-19) ·
