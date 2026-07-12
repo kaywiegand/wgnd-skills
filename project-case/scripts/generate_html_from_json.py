@@ -498,10 +498,10 @@ def render_slide(
         # Title row on top, then two columns: text left, KPI/scenario boxes right
         html = f'<section{data_ch}{data_lbl}>'
         html += render_head(chapter_label, title, subtitle)
-        html += '<div class="cols">'
+        html += '<div class="content-zone"><div class="cols">'
         html += f'<div class="w45">{render_content_item(content[0])}</div>'
         html += f'<div class="w55">{render_content_item(content[1])}</div>'
-        html += '</div></section>'
+        html += '</div></div></section>'
     elif content and all(c.get("type") == "statement" for c in content):
         # Reine Text-Slides: 1 Aussage → zentrierte Lead (medium), 2–5 → zweispaltig light (randlos)
         html = f'<section{data_ch}{data_lbl}>'
