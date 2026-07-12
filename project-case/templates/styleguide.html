@@ -126,7 +126,7 @@
 
     /* Echte 1024×720-Canvas für die Slide-Formate-Demos — genau wie Reveal.js selbst:
        bei echter Größe rendern (echte 17px-Basis, echte 56/170/40px-Werte), dann per
-       transform:scale gleichmäßig runterskalieren. Nur so bleibt die 170px-Kopfzone im
+       transform:scale gleichmäßig runterskalieren. Nur so bleibt die 150px-Kopfzone im
        korrekten Größenverhältnis zur Slide sichtbar (feste px-Werte skalieren nicht
        automatisch mit, wenn man nur die Breite ändert). */
     .slide-canvas-wrap { width: 640px; height: 450px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 10px 30px -12px rgba(0,0,0,.25); }
@@ -289,7 +289,7 @@
         <tr><td class="name">Canvas</td><td>1024 × 720px</td></tr>
         <tr><td class="name">Rand oben / seitlich</td><td>56px (<code>--frame-side</code>)</td></tr>
         <tr><td class="name">Rand unten</td><td>40px (<code>--frame-bottom</code>)</td></tr>
-        <tr><td class="name">Kopfzone</td><td>fix 170px (<code>--head-zone</code>), unabhängig vom Inhalt darunter</td></tr>
+        <tr><td class="name">Kopfzone</td><td>fix 150px (<code>--head-zone</code>), unabhängig vom Inhalt darunter</td></tr>
         <tr><td class="name">Spalten</td><td>12 (<code>.g12</code>), Gutter 20–32px je nach Layout</td></tr>
       </table>
     </div>
@@ -371,7 +371,7 @@
   </div>
 
   <!-- ═══════════════ SLIDE-FORMATE ═══════════════
-       Drei Formate, EIN Skelett: .slide-head (feste 170px-Kopfzone, Titel+Subline+
+       Drei Formate, EIN Skelett: .slide-head (feste 150px-Kopfzone, Titel+Subline+
        Trennlinie, immer oben) + .content-zone (restliche Höhe, Inhalt zentriert sich
        als Gruppe). Title-Slide und Closing sind strukturell identisch zur
        Content-Slide — nur Farben invertiert (heller Text auf --navy statt umgekehrt).
