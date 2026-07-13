@@ -224,11 +224,16 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return html
 
     elif item_type == "process_arrows":
-        # E11 Process Arrows — kompakt, ohne Erklärtext je Schritt
+        # E11 Process Arrows — kompakt, ohne Erklärtext je Schritt. Items als dict mit
+        # current:true heben den jeweils aktuellen Schritt hervor (z.B. wenn dieselbe
+        # Pfeilkette auf mehreren Folgeslides wiederkehrt, je Slide anderer Schritt aktiv).
         html = '<div class="arrows">'
         for step in item.get("items", []):
-            text = step.get("text", "") if isinstance(step, dict) else step
-            html += f'<div class="arrow-chip">{text}</div>'
+            is_dict = isinstance(step, dict)
+            text = step.get("text", "") if is_dict else step
+            current = bool(step.get("current")) if is_dict else False
+            cls = "arrow-chip current" if current else "arrow-chip"
+            html += f'<div class="{cls}">{text}</div>'
         html += '</div>'
         return html
 
