@@ -189,11 +189,15 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return html
 
     elif item_type == "box_grid":
-        # E6 Box-Grid — neutrale Boxen (Linksrand) + hervorgehobene (voller Akzentrand)
+        # E6 Box-Grid — neutrale Boxen (Linksrand) + hervorgehobene (voller Akzentrand).
+        # Items können plain strings oder {text, highlight} sein (wie process_arrows).
         html = '<div class="box-grid">'
         for box in item.get("items", []):
-            cls = "box-item highlight" if box.get("highlight") else "box-item"
-            html += f'<div class="{cls}">{box.get("text", "")}</div>'
+            is_dict = isinstance(box, dict)
+            text = box.get("text", "") if is_dict else box
+            highlight = bool(box.get("highlight")) if is_dict else False
+            cls = "box-item highlight" if highlight else "box-item"
+            html += f'<div class="{cls}">{text}</div>'
         html += '</div>'
         return html
 
