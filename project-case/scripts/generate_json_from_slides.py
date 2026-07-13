@@ -66,10 +66,19 @@ def build_view_json(registry: dict, view: str, chapter_ids: list[str]) -> dict:
                     content.append({
                         "type": "view_teaser",
                         "label": view_card.get("label", ""),
-                        "badge": view_card.get("badge", ""),
                         "description": view_card.get("description", ""),
                     })
                     rendered["content"] = content
+            # Closing mit title_from_hub: true (Opt-in, siehe slides.yaml) — NUR Titel/
+            # Subline kommen wie beim Opening aus dem hub-Block (identischer Wortlaut,
+            # kein Drift). Der Content-Text bleibt eigenständig von Hand gepflegt — anders
+            # als der Opening-Titel hat der Closing eigene Absätze (Kay-Feedback
+            # 2026-07-13: Subline = wie Title-Slide, Content-Text = eigener Wortlaut).
+            if rendered.get("role") == "closing" and rendered.get("title_from_hub") and hub:
+                rendered["title"] = meta.get("project", rendered.get("title", ""))
+                period = meta.get("period", "")
+                subtitle_line2 = f'{hub.get("subtitle", "")} | {period}' if period else hub.get("subtitle", "")
+                rendered["subtitle"] = [hub.get("tagline", ""), subtitle_line2]
             rendered_slides.append(rendered)
 
         chapters_out.append({"nav_label": nav_label, "slides": rendered_slides})
