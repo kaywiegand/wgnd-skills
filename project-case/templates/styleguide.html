@@ -303,7 +303,8 @@
         <tr><td class="name">20–24px</td><td>Standard-Gutter im 12-Spalten-Grid, Gap bei L6/L7, Steps</td></tr>
         <tr><td class="name">28px</td><td>Gap bei Karten (2–3 Spalten), Rings/Value-Gruppen</td></tr>
         <tr><td class="name">32px</td><td>Gap bei L2/L3-Layouts, Value-Row</td></tr>
-        <tr><td class="name">40px</td><td>Abstand Element → Zusatztext, immer, egal welches Element</td></tr>
+        <tr><td class="name">3em</td><td>KPI-Row/Tabelle/Steps/Process-Arrows/Empfehlungen → folgender Fließtext (blockquote.statement, .pf-grid, .sec-text) — margin-top auf dem Nachfolger, nicht auf dem Element selbst</td></tr>
+        <tr><td class="name">0.7em</td><td>Zwischen gleichartigen, gestapelten Elementen (z. B. zwei blockquote.statement direkt hintereinander bei <code>layout: callout</code>) — sonst zu viel Leerraum</td></tr>
         <tr><td class="name">48–72px</td><td>Gap bei mehrspaltigem Zusatztext</td></tr>
       </table>
     </div>
@@ -417,6 +418,33 @@
   </div>
 
   <div class="sr-demo">
+    <div class="sr-bar"><b>2b · Title-Slide (L6-Variante)</b> <code>layout: L6</code> — Titel/Subline bleiben in der Kopfzone, aber Teaser+Start und KPI-Row stehen zweispaltig (4+8) statt zentriert untereinander. Opt-in pro Slide, aktuell in Produktion (zh-tram-data, alle 3 Views).</div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="title-slide title-split present">
+      <div class="slide-head">
+        <h2>Projekt-Titel</h2>
+        <p class="subline">Tagline-Zeile<br>Zeitraum · Umfang · Stack</p>
+      </div>
+      <div class="content-zone"><div class="title-split-cols">
+        <div class="title-split-left">
+          <div class="view-teaser">
+            <div class="view-teaser-heading">Label für diese View</div>
+            <p class="view-teaser-desc">View-Teaser aus hub.view_cards[view], nicht von Hand gepflegt.</p>
+          </div>
+          <div class="closing-links title-cta"><span class="c-link">Start</span></div>
+        </div>
+        <div class="title-split-right">
+          <div class="kpi-row">
+            <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
+            <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
+            <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
+            <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl D</div></div>
+          </div>
+        </div>
+      </div></div>
+    </section></div></div></div></div>
+  </div>
+
+  <div class="sr-demo">
     <div class="sr-bar"><b>3 · Closing-Slide</b> <code>gleiches Skelett, dunkel · h2 auf 1.75em · beliebiger Content-Typ · .closing-links</code> — strukturell identisch zu Title, nur andere Inhalte</div>
     <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="closing present">
       <div class="slide-head">
@@ -434,12 +462,31 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Inhalt-Slide (zwei Spalten)</b> <code>.agenda-cols · .agenda-head (Caption+Titel+Subline) · .agenda-list · .ag-item (.ag-num/.ag-label) · .ag-sub</code> — Content-Typ <code>agenda</code></div>
+    <div class="sr-bar"><b>Agenda · L1 (Standard)</b> <code>render_head() + .agenda-list.agenda-list-center</code> — Content-Typ <code>agenda</code>, <code>layout: L1</code>. Kopfzone wie jede Slide, Liste horizontal+vertikal zentriert. In Produktion die gewählte Variante für alle 3 Views (zh-tram-data).</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="slide-head">
+        <span class="slide-kicker">Agenda</span>
+        <h2>Inhaltsübersicht</h2>
+        <p class="subline">Eine Zeile Untertitel zum Überblick.</p>
+      </div>
+      <div class="content-zone">
+        <div class="agenda-list agenda-list-center">
+          <div class="ag-item"><span class="ag-num">1</span><span class="ag-label">Erstes Kapitel</span></div>
+          <div class="ag-item"><span class="ag-num">2</span><span class="ag-label">Zweites Kapitel</span></div>
+          <div class="ag-sub">Optionaler Unterpunkt (grouped)</div>
+          <div class="ag-item"><span class="ag-num">3</span><span class="ag-label">Drittes Kapitel</span></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Agenda · L6 (Alternative)</b> <code>.agenda-cols · .agenda-head · .agenda-list</code> — Content-Typ <code>agenda</code>, <code>layout: L6</code>. Titelblock links, Liste rechts — kompakter, aber kein geteiltes Kopfzonen-Skelett.</div>
     <div class="sr-stage"><div class="reveal">
       <div class="agenda-cols">
         <div class="agenda-head">
-          <span class="slide-kicker">Inhalt</span>
-          <h2>Inhalt</h2>
+          <span class="slide-kicker">Agenda</span>
+          <h2>Inhaltsübersicht</h2>
           <p class="subline">Eine Zeile Untertitel zum Überblick.</p>
         </div>
         <div class="agenda-list">
@@ -497,6 +544,14 @@
     <div class="sr-bar"><b>Statement-Callout</b> <code>blockquote.statement</code> — <code>statement</code></div>
     <div class="sr-stage"><div class="reveal">
       <blockquote class="statement">Eine zentrale, zugespitzte Aussage als Akzent zwischen den Inhalten.</blockquote>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Statement-Callout · gestapelt</b> <code>layout: callout</code> (Slide-Flag) — mehrere <code>statement</code>-Items fallen damit aus der zweispaltigen Fließtext-Darstellung (E14/E16) heraus und werden stattdessen als volle Breite, zentriert, untereinander gerendert. Enger Abstand zwischen gleichartigen Callouts (0.7em) statt der 3em-Regel unten.</div>
+    <div class="sr-stage"><div class="reveal">
+      <blockquote class="statement">Erste Aussage — z. B. der Ausgangspunkt oder Kontext.</blockquote>
+      <blockquote class="statement">Zweite Aussage — die Konsequenz oder Zuspitzung daraus.</blockquote>
     </div></div>
   </div>
 
@@ -586,10 +641,10 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>E11 · Process Arrows</b> <code>.arrows · .arrow-chip</code> — <code>process_arrows</code>, kompakt ohne Erklärtext</div>
+    <div class="sr-bar"><b>E11 · Process Arrows</b> <code>.arrows · .arrow-chip (.current)</code> — <code>process_arrows</code>, kompakt ohne Erklärtext. Items als <code>{text, current: true}</code> heben den jeweils aktuellen Schritt hervor — praktisch, wenn dieselbe Kette auf mehreren Folgeslides wiederkehrt (z. B. vier Anreicherungs-Quellen-Detailslides, je Slide ein anderer Schritt aktiv). Nach <code>.arrows</code> folgt Content immer mit 3em Abstand (siehe Abstände-Tabelle).</div>
     <div class="sr-stage"><div class="reveal">
       <div class="arrows">
-        <div class="arrow-chip">Schritt 1</div>
+        <div class="arrow-chip current">Schritt 1</div>
         <div class="arrow-chip">Schritt 2</div>
         <div class="arrow-chip">Schritt 3</div>
       </div>
