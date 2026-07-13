@@ -31,9 +31,11 @@ def load_registry(path: Path) -> dict:
 
 def build_view_json(registry: dict, view: str, chapter_ids: list[str]) -> dict:
     chapters_by_id = {ch["id"]: ch for ch in registry["chapters"]}
+    hub = registry.get("hub", {})
+    meta = dict(registry.get("view_meta", {}).get(view, {}))
     chapters_out = []
 
-    for chapter_id in chapter_ids:
+    for idx, chapter_id in enumerate(chapter_ids):
         if chapter_id not in chapters_by_id:
             raise SystemExit(f"❌ view_composition['{view}'] referenziert unbekanntes Kapitel: {chapter_id}")
         chapter = chapters_by_id[chapter_id]
@@ -47,11 +49,31 @@ def build_view_json(registry: dict, view: str, chapter_ids: list[str]) -> dict:
         rendered_slides = []
         for slide in slides_for_view:
             rendered = {k: v for k, v in slide.items() if k not in ("id", "views")}
+            # Opening-Titel (erstes Kapitel, role:title): Titel/Subline und der
+            # View-Teaser kommen automatisch aus dem hub-Block statt pro View von Hand
+            # gepflegt zu werden — sonst driftet der Wortlaut zwischen Hub und
+            # Titel-Slide auseinander (Kay-Feedback 2026-07-12: "immer ähnlicher aber
+            # anderer Text wirkt verwirrend"). Betrifft NUR die Opening-Titel-Slide
+            # (erstes Kapitel), nicht die Ende-Titel-Wiederholung.
+            if idx == 0 and rendered.get("role") == "title" and hub:
+                rendered["title"] = meta.get("project", rendered.get("title", ""))
+                period = meta.get("period", "")
+                subtitle_line2 = f'{hub.get("subtitle", "")} | {period}' if period else hub.get("subtitle", "")
+                rendered["subtitle"] = [hub.get("tagline", ""), subtitle_line2]
+                view_card = hub.get("view_cards", {}).get(view)
+                if view_card:
+                    content = list(rendered.get("content", []))
+                    content.append({
+                        "type": "view_teaser",
+                        "label": view_card.get("label", ""),
+                        "badge": view_card.get("badge", ""),
+                        "description": view_card.get("description", ""),
+                    })
+                    rendered["content"] = content
             rendered_slides.append(rendered)
 
         chapters_out.append({"nav_label": nav_label, "slides": rendered_slides})
 
-    meta = dict(registry.get("view_meta", {}).get(view, {}))
     # Closing-Links (kein Hardcoding im Renderer): LinkedIn wenn gesetzt, sonst hub.quick_links.
     # Übersicht + GitHub werden im Renderer davor gesetzt.
     linkedin = meta.get("linkedin", "")

@@ -316,8 +316,10 @@ body.nav-invert #progress-fill                    { background: #fff; }
 /* ── Title slide — gleiche Kopfzone/Content-Zone-Struktur wie jede andere Slide,
    nur Farben invertiert (dunkler Hintergrund, helle Schrift). Kein Sonderlayout mehr. */
 .title-slide { display: flex !important; flex-direction: column; text-align: center; }
-.title-slide h2 { font-size: 2.6em; font-weight: 100; color: #fff; letter-spacing: -0.01em; }
-.title-slide .subline { color: rgba(255,255,255,0.78); }
+/* Gleiche Größen wie header h1/.tagline in index-template.html (3.5rem/1rem bei 16px
+   Basis) — umgerechnet auf die 17px-Slide-Basis: 56px/17=3.29em, 16px/17=0.94em. */
+.title-slide h2 { font-size: 3.29em; font-weight: 100; color: #fff; letter-spacing: -0.01em; }
+.title-slide .subline { font-size: 0.94em; color: rgba(255,255,255,0.78); }
 .title-slide .content-zone,
 .closing .content-zone { border-top-color: rgba(255,255,255,0.15); }
 /* KPI-Reihe wie E1 im Slide-System: Border-Left-Akzent statt Box-Pille */
@@ -330,6 +332,11 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .title-slide .kpi.green { border-left-color: var(--color-kpi-positive); }
 /* Start-CTA: nutzt .closing-links als Wrapper (gleiche Skalierung), nur der margin-top ist eigen */
 .title-cta { margin-top: 2.4em; }
+/* View-Teaser: automatisch aus hub.view_cards[view], sitzt zwischen KPI-Reihe und
+   Start-CTA — derselbe Text, den die Hub-Karte für diese View zeigt. */
+.view-teaser { margin-top: 2em; text-align: center; }
+.view-teaser-heading { font-size: 0.85em; font-weight: 500; color: var(--accent); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.5em; }
+.view-teaser-desc { font-size: 0.88em; color: rgba(255,255,255,0.75); max-width: 52ch; margin: 0 auto; line-height: 1.5; }
 .title-cta .c-link { cursor: pointer; }
 .title-slide .kpi.red   .v { color: var(--color-kpi-negative); }
 .title-slide .kpi.amber .v { color: var(--color-kpi-warning); }

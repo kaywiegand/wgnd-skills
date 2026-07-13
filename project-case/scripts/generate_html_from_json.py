@@ -88,6 +88,19 @@ def render_content_item(item: Dict[str, Any]) -> str:
         html += '</div>'
         return html
 
+    elif item_type == "view_teaser":
+        # Title-Slide-Teaser für die aktuelle View — automatisch aus hub.view_cards[view]
+        # (siehe generate_json_from_slides.py), nicht von Hand gepflegt. Label + Badge als
+        # kombinierte Mini-Überschrift, Description als Fließtext darunter.
+        label = item.get("label", "")
+        badge = item.get("badge", "")
+        heading = f"{label} für {badge}" if badge else label
+        html = '<div class="view-teaser">'
+        html += f'<div class="view-teaser-heading">{heading}</div>'
+        html += f'<p class="view-teaser-desc">{item.get("description", "")}</p>'
+        html += '</div>'
+        return html
+
     elif item_type == "figures_with_context":
         # Fact box + explanatory text → .kv-list > .kv-row
         html = '<div class="kv-list">'
