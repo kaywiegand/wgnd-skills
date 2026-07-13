@@ -520,12 +520,13 @@ def render_slide(
         html += '</div>'
         html += '</section>'
     elif len(content) == 1 and content[0].get("type") == "agenda" and slide.get("layout") == "L1":
-        # Agenda-Variante L1 (Versuch, zur Auswahl) — Kopfzone mit Kicker/Titel/Subline
-        # wie jede Standard-Slide, Liste zentriert in der Content-Zone statt Seitenspalte.
+        # Agenda-Variante L1 — Kopfzone mit Kicker/Titel/Subline wie jede Standard-Slide,
+        # Liste vertikal UND horizontal zentriert in der Content-Zone (Kay-Entscheidung
+        # 2026-07-13, nach Vergleich mit der L6-Variante).
         agenda = content[0]
         html = f'<section{data_ch}{data_lbl}>'
         html += render_head(chapter_label, title, subtitle)
-        html += '<div class="content-zone"><div class="agenda-list">'
+        html += '<div class="content-zone"><div class="agenda-list agenda-list-center">'
         for i, entry in enumerate(agenda.get("items", [])):
             if agenda.get("grouped"):
                 html += f'<div class="ag-item"><span class="ag-num">{i + 1}</span><span class="ag-label">{entry.get("section", "")}</span></div>'
