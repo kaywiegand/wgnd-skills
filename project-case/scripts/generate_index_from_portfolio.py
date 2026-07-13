@@ -90,13 +90,28 @@ def render_view_cards(registry: dict) -> str:
 
 
 def render_about(hub: dict) -> str:
-    """Render the '## Das Projekt'-Absätze aus hub.about (Liste von {label, text})."""
-    html = ""
-    for para in hub.get("about", []):
-        label = para.get("label", "")
-        text = para.get("text", "")
-        strong = f"<strong>{label}:</strong> " if label else ""
-        html += f'    <p class="section-intro">\n      {strong}{text}\n    </p>\n'
+    """Render die 'Das Projekt'-Absätze aus hub.about (Liste von {label, text}) in zwei
+    Spalten — fette Zwischenüberschrift (block, kein <br> nötig), Text normal darunter.
+
+    Items werden explizit per Python auf zwei Spalten-<div>s aufgeteilt (linke Spalte
+    bekommt bei ungerader Anzahl das zusätzliche Item) statt CSS-Balancing zu
+    überlassen — damit ist links immer >= rechts, deterministisch für jede Item-Zahl,
+    nicht vom Browser-Spaltenausgleich abhängig (Kay-Feedback: rechts lief länger als
+    links). Jede Spalte ist ein eigener Block, Items stacken nach ihrer eigenen Höhe —
+    kein CSS-Grid mit erzwungener gleicher Zeilenhöhe."""
+    items = hub.get("about", [])
+    split = -(-len(items) // 2)  # ceil(n/2) -> linke Spalte gleich lang oder länger
+    columns = [items[:split], items[split:]]
+    html = '    <div class="about-grid">\n'
+    for col in columns:
+        html += '      <div class="about-col">\n'
+        for para in col:
+            label = para.get("label", "")
+            text = para.get("text", "")
+            strong = f"<strong>{label}</strong>" if label else ""
+            html += f'        <div class="about-item">{strong}{text}</div>\n'
+        html += '      </div>\n'
+    html += '    </div>\n'
     return html
 
 
@@ -106,7 +121,7 @@ def render_quick_links(hub: dict, repo_url: str) -> str:
     links += hub.get("quick_links", [])
     html = ""
     for link in links:
-        html += f'        <a href="{link["href"]}" class="quick-link">{link["label"]}</a>\n'
+        html += f'        <a href="{link["href"]}" class="quick-link" target="_blank">{link["label"]}</a>\n'
     return html
 
 

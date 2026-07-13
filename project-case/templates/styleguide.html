@@ -23,38 +23,51 @@
     * { box-sizing: border-box; }
     body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background: #eef2f6; color: #333; line-height: 1.6; }
     .sr-wrap { max-width: 1000px; margin: 0 auto; padding: 44px 24px 100px; }
-    .sr-title { font-size: 1.9rem; font-weight: 700; color: var(--color-primary); }
+    .sr-title { font-size: 1.9rem; font-weight: 700; color: var(--navy); }
     .sr-intro { color: #667; margin: 6px 0 8px; font-size: 0.95rem; }
-    .sr-cat { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-accent); margin: 44px 0 6px; border-top: 1px solid #d6e2ec; padding-top: 30px; }
+    .sr-cat { font-size: 0.75rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent); margin: 44px 0 6px; border-top: 1px solid #d6e2ec; padding-top: 30px; }
     .sr-demo { background: #fff; border: 1px solid #dde8f0; border-radius: 8px; margin: 14px 0; overflow: hidden; }
     .sr-bar { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; background: #f5f9fc; border-bottom: 1px solid #e3edf4; padding: 8px 14px; }
-    .sr-bar b { color: var(--color-primary); font-size: 0.84rem; }
-    .sr-bar code { color: var(--color-accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.76rem; }
+    .sr-bar b { color: var(--navy); font-size: 0.84rem; }
+    .sr-bar code { color: var(--accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.76rem; }
     .sr-stage { padding: 20px 18px; }
     .sr-stage.flush { padding: 0; }
-    .sr-stage.dark { background: var(--color-primary); padding: 24px 18px; }
+    .sr-stage.dark { background: var(--navy); padding: 24px 18px; }
 
-    /* ── Hub-Elemente (aus index-template.html) ── */
-    .hub-header { background: var(--color-primary); color: #fff; padding: 2.4rem 2rem; }
-    .hub-header h1 { font-size: 2rem; font-weight: 700; margin: 0 0 0.35rem; }
+    /* ── Hub-Elemente — 1:1 aus templates/index-template.html kopiert (gleiche
+       Klassennamen, gleiche Werte). Bei Änderungen an index-template.html IMMER
+       auch hier nachziehen — sonst driftet diese Demo wieder von der echten
+       Datei weg (genau das ist am 2026-07-12 passiert). ── */
+    .hub-header { background: var(--ink); color: #fff; padding: 2.4rem 2rem; }
+    .hub-header h1 { font-size: 2.6rem; font-weight: 100; margin: 0 0 1rem; }
     .hub-header .tagline { font-size: 1rem; opacity: 0.85; margin: 0 0 0.15rem; }
     .hub-header .subtitle { font-size: 1rem; opacity: 0.85; margin: 0; }
-    .hub-kpi-row { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 1.4rem; }
-    .hub-kpi { background: #fff; border: 1px solid #dde8f0; border-radius: var(--radius-card); padding: 10px 18px; text-align: center; min-width: 110px; }
-    .hub-kpi .v { font-size: 1.5rem; font-weight: 700; color: var(--color-primary); }
-    .hub-kpi .l { font-size: 0.68rem; color: #888; letter-spacing: 0.04em; margin-top: 2px; }
-    .hub-kpi.positive .v { color: var(--color-positive); }  .hub-kpi.negative .v { color: var(--color-negative); }
-    .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.02em; color: var(--color-accent); margin-bottom: 0.5rem; }
-    .hub-h2 { font-size: 1.35rem; font-weight: 700; color: var(--color-primary); margin: 0 0 0.5rem; }
-    .section-intro { font-size: 0.92rem; color: #555; margin-bottom: 0.5rem; }
+    .hub-kpi-row { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 2.4rem; }
+    .hub-kpi { border-left: 3px solid rgba(255,255,255,0.25); padding-left: 14px; text-align: left; }
+    .hub-kpi .v { font-size: 1.6rem; font-weight: 500; color: #fff; line-height: 1; }
+    .hub-kpi .l { font-size: 0.68rem; color: rgba(255,255,255,0.6); letter-spacing: 0.04em; margin-top: 6px; }
+    .hub-kpi.positive { border-left-color: var(--color-kpi-positive); } .hub-kpi.positive .v { color: var(--color-kpi-positive); }
+    .hub-kpi.negative { border-left-color: var(--color-kpi-negative); } .hub-kpi.negative .v { color: var(--color-kpi-negative); }
+    .section-label { font-size: 0.72rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.6em; }
+    .hub-h2 { font-size: 1.35rem; font-weight: 500; color: var(--navy); margin: 0 0 0.5rem; }
+    .section-intro { font-size: 0.92rem; color: var(--ink-body); margin-bottom: 0.5rem; line-height: 1.6; }
+    /* "Das Projekt" — zwei Spalten-Blöcke, linke Spalte immer >= rechte (Python-seitig
+       aufgeteilt, kein CSS-Balancing) */
+    .about-grid { display: flex; gap: 2rem; margin-top: 1rem; }
+    .about-col { flex: 1; min-width: 0; }
+    .about-item { font-size: 0.85rem; color: var(--ink-body); line-height: 1.7; margin-bottom: 1rem; }
+    .about-item:last-child { margin-bottom: 0; }
+    .about-item > strong:first-child { display: block; color: var(--navy); font-weight: 500; margin-bottom: 0.2em; }
     .view-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
-    .view-card { background: #fff; border: 1px solid #dde8f0; padding: 22px; border-top: 4px solid var(--color-accent); border-radius: var(--radius-card); display: flex; flex-direction: column; }
-    .view-label { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.02em; margin-bottom: 8px; color: var(--color-accent); }
-    .view-card h3 { font-size: 1.1rem; color: var(--color-primary); margin: 0 0 6px; }
-    .view-desc { font-size: 0.85rem; color: #555; margin-bottom: 14px; flex-grow: 1; }
+    .view-card { background: var(--card); padding: 18px 20px; border-radius: var(--radius-card); display: flex; flex-direction: column; }
+    .view-label { font-size: 0.68rem; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; margin-bottom: 0.8em; color: var(--accent); }
+    .view-card h3 { font-size: 1.05rem; font-weight: 500; color: var(--ink); margin: 0 0 6px; }
+    .view-desc { font-size: 0.82rem; color: var(--ink-body); margin-bottom: 14px; flex-grow: 1; }
     .view-meta { display: flex; gap: 12px; align-items: center; margin-top: 12px; }
-    .view-time { font-size: 0.75rem; color: #888; font-weight: 500; }
-    .view-badge { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-box); background: #e6f3ff; color: #0066cc; }
+    .view-time { font-size: 0.75rem; color: var(--ink-soft); font-weight: 500; }
+    .view-badge { font-size: 0.7rem; font-weight: 600; padding: 3px 9px; border-radius: var(--radius-box); background: #fff; color: var(--navy); }
+    .hub-footer { background: var(--bg-box-default); border-top: 1px solid var(--card-border); padding: 1.6rem; text-align: center; color: var(--ink-soft); font-size: 0.85rem; }
+    .hub-footer a { color: var(--accent); text-decoration: none; }
 
     /* ── Navigation-Demo (statisch) ── */
     .nav-demo-wrap { background: #f0f4f8; padding: 24px 0 0; border-radius: 0 0 6px 6px; }
@@ -68,11 +81,11 @@
     .demo-stk-wrap.is-chapter .demo-stk { height: 28px; }
     .demo-stk-wrap.is-past .demo-stk { background: rgba(26,58,92,0.45); }
     .demo-stk-wrap.is-past .demo-stk-num { color: rgba(26,58,92,0.45); }
-    .demo-stk-wrap.is-current .demo-stk { width: 2px; height: 30px; background: var(--color-primary); }
-    .demo-stk-wrap.is-current .demo-stk-num { color: var(--color-primary); font-weight: 700; }
-    .demo-stk-wrap.is-chapter.is-current .demo-stk-ch-label { color: var(--color-primary); font-weight: 700; }
+    .demo-stk-wrap.is-current .demo-stk { width: 2px; height: 30px; background: var(--navy); }
+    .demo-stk-wrap.is-current .demo-stk-num { color: var(--navy); font-weight: 700; }
+    .demo-stk-wrap.is-chapter.is-current .demo-stk-ch-label { color: var(--navy); font-weight: 700; }
     .demo-progress { height: 8px; background: rgba(26,58,92,0.1); margin: 0; }
-    .demo-progress-fill { height: 100%; background: var(--color-primary); }
+    .demo-progress-fill { height: 100%; background: var(--navy); }
     /* prev/next arrows flanking the tick bar */
     .demo-navrow { display: flex; align-items: flex-end; }
     .demo-navrow .demo-ticks { flex: 1; }
@@ -81,7 +94,7 @@
     .demo-hover .demo-stk { background: rgba(26,58,92,0.6); }      /* hover state shown statically */
     .demo-hover .demo-stk-num { color: rgba(26,58,92,0.7); }
     /* inverted variant — title / closing slide */
-    .nav-demo-wrap.dark { background: var(--color-primary); }
+    .nav-demo-wrap.dark { background: var(--navy); }
     .nav-demo-wrap.dark .nav-demo-slide { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.4); }
     .nav-demo-wrap.dark .demo-stk { background: rgba(255,255,255,0.4); }
     .nav-demo-wrap.dark .demo-stk-num { color: rgba(255,255,255,0.55); }
@@ -100,8 +113,26 @@
     .swatch-info { padding: 8px 10px; background: #fff; }
     .swatch-name { font-size: 0.78rem; font-weight: 600; color: #333; }
     .swatch-hex { font-size: 0.72rem; color: #888; font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 1px; }
-    .swatch-var { font-size: 0.68rem; color: var(--color-accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 2px; }
+    .swatch-var { font-size: 0.68rem; color: var(--accent); font-family: ui-monospace, "SF Mono", Menlo, monospace; margin-top: 2px; }
     .palette-group-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #888; margin: 16px 0 6px; }
+
+    /* ── Raster & Layouts (L1–L7) ── */
+    .spec-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
+    .spec-table th { text-align: left; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.05em; text-transform: uppercase; color: #fff; background: var(--navy); padding: 8px 12px; }
+    .spec-table td { padding: 8px 12px; border-bottom: 1px solid #eee; }
+    .spec-table td.name { font-weight: 700; color: var(--navy); white-space: nowrap; }
+    .layout-demo { background: #fff; }
+    .layout-demo .box { grid-column: span var(--span); background: var(--card); border-radius: var(--radius-card); padding: 14px 0; text-align: center; font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.78rem; color: var(--ink-soft); }
+
+    /* Echte 1024×720-Canvas für die Slide-Formate-Demos — genau wie Reveal.js selbst:
+       bei echter Größe rendern (echte 17px-Basis, echte 56/170/40px-Werte), dann per
+       transform:scale gleichmäßig runterskalieren. Nur so bleibt die 150px-Kopfzone im
+       korrekten Größenverhältnis zur Slide sichtbar (feste px-Werte skalieren nicht
+       automatisch mit, wenn man nur die Breite ändert). */
+    .slide-canvas-wrap { width: 640px; height: 450px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 8px; box-shadow: 0 10px 30px -12px rgba(0,0,0,.25); }
+    .slide-canvas-wrap .reveal { position: absolute; top: 0; left: 0; width: 1024px; height: 720px; transform: scale(0.625); transform-origin: top left; background: #fff; }
+    .slide-canvas-wrap.dark .reveal { background: var(--navy); }
+    .slide-canvas-wrap .slides { position: absolute; inset: 0; }
   </style>
 </head>
 <body>
@@ -117,7 +148,7 @@
   <div class="sr-cat">Hub-Elemente (index.html)</div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Header</b> <code>.hub-header · h1 · .tagline · .subtitle · .hub-kpi-row</code></div>
+    <div class="sr-bar"><b>Header</b> <code>header · .header-inner · h1 · .tagline · .subtitle · .kpi-row · .kpi</code></div>
     <div class="sr-stage flush">
       <header class="hub-header">
         <h1>Projekt-Titel</h1>
@@ -133,7 +164,7 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Text-Block</b> <code>.section-label · .hub-h2 · .section-intro</code></div>
+    <div class="sr-bar"><b>Text-Block</b> <code>.section-label · h2 · .section-intro</code></div>
     <div class="sr-stage">
       <div class="section-label">Caption / Kicker</div>
       <div class="hub-h2">Abschnitts-Titel</div>
@@ -142,7 +173,22 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Info-Karten</b> <code>.view-grid · .view-card · .view-label · .view-badge</code></div>
+    <div class="sr-bar"><b>"Das Projekt" — zwei Spalten</b> <code>.about-grid · .about-col · .about-item · strong:first-child</code> — linke Spalte immer &gt;= rechte (Python-Split, kein CSS-Balancing)</div>
+    <div class="sr-stage">
+      <div class="about-grid">
+        <div class="about-col">
+          <div class="about-item"><strong>Motivation</strong>Beispiel-Absatz — die Überschrift ist block, kein <code>&lt;br&gt;</code> danach nötig.</div>
+          <div class="about-item"><strong>Kernfrage</strong>Zweiter Absatz in derselben Spalte, normale Zeilenhöhe.</div>
+        </div>
+        <div class="about-col">
+          <div class="about-item"><strong>Ergebnisse</strong>Rechte Spalte, ein Absatz weniger als links.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Info-Karten</b> <code>.view-grid · .view-card · .view-label · .view-badge</code> — gefüllte <code>--card</code>-Fläche, kein Rahmen</div>
     <div class="sr-stage">
       <div class="view-grid">
         <div class="view-card">
@@ -164,6 +210,20 @@
           <div class="view-meta"><span class="view-time">⏱ 00 Min</span><span class="view-badge">Badge</span></div>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Footer</b> <code>footer · .hub-footer</code> — zweite Zeile immer fix: "Kay Wiegand | LinkedIn | GitHub", externe Links <code>target=_blank</code> (auch Quick-Links oben)</div>
+    <div class="sr-stage flush">
+      <footer class="hub-footer">
+        <p>
+          Projekt-Titel — Eine Zeile Footer-Tagline<br>
+          Kay Wiegand |
+          <a href="https://www.linkedin.com/in/kaywiegand/" target="_blank">LinkedIn</a> |
+          <a href="https://github.com/kaywiegand" target="_blank">GitHub</a>
+        </p>
+      </footer>
     </div>
   </div>
 
@@ -215,54 +275,218 @@
     </div>
   </div>
 
+  <!-- ═══════════════ RASTER & LAYOUTS (L1–L7) ═══════════════
+       Fehlte bisher komplett in dieser Referenz (Kay-Feedback 2026-07-12) — nur die
+       Elemente (E1–E17) waren dokumentiert, nicht das Raster/die Layouts, obwohl genau
+       diese Namen (z.B. "L3 · E7") für Slide-Briefings genutzt werden sollen. -->
+  <div class="sr-cat">Raster &amp; Layouts (L1–L7) — Namen für Slide-Briefings</div>
+
   <div class="sr-demo">
-    <div class="sr-bar"><b>Title-Slide</b> <code>.title-slide · h1 · .sub · .kpi-row · .kpi (.red/.amber/.green) · .meta</code></div>
-    <div class="sr-stage dark flush"><div class="reveal">
-      <div class="title-slide">
-        <h1>Projekt-Titel</h1>
-        <div class="sub">Tagline-Zeile<br>Zeitraum · Umfang · Stack</div>
+    <div class="sr-bar"><b>Raster</b> — Canvas, Ränder, Spalten (Basis für jedes Layout)</div>
+    <div class="sr-stage">
+      <table class="spec-table">
+        <tr><th>Eigenschaft</th><th>Wert</th></tr>
+        <tr><td class="name">Canvas</td><td>1024 × 720px</td></tr>
+        <tr><td class="name">Rand oben / seitlich</td><td>56px (<code>--frame-side</code>)</td></tr>
+        <tr><td class="name">Rand unten</td><td>40px (<code>--frame-bottom</code>)</td></tr>
+        <tr><td class="name">Kopfzone</td><td>fix 150px (<code>--head-zone</code>), unabhängig vom Inhalt darunter</td></tr>
+        <tr><td class="name">Spalten</td><td>12 (<code>.g12</code>), Gutter 20–32px je nach Layout</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Abstände</b> — feste Werte statt beliebiger Zwischenräume</div>
+    <div class="sr-stage">
+      <table class="spec-table">
+        <tr><th>Wert</th><th>Verwendung</th></tr>
+        <tr><td class="name">20–24px</td><td>Standard-Gutter im 12-Spalten-Grid, Gap bei L6/L7, Steps</td></tr>
+        <tr><td class="name">28px</td><td>Gap bei Karten (2–3 Spalten), Rings/Value-Gruppen</td></tr>
+        <tr><td class="name">32px</td><td>Gap bei L2/L3-Layouts, Value-Row</td></tr>
+        <tr><td class="name">3em</td><td>KPI-Row/Tabelle/Steps/Process-Arrows/Empfehlungen → folgender Fließtext (blockquote.statement, .pf-grid, .sec-text) — margin-top auf dem Nachfolger, nicht auf dem Element selbst</td></tr>
+        <tr><td class="name">0.7em</td><td>Zwischen gleichartigen, gestapelten Elementen (z. B. zwei blockquote.statement direkt hintereinander bei <code>layout: callout</code>) — sonst zu viel Leerraum</td></tr>
+        <tr><td class="name">48–72px</td><td>Gap bei mehrspaltigem Zusatztext</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L1 · Volle Fläche</b> <code>.g12, span 12</code> — Diagramme, Einzeltabellen, ein Element ohne Unterteilung</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:20px;">
+      <div class="box" style="--span:12;">span 12</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L2 · Zweispaltig</b> <code>.g12, 6+6, Gap 32px</code> — Vergleich, zwei parallele Argumente</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:32px;">
+      <div class="box" style="--span:6;">span 6</div><div class="box" style="--span:6;">span 6</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L3 · Dreispaltig</b> <code>.g12, 4+4+4, Gap 28px</code> — Karten-Trios, der Standard für 3 gleich wichtige Punkte</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:28px;">
+      <div class="box" style="--span:4;">span 4</div><div class="box" style="--span:4;">span 4</div><div class="box" style="--span:4;">span 4</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L4 · Vierspaltig</b> <code>.g12, 3+3+3+3, Gap 24px</code> — Standard für die KPI-Reihe (E1)</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:24px;">
+      <div class="box" style="--span:3;">span 3</div><div class="box" style="--span:3;">span 3</div><div class="box" style="--span:3;">span 3</div><div class="box" style="--span:3;">span 3</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L5 · Fünfspaltig</b> <code>Flex-Sonderfall</code> — 12 nicht durch 5 teilbar, deshalb Flex statt Grid. Nur für 5-Schritt-Prozesse</div>
+    <div class="sr-stage layout-demo"><div style="display:flex; gap:20px;">
+      <div class="box" style="flex:1;">1/5</div><div class="box" style="flex:1;">1/5</div><div class="box" style="flex:1;">1/5</div><div class="box" style="flex:1;">1/5</div><div class="box" style="flex:1;">1/5</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L6 · Schmal + Breit</b> <code>.g12, 4+8, Gap 24px</code> — Grafik/Steps links, Copy oder Diagramm rechts über volle Höhe</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:24px;">
+      <div class="box" style="--span:4;">span 4</div><div class="box" style="--span:8;">span 8</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>L7 · Breit + Schmal</b> <code>.g12, 8+4, Gap 24px</code> — Hauptinhalt links, Zusatzinfo/Zahl rechts</div>
+    <div class="sr-stage layout-demo"><div class="g12" style="gap:24px;">
+      <div class="box" style="--span:8;">span 8</div><div class="box" style="--span:4;">span 4</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Kombinationsregeln</b></div>
+    <div class="sr-stage">
+      <ul style="margin:0; padding-left:1.2em; font-size:0.88rem; color:#444; line-height:1.9;">
+        <li><b>Element + Zusatztext darunter:</b> 40px Abstand, 1–3 Absätze, untereinander oder mehrspaltig.</li>
+        <li><b>Element + Subline darüber:</b> Subline steht in der Kopfzone (<code>.slide-head</code>), nicht im Element — funktioniert mit jedem Element.</li>
+        <li><b>Rings/Ring+Value/Value-Row verteilen sich über Spalten:</b> 2 Elemente → 2-spaltig, 3 → 3-spaltig, 4 → 4-spaltig — gleiche Logik wie Steps.</li>
+        <li><b>Notation für Slide-Briefings:</b> <code>Layout · Element</code>, z. B. <code>L6 · E8 + Copy</code> oder <code>L4 · E1</code> oder <code>L3 · E3</code>.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ═══════════════ SLIDE-FORMATE ═══════════════
+       Drei Formate, EIN Skelett: .slide-head (feste 150px-Kopfzone, Titel+Subline+
+       Trennlinie, immer oben) + .content-zone (restliche Höhe, Inhalt zentriert sich
+       als Gruppe). Title-Slide und Closing sind strukturell identisch zur
+       Content-Slide — nur Farben invertiert (heller Text auf --navy statt umgekehrt).
+       Einzige bewusste Ausnahme: die Agenda-Slide (eigenes Zwei-Spalten-Layout ohne
+       Kicker/Subline). Jede <section> füllt immer exakt den 1024×720-Canvas
+       (height:100%) — das verhindert, dass der Content je nach Slide "springt". -->
+  <div class="sr-cat">Slide-Formate — ein Skelett, drei Einfärbungen</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>1 · Content-Slide (Standard)</b> <code>.slide-head (h2 · .subline) + .content-zone</code> — helle Fläche, das Baseline-Format. Maßstabsgetreue 1024×720-Canvas, exakt die echte <code>.reveal &gt; .slides &gt; section</code>-Kette.</div>
+    <div class="sr-stage"><div class="slide-canvas-wrap"><div class="reveal"><div class="slides"><section class="present">
+      <div class="slide-head">
+        <span class="slide-kicker">Kapitel-Titel</span>
+        <h2>Abschnitts-Überschrift</h2>
+        <p class="subline">Optionale Subline — präzisiert das Thema der Folie in einem Satz.</p>
+      </div>
+      <div class="content-zone">
+        <p>Content zentriert sich als Gruppe in der verbleibenden Höhe — hier stünde z.B. eine KPI-Reihe oder Karten-Grid.</p>
+      </div>
+    </section></div></div></div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>2 · Title-Slide</b> <code>gleiches Skelett, dunkel · h2/subline ≙ Hub-Header-Typografie (3.29em/0.94em) · .kpi-row (E1-Optik) · .view-teaser · Start-CTA</code></div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="title-slide present">
+      <div class="slide-head">
+        <h2>Projekt-Titel</h2>
+        <p class="subline">Tagline-Zeile<br>Zeitraum · Umfang · Stack</p>
+      </div>
+      <div class="content-zone">
         <div class="kpi-row">
           <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
           <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
           <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
         </div>
-        <div class="meta">github.com/user/repo</div>
+        <div class="view-teaser">
+          <div class="view-teaser-heading">Label für Badge</div>
+          <p class="view-teaser-desc">View-Teaser: Beschreibung der aktuellen View — kommt automatisch aus hub.view_cards[view] in slides.yaml (generate_json_from_slides.py), nicht von Hand gepflegt.</p>
+        </div>
+        <div class="closing-links title-cta"><span class="c-link">Start</span></div>
       </div>
-    </div></div>
+    </section></div></div></div></div>
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>End-Slide</b> <code>.title-slide · h1 · .sub · .closing-links · .c-link — letzte Slide</code></div>
-    <div class="sr-stage dark flush"><div class="reveal">
-      <div class="title-slide">
-        <h1>Projekt-Titel</h1>
-        <div class="sub">Der Bogen zurück zur Ausgangsfrage</div>
+    <div class="sr-bar"><b>2b · Title-Slide (L6-Variante)</b> <code>layout: L6</code> — Titel/Subline bleiben in der Kopfzone, aber Teaser+Start und KPI-Row stehen zweispaltig (4+8) statt zentriert untereinander. Opt-in pro Slide, aktuell in Produktion (zh-tram-data, alle 3 Views).</div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="title-slide title-split present">
+      <div class="slide-head">
+        <h2>Projekt-Titel</h2>
+        <p class="subline">Tagline-Zeile<br>Zeitraum · Umfang · Stack</p>
+      </div>
+      <div class="content-zone"><div class="title-split-cols">
+        <div class="title-split-left">
+          <div class="view-teaser">
+            <div class="view-teaser-heading">Label für diese View</div>
+            <p class="view-teaser-desc">View-Teaser aus hub.view_cards[view], nicht von Hand gepflegt.</p>
+          </div>
+          <div class="closing-links title-cta"><span class="c-link">Start</span></div>
+        </div>
+        <div class="title-split-right">
+          <div class="kpi-row">
+            <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
+            <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
+            <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
+            <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl D</div></div>
+          </div>
+        </div>
+      </div></div>
+    </section></div></div></div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>3 · Closing-Slide</b> <code>gleiches Skelett, dunkel · h2 auf 1.75em · beliebiger Content-Typ · .closing-links</code> — strukturell identisch zu Title, nur andere Inhalte</div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="closing present">
+      <div class="slide-head">
+        <h2>Was vorhersagbar ist, ist steuerbar.</h2>
+        <p class="subline">Der Bogen zurück zur Ausgangsfrage.</p>
+      </div>
+      <div class="content-zone">
         <div class="closing-links">
           <a href="#" class="c-link">GitHub-Repo</a>
           <a href="#" class="c-link">Dashboard-Prototype</a>
           <a href="#" class="c-link">Netzwerk-Karte</a>
         </div>
       </div>
-    </div></div>
+    </section></div></div></div></div>
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Slide-Titel</b> <code>.slide-kicker (Kapitel) · h2 · .subline (subtitle)</code></div>
+    <div class="sr-bar"><b>Agenda · L1 (Standard)</b> <code>render_head() + .agenda-list.agenda-list-center</code> — Content-Typ <code>agenda</code>, <code>layout: L1</code>. Kopfzone wie jede Slide, Liste horizontal+vertikal zentriert. In Produktion die gewählte Variante für alle 3 Views (zh-tram-data).</div>
     <div class="sr-stage"><div class="reveal">
-      <span class="slide-kicker">Kapitel-Titel</span>
-      <h2>Abschnitts-Überschrift</h2>
-      <p class="subline">Optionale Subline — präzisiert das Thema der Folie in einem Satz.</p>
-      <p>Fließtext unter der Überschrift — Standardabsatz im Slide-Kontext.</p>
+      <div class="slide-head">
+        <span class="slide-kicker">Agenda</span>
+        <h2>Inhaltsübersicht</h2>
+        <p class="subline">Eine Zeile Untertitel zum Überblick.</p>
+      </div>
+      <div class="content-zone">
+        <div class="agenda-list agenda-list-center">
+          <div class="ag-item"><span class="ag-num">1</span><span class="ag-label">Erstes Kapitel</span></div>
+          <div class="ag-item"><span class="ag-num">2</span><span class="ag-label">Zweites Kapitel</span></div>
+          <div class="ag-sub">Optionaler Unterpunkt (grouped)</div>
+          <div class="ag-item"><span class="ag-num">3</span><span class="ag-label">Drittes Kapitel</span></div>
+        </div>
+      </div>
     </div></div>
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Inhalt-Slide (zwei Spalten)</b> <code>.agenda-cols · .agenda-head (Caption+Titel+Subline) · .agenda-list · .ag-item (.ag-num/.ag-label) · .ag-sub</code> — Content-Typ <code>agenda</code></div>
+    <div class="sr-bar"><b>Agenda · L6 (Alternative)</b> <code>.agenda-cols · .agenda-head · .agenda-list</code> — Content-Typ <code>agenda</code>, <code>layout: L6</code>. Titelblock links, Liste rechts — kompakter, aber kein geteiltes Kopfzonen-Skelett.</div>
     <div class="sr-stage"><div class="reveal">
       <div class="agenda-cols">
         <div class="agenda-head">
-          <span class="slide-kicker">Inhalt</span>
-          <h2>Inhalt</h2>
+          <span class="slide-kicker">Agenda</span>
+          <h2>Inhaltsübersicht</h2>
           <p class="subline">Eine Zeile Untertitel zum Überblick.</p>
         </div>
         <div class="agenda-list">
@@ -324,6 +548,14 @@
   </div>
 
   <div class="sr-demo">
+    <div class="sr-bar"><b>Statement-Callout · gestapelt</b> <code>layout: callout</code> (Slide-Flag) — mehrere <code>statement</code>-Items fallen damit aus der zweispaltigen Fließtext-Darstellung (E14/E16) heraus und werden stattdessen als volle Breite, zentriert, untereinander gerendert. Enger Abstand zwischen gleichartigen Callouts (0.7em) statt der 3em-Regel unten.</div>
+    <div class="sr-stage"><div class="reveal">
+      <blockquote class="statement">Erste Aussage — z. B. der Ausgangspunkt oder Kontext.</blockquote>
+      <blockquote class="statement">Zweite Aussage — die Konsequenz oder Zuspitzung daraus.</blockquote>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
     <div class="sr-bar"><b>Steps</b> <code>.steps · .step · .sn (Nummer) · .sl (Label) · p</code> — <code>steps</code></div>
     <div class="sr-stage"><div class="reveal">
       <div class="steps">
@@ -335,14 +567,148 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Evidence-Chain</b> <code>.ev-chain · .ev-step (.climax) · .ev-circle · .ev-body · .ev-arrow</code> — <code>sequence</code></div>
+    <div class="sr-bar"><b>E8 · Timeline</b> <code>.timeline · .tl-item (.climax) · .tl-num · h4 · p</code> — <code>sequence</code>, Verbindungslinie per CSS</div>
     <div class="sr-stage"><div class="reveal">
-      <div class="ev-chain">
-        <div class="ev-step"><div class="ev-circle">1</div><div class="ev-body"><strong>Erster Schritt</strong><span>Beobachtung oder Befund.</span></div></div>
-        <div class="ev-arrow">↓</div>
-        <div class="ev-step"><div class="ev-circle">2</div><div class="ev-body"><strong>Zweiter Schritt</strong><span>Ableitung daraus.</span></div></div>
-        <div class="ev-arrow">↓</div>
-        <div class="ev-step climax"><div class="ev-circle">3</div><div class="ev-body"><strong>Ergebnis (climax)</strong><span>Die Schlussfolgerung — grün hervorgehoben.</span></div></div>
+      <div class="timeline">
+        <div class="tl-item"><div class="tl-num">1</div><div><h4>Erster Schritt</h4><p>Beobachtung oder Befund.</p></div></div>
+        <div class="tl-item"><div class="tl-num">2</div><div><h4>Zweiter Schritt</h4><p>Ableitung daraus.</p></div></div>
+        <div class="tl-item climax"><div class="tl-num">3</div><div><h4>Ergebnis (climax)</h4><p>Die Schlussfolgerung — grün hervorgehoben.</p></div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E4 · Rings</b> <code>.rings · .ring-wrap · .ring (conic-gradient) · .ring-inner · .l</code> — <code>rings</code>, nur für echte Anteile</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="rings" style="grid-template-columns: repeat(3, 1fr); max-width: 660px; margin: 0 auto;">
+        <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Anteil A</div></div>
+        <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 68%, var(--card) 0);"><div class="ring-inner">68%</div></div><div class="l">Anteil B</div></div>
+        <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 20%, var(--card) 0);"><div class="ring-inner">20%</div></div><div class="l">Anteil C</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E5 · Ring + Value</b> <code>.combo · .ring-wrap · .value-peer</code> — <code>ring_value</code>, Ring und Zahlen gleichwertig</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="combo" style="grid-template-columns: repeat(3, 1fr); max-width: 660px; margin: 0 auto;">
+        <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 100%, var(--card) 0);"><div class="ring-inner">100%</div></div><div class="l">Anteil A</div></div>
+        <div class="value-peer"><div class="v">00,0</div><div class="l">Kennzahl B</div></div>
+        <div class="value-peer"><div class="v">00</div><div class="l">Kennzahl C</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E6 · Box-Grid</b> <code>.box-grid · .box-item (.highlight)</code> — <code>box_grid</code>, 3 neutral + 1 hervorgehoben</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="box-grid">
+        <div class="box-item">Erster Punkt</div>
+        <div class="box-item">Zweiter Punkt</div>
+        <div class="box-item">Dritter Punkt</div>
+        <div class="box-item highlight">Vierter Punkt — hervorgehoben</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E9 · Horizontale Timeline</b> <code>.h-timeline · .ht-line-row · .ht-dot · .ht-labels · .ht-label</code> — <code>h_timeline</code>, für Roadmap/Phasen</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="h-timeline">
+        <div class="ht-line-row">
+          <div class="ht-dot-wrap"><div class="ht-dot"></div></div>
+          <div class="ht-dot-wrap"><div class="ht-dot"></div></div>
+          <div class="ht-dot-wrap"><div class="ht-dot"></div></div>
+        </div>
+        <div class="ht-labels">
+          <div class="ht-label"><h4>Phase A</h4><p>Kurzbeschreibung.</p></div>
+          <div class="ht-label"><h4>Phase B</h4><p>Kurzbeschreibung.</p></div>
+          <div class="ht-label"><h4>Phase C</h4><p>Kurzbeschreibung.</p></div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E10 · Funnel</b> <code>.funnel · .fu-step</code> — <code>funnel</code>, nur für echte Verengung/Filterung</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="funnel">
+        <div class="fu-step" style="width: 100%;">Stufe 1 — Ausgangsmenge</div>
+        <div class="fu-step" style="width: 73%;">Stufe 2 — gefiltert</div>
+        <div class="fu-step" style="width: 46%;">Stufe 3 — Zielmenge</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E11 · Process Arrows</b> <code>.arrows · .arrow-chip (.current)</code> — <code>process_arrows</code>, kompakt ohne Erklärtext. Items als <code>{text, current: true}</code> heben den jeweils aktuellen Schritt hervor — praktisch, wenn dieselbe Kette auf mehreren Folgeslides wiederkehrt (z. B. vier Anreicherungs-Quellen-Detailslides, je Slide ein anderer Schritt aktiv). Nach <code>.arrows</code> folgt Content immer mit 3em Abstand (siehe Abstände-Tabelle).</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="arrows">
+        <div class="arrow-chip current">Schritt 1</div>
+        <div class="arrow-chip">Schritt 2</div>
+        <div class="arrow-chip">Schritt 3</div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E12 · Value-Row</b> <code>.value-row · .value-item (.v/.l/.d) · .quote</code> — <code>value_row</code>, optional Zitat darunter</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="value-row" style="grid-template-columns: repeat(3, 1fr); max-width: 660px; margin: 0 auto;">
+        <div class="value-item"><div class="v">00,0</div><div class="l">Kennzahl A</div><div class="d">Zusatzinfo</div></div>
+        <div class="value-item"><div class="v">00</div><div class="l">Kennzahl B</div><div class="d">Zusatzinfo</div></div>
+        <div class="value-item"><div class="v">00%</div><div class="l">Kennzahl C</div><div class="d">Zusatzinfo</div></div>
+      </div>
+      <div class="extra-text" style="text-align: center;"><p class="quote">„Optionales Zitat als Fließtext, keine Box.“</p></div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E13 · Fact-Grid</b> <code>.fact-grid · .fact-cell (.v/.l)</code> — <code>fact_grid</code>, dichtes Raster für Detail-/Anhang-Slides</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="fact-grid">
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt A</div></div>
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt B</div></div>
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt C</div></div>
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt D</div></div>
+        <div class="fact-cell"><div class="v">00</div><div class="l">Fakt E</div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E15 · Statement, prominent</b> <code>.statement-lead</code> — reine Text-Slide, 1 Aussage, zentriert</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="statement-lead">Ein Gedanke, groß gesetzt, maximal drei Zeilen — für die eine Aussage, die hängen bleiben soll.</div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E14 · Copy 2-spaltig mit Headline</b> <code>.text-cols-head · h4 · p</code> — reine Text-Slide, 2 Aussagen mit <code>heading</code>-Feld</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="text-cols-head">
+        <div><h4>Warum A</h4><p>Kurzer erklärender Absatz zur ersten Spalte.</p></div>
+        <div><h4>Warum B</h4><p>Kurzer erklärender Absatz zur zweiten Spalte.</p></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E16 · Copy, zwei Absätze</b> <code>.text-stack · p</code> — reine Text-Slide, Aussagen mit <code>layout: stack</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="text-stack">
+        <p>Erster Absatz — normaler Fließtext, zwei bis vier Zeilen.</p>
+        <p>Zweiter Absatz — schließt inhaltlich an den ersten an.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E17 · Statement + Copy gemischt</b> <code>.text-lead-copy · .lead · .copy</code> — reine Text-Slide, <code>layout: lead_copy</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="text-lead-copy">
+        <p class="lead">Die große These, zentriert und hervorgehoben.</p>
+        <p class="copy">Der erklärende Absatz direkt darunter, normale Textgröße.</p>
       </div>
     </div></div>
   </div>
@@ -430,11 +796,18 @@
     <div class="sr-stage">
       <div class="palette-group-label">Primärfarben</div>
       <div class="palette-grid">
-        <div class="swatch"><div class="swatch-color" style="background: #1a3a5c;"></div><div class="swatch-info"><div class="swatch-name">Primary</div><div class="swatch-hex">#1a3a5c</div><div class="swatch-var">--color-primary</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #2E86AB;"></div><div class="swatch-info"><div class="swatch-name">Accent</div><div class="swatch-hex">#2E86AB</div><div class="swatch-var">--color-accent</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #27ae60;"></div><div class="swatch-info"><div class="swatch-name">Positive</div><div class="swatch-hex">#27ae60</div><div class="swatch-var">--color-positive</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #e67e22;"></div><div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#e67e22</div><div class="swatch-var">--color-warning</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #c0392b;"></div><div class="swatch-info"><div class="swatch-name">Negative</div><div class="swatch-hex">#c0392b</div><div class="swatch-var">--color-negative</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #1a3a5c;"></div><div class="swatch-info"><div class="swatch-name">Navy</div><div class="swatch-hex">#1a3a5c</div><div class="swatch-var">--navy</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #C9873F;"></div><div class="swatch-info"><div class="swatch-name">Accent</div><div class="swatch-hex">#C9873F</div><div class="swatch-var">--accent</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #3E4A5C;"></div><div class="swatch-info"><div class="swatch-name">Ink</div><div class="swatch-hex">#3E4A5C</div><div class="swatch-var">--ink</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #66707D;"></div><div class="swatch-info"><div class="swatch-name">Ink-Body</div><div class="swatch-hex">#66707D</div><div class="swatch-var">--ink-body</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #8A93A0;"></div><div class="swatch-info"><div class="swatch-name">Ink-Soft</div><div class="swatch-hex">#8A93A0</div><div class="swatch-var">--ink-soft</div></div></div>
+      </div>
+
+      <div class="palette-group-label">Status</div>
+      <div class="palette-grid">
+        <div class="swatch"><div class="swatch-color" style="background: #4C9C7B;"></div><div class="swatch-info"><div class="swatch-name">Positive</div><div class="swatch-hex">#4C9C7B</div><div class="swatch-var">--positive</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #d98a3d;"></div><div class="swatch-info"><div class="swatch-name">Warning</div><div class="swatch-hex">#d98a3d</div><div class="swatch-var">--warning</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #c0392b;"></div><div class="swatch-info"><div class="swatch-name">Negative</div><div class="swatch-hex">#c0392b</div><div class="swatch-var">--negative</div></div></div>
       </div>
 
       <div class="palette-group-label">Auf dunklem Hintergrund (Title / End Slide)</div>
@@ -445,12 +818,10 @@
         <div class="swatch"><div class="swatch-color" style="background: #ffc66d;"></div><div class="swatch-info"><div class="swatch-name">KPI Warning</div><div class="swatch-hex">#ffc66d</div><div class="swatch-var">--color-kpi-warning</div></div></div>
       </div>
 
-      <div class="palette-group-label">Hintergründe &amp; Rahmen</div>
+      <div class="palette-group-label">Card-Oberflächen (Standard-Theme: Blau-Grau — austauschbar, nur diese zwei Werte; Alternativen: Beige #F3F1EC/#E4E0D6, Grün)</div>
       <div class="palette-grid">
-        <div class="swatch"><div class="swatch-color" style="background: #f5f9fc; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Card BG</div><div class="swatch-hex">#f5f9fc</div><div class="swatch-var">--bg-card</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #f0f7fb; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Box Default BG</div><div class="swatch-hex">#f0f7fb</div><div class="swatch-var">--bg-box-default</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #f2faf5; border: 1px solid #e0e8ef;"></div><div class="swatch-info"><div class="swatch-name">Box Positive BG</div><div class="swatch-hex">#f2faf5</div><div class="swatch-var">--bg-box-positive</div></div></div>
-        <div class="swatch"><div class="swatch-color" style="background: #d0e8f5;"></div><div class="swatch-info"><div class="swatch-name">Border Card</div><div class="swatch-hex">#d0e8f5</div><div class="swatch-var">--border-card</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #EDEFF2; border: 1px solid #DCE2E8;"></div><div class="swatch-info"><div class="swatch-name">Card</div><div class="swatch-hex">#EDEFF2</div><div class="swatch-var">--card</div></div></div>
+        <div class="swatch"><div class="swatch-color" style="background: #DCE2E8;"></div><div class="swatch-info"><div class="swatch-name">Card Border</div><div class="swatch-hex">#DCE2E8</div><div class="swatch-var">--card-border</div></div></div>
       </div>
     </div>
   </div>

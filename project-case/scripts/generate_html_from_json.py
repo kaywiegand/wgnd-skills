@@ -48,6 +48,25 @@ def load_slides_template(path: Path) -> str:
         return f.read()
 
 
+def render_head(chapter_label: str | None, title: str, subtitle: str) -> str:
+    """Kicker + h2 + subline, gemeinsam in .slide-head gewrappt.
+
+    .slide-head reserviert per CSS die feste 170px-Kopfzone (Styleguide v2 §2) —
+    Subline sitzt dadurch immer direkt unter dem Titel, unabhängig davon, wie
+    lang/kurz der Titel ist. Ohne diesen Wrapper hing die Subline-Position am
+    h2-min-height und driftete Richtung Content-Zone ab, statt am Titel zu kleben.
+    """
+    html = '<div class="slide-head">'
+    if chapter_label:
+        html += f'<span class="slide-kicker">{chapter_label}</span>'
+    if title:
+        html += f'<h2>{title}</h2>'
+    if subtitle:
+        html += f'<p class="subline">{subtitle}</p>'
+    html += '</div>'
+    return html
+
+
 def render_content_item(item: Dict[str, Any]) -> str:
     """Render a single content item to styleguide-conformant HTML.
 
@@ -66,6 +85,17 @@ def render_content_item(item: Dict[str, Any]) -> str:
             html += f'<div class="val">{fig.get("value", "")}</div>'
             html += f'<div class="lbl">{fig.get("label", "")}</div>'
             html += '</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "view_teaser":
+        # Title-Slide-Teaser für die aktuelle View — automatisch aus hub.view_cards[view]
+        # (siehe generate_json_from_slides.py), nicht von Hand gepflegt. Nur das Label als
+        # Mini-Überschrift (kein Badge/Tag-Text — Kay-Feedback 2026-07-13: "die brauchen
+        # wir nicht"), Description als Fließtext darunter.
+        html = '<div class="view-teaser">'
+        html += f'<div class="view-teaser-heading">{item.get("label", "")}</div>'
+        html += f'<p class="view-teaser-desc">{item.get("description", "")}</p>'
         html += '</div>'
         return html
 
@@ -99,9 +129,10 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return f'<blockquote class="statement">{item.get("text", "")}</blockquote>'
 
     elif item_type == "steps":
-        # Numbered process steps → .steps > .step (.sn/.sl/p)
-        html = '<div class="steps">'
-        for step in item.get("items", []):
+        # Numbered process steps → .steps > .step (.sn badge/.sl/p), 3/4/5-spaltig
+        items = item.get("items", [])
+        html = f'<div class="steps" style="grid-template-columns: repeat({len(items)}, 1fr)">'
+        for step in items:
             html += '<div class="step">'
             html += f'<div class="sn">{step.get("step", "")}</div>'
             html += f'<span class="sl">{step.get("label", "")}</span>'
@@ -113,17 +144,127 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return html
 
     elif item_type == "sequence":
-        # Chain of reasoning → .ev-chain > .ev-step, arrows between
+        # Chain of reasoning → E8 Timeline: .timeline > .tl-item (.tl-num/h4/p), Verbindungslinie per CSS
         items = item.get("items", [])
-        html = '<div class="ev-chain">'
+        html = '<div class="timeline">'
         for i, step in enumerate(items):
             climax = " climax" if (step.get("sentiment") == "positive" or i == len(items) - 1) else ""
-            html += f'<div class="ev-step{climax}">'
-            html += f'<div class="ev-circle">{i + 1}</div>'
-            html += f'<div class="ev-body"><strong>{step.get("label", "")}</strong>'
-            html += f'<span>{step.get("text", "")}</span></div></div>'
-            if i < len(items) - 1:
-                html += '<div class="ev-arrow">↓</div>'
+            html += f'<div class="tl-item{climax}">'
+            html += f'<div class="tl-num">{i + 1}</div>'
+            html += f'<div><h4>{step.get("label", "")}</h4><p>{step.get("text", "")}</p></div>'
+            html += '</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "rings":
+        # E4 Rings — Donut-Ringe, nur für echte Anteile, spaltenweise verteilt
+        items = item.get("items", [])
+        html = f'<div class="rings" style="grid-template-columns: repeat({len(items)}, 1fr);">'
+        for ring in items:
+            pct = ring.get("percent", 0)
+            html += '<div class="ring-wrap">'
+            html += f'<div class="ring" style="background: conic-gradient(var(--accent) {pct}%, var(--card) 0);">'
+            html += f'<div class="ring-inner">{ring.get("value", "")}</div></div>'
+            html += f'<div class="l">{ring.get("label", "")}</div>'
+            html += '</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "ring_value":
+        # E5 Ring + Value — Ring und Zahlen gleichwertig nebeneinander
+        items = item.get("items", [])
+        html = f'<div class="combo" style="grid-template-columns: repeat({len(items)}, 1fr);">'
+        for entry in items:
+            if entry.get("kind") == "ring":
+                pct = entry.get("percent", 0)
+                html += '<div class="ring-wrap">'
+                html += f'<div class="ring" style="background: conic-gradient(var(--accent) {pct}%, var(--card) 0);">'
+                html += f'<div class="ring-inner">{entry.get("value", "")}</div></div>'
+                html += f'<div class="l">{entry.get("label", "")}</div>'
+                html += '</div>'
+            else:
+                html += f'<div class="value-peer"><div class="v">{entry.get("value", "")}</div>'
+                html += f'<div class="l">{entry.get("label", "")}</div></div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "box_grid":
+        # E6 Box-Grid — neutrale Boxen (Linksrand) + hervorgehobene (voller Akzentrand).
+        # Items können plain strings oder {text, highlight} sein (wie process_arrows).
+        html = '<div class="box-grid">'
+        for box in item.get("items", []):
+            is_dict = isinstance(box, dict)
+            text = box.get("text", "") if is_dict else box
+            highlight = bool(box.get("highlight")) if is_dict else False
+            cls = "box-item highlight" if highlight else "box-item"
+            html += f'<div class="{cls}">{text}</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "h_timeline":
+        # E9 Horizontale Timeline — Meilenstein-Punkte auf einer Linie
+        items = item.get("items", [])
+        html = '<div class="h-timeline"><div class="ht-line-row">'
+        for _ in items:
+            html += '<div class="ht-dot-wrap"><div class="ht-dot"></div></div>'
+        html += '</div><div class="ht-labels">'
+        for entry in items:
+            html += f'<div class="ht-label"><h4>{entry.get("label", "")}</h4><p>{entry.get("text", "")}</p></div>'
+        html += '</div></div>'
+        return html
+
+    elif item_type == "funnel":
+        # E10 Funnel — echte Verengung/Filterung in Stufen, Breite linear gestaffelt
+        items = item.get("items", [])
+        n = len(items)
+        html = '<div class="funnel">'
+        for i, step in enumerate(items):
+            text = step.get("text", "") if isinstance(step, dict) else step
+            width = step.get("width_pct") if isinstance(step, dict) else None
+            if width is None:
+                width = 100 if n <= 1 else round(100 - i * (54 / (n - 1)))
+            html += f'<div class="fu-step" style="width: {width}%;">{text}</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "process_arrows":
+        # E11 Process Arrows — kompakt, ohne Erklärtext je Schritt. Items als dict mit
+        # current:true heben den jeweils aktuellen Schritt hervor (z.B. wenn dieselbe
+        # Pfeilkette auf mehreren Folgeslides wiederkehrt, je Slide anderer Schritt aktiv).
+        html = '<div class="arrows">'
+        for step in item.get("items", []):
+            is_dict = isinstance(step, dict)
+            text = step.get("text", "") if is_dict else step
+            current = bool(step.get("current")) if is_dict else False
+            cls = "arrow-chip current" if current else "arrow-chip"
+            html += f'<div class="{cls}">{text}</div>'
+        html += '</div>'
+        return html
+
+    elif item_type == "value_row":
+        # E12 Value-Row — große Zahlen, spaltenweise, optional Zitat als Fließtext darunter
+        items = item.get("items", [])
+        html = f'<div class="value-row" style="grid-template-columns: repeat({len(items)}, 1fr);">'
+        for val in items:
+            html += '<div class="value-item">'
+            html += f'<div class="v">{val.get("value", "")}</div>'
+            html += f'<div class="l">{val.get("label", "")}</div>'
+            detail = val.get("detail", "")
+            if detail:
+                html += f'<div class="d">{detail}</div>'
+            html += '</div>'
+        html += '</div>'
+        quote = item.get("quote", "")
+        if quote:
+            html += f'<div class="extra-text" style="text-align: center;"><p class="quote">{quote}</p></div>'
+        return html
+
+    elif item_type == "fact_grid":
+        # E13 Fact-Grid — dichtes Zahlen-Raster für Detail-/Anhang-Slides
+        html = '<div class="fact-grid">'
+        for fact in item.get("items", []):
+            html += f'<div class="fact-cell"><div class="v">{fact.get("value", "")}</div>'
+            html += f'<div class="l">{fact.get("label", "")}</div></div>'
         html += '</div>'
         return html
 
@@ -324,17 +465,40 @@ def render_slide(
     # (chapter_label) steht dagegen auf JEDER Slide des Kapitels.
     data_lbl = f' data-chapter-label="{chapter_label}"' if (is_chapter_start and chapter_label) else ""
 
-    if role == "title":
-        html = f'<section class="title-slide" data-background="#1a3a5c"{data_ch}{data_lbl}>'
-        html += f'<h1>{title}</h1>'
-        # Subtitle: join list with <br> into one .sub div
+    if role == "title" and slide.get("layout") == "L6":
+        # L6-Experiment v2 (Kay-Feedback 2026-07-13: Titel/Subline zurück in die
+        # normale Kopfzone, wie jede andere Slide — nur KPI-Row/Teaser/Start
+        # bleiben zweispaltig in der Content-Zone).
+        html = f'<section class="title-slide title-split" data-background="#3E4A5C"{data_ch}{data_lbl}>'
         if isinstance(subtitle, list):
             sub_text = "<br>".join(s for s in subtitle if s)
         else:
             sub_text = subtitle or ""
-        if sub_text:
-            html += f'<div class="sub">{sub_text}</div>'
-        # KPI row from figures
+        html += render_head(None, title, sub_text)
+        html += '<div class="content-zone"><div class="title-split-cols">'
+        html += '<div class="title-split-left">'
+        for item in content:
+            if item.get("type") == "view_teaser":
+                html += render_content_item(item)
+        html += '<div class="closing-links title-cta"><span class="c-link" onclick="Reveal.next()">Start</span></div>'
+        html += '</div>'
+        html += '<div class="title-split-right">'
+        for item in content:
+            if item.get("type") == "figures":
+                html += render_title_slide_content([item])
+        html += '</div>'
+        html += '</div></div>'
+        html += '</section>'
+    elif role == "title":
+        # Gleiche Kopfzone/Content-Zone-Struktur wie jede andere Slide (Kay: "quasi ganz
+        # gleich, nur farblich invertiert") — kein Sonderlayout mehr für Title-Slides.
+        html = f'<section class="title-slide" data-background="#3E4A5C"{data_ch}{data_lbl}>'
+        if isinstance(subtitle, list):
+            sub_text = "<br>".join(s for s in subtitle if s)
+        else:
+            sub_text = subtitle or ""
+        html += render_head(None, title, sub_text)
+        html += '<div class="content-zone">'
         html += render_title_slide_content(content)
         # Link-Reihe nur auf der End-Slide (title-repeat). Opening-Titel trägt KEIN github mehr
         # — der GitHub-Link lebt auf dem Closing (CTA).
@@ -343,28 +507,54 @@ def render_slide(
         else:
             # Opening-Titel: Start-CTA — exakt derselbe Baustein wie Closing (.closing-links > .c-link)
             html += '<div class="closing-links title-cta"><span class="c-link" onclick="Reveal.next()">Start</span></div>'
+        html += '</div>'
         html += '</section>'
     elif role == "closing":
-        # Closing / CTA — dunkel, Titel + kurze Botschaft + Link-Reihe (Übersicht/GitHub/…),
-        # bewusst KEINE KPI-Boxen.
-        html = f'<section class="closing" data-background="#1a3a5c"{data_ch}{data_lbl}>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
+        # Closing / CTA — dunkel, sonst gleiche Kopfzone/Content-Zone-Struktur wie überall.
+        # subtitle kann eine Liste sein (title_from_hub, siehe generate_json_from_slides.py) —
+        # gleiche <br>-Verkettung wie beim Opening-Titel.
+        html = f'<section class="closing" data-background="#3E4A5C"{data_ch}{data_lbl}>'
+        if isinstance(subtitle, list):
+            sub_text = "<br>".join(s for s in subtitle if s)
+        else:
+            sub_text = subtitle or ""
+        html += render_head(None, title, sub_text)
+        html += '<div class="content-zone">'
         for item in content:
             html += render_content_item(item)
         html += render_closing_links(github, closing_links)
+        html += '</div>'
         html += '</section>'
+    elif len(content) == 1 and content[0].get("type") == "agenda" and slide.get("layout") == "L1":
+        # Agenda-Variante L1 — Kopfzone mit Kicker/Titel/Subline wie jede Standard-Slide,
+        # Liste vertikal UND horizontal zentriert in der Content-Zone (Kay-Entscheidung
+        # 2026-07-13, nach Vergleich mit der L6-Variante).
+        agenda = content[0]
+        html = f'<section{data_ch}{data_lbl}>'
+        html += render_head(chapter_label, title, subtitle)
+        html += '<div class="content-zone"><div class="agenda-list agenda-list-center">'
+        for i, entry in enumerate(agenda.get("items", [])):
+            if agenda.get("grouped"):
+                html += f'<div class="ag-item"><span class="ag-num">{i + 1}</span><span class="ag-label">{entry.get("section", "")}</span></div>'
+                for sub in entry.get("slides", []):
+                    html += f'<div class="ag-sub">{sub}</div>'
+            else:
+                html += f'<div class="ag-item"><span class="ag-num">{i + 1}</span><span class="ag-label">{entry}</span></div>'
+        html += '</div></div></section>'
     elif len(content) == 1 and content[0].get("type") == "agenda":
-        # Table-of-contents slide → two columns: title block left, chapter list right
+        # Table-of-contents slide → two columns: title block left, chapter list right.
+        # layout: L6 (Versuch, zur Auswahl) ergänzt Kicker+Subline im Kopfblock — Default
+        # bleibt bewusst ohne Kicker/Subline (Kay), nur der Titel.
         agenda = content[0]
         html = f'<section{data_ch}{data_lbl}>'
         html += '<div class="agenda-cols">'
         html += '<div class="agenda-head">'
-        # Inhalt-Slide: bewusst ohne Kicker + ohne Subline (Kay), nur der Titel
+        if slide.get("layout") == "L6" and chapter_label:
+            html += f'<span class="slide-kicker">{chapter_label}</span>'
         if title:
             html += f'<h2>{title}</h2>'
+        if slide.get("layout") == "L6" and subtitle:
+            html += f'<p class="subline">{subtitle}</p>'
         html += '</div>'
         html += '<div class="agenda-list">'
         for i, entry in enumerate(agenda.get("items", [])):
@@ -378,32 +568,46 @@ def render_slide(
     elif [c.get("type") for c in content] == ["statement", "scenarios"]:
         # Title row on top, then two columns: text left, KPI/scenario boxes right
         html = f'<section{data_ch}{data_lbl}>'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
-        html += '<div class="cols">'
+        html += render_head(chapter_label, title, subtitle)
+        html += '<div class="content-zone"><div class="cols">'
         html += f'<div class="w45">{render_content_item(content[0])}</div>'
         html += f'<div class="w55">{render_content_item(content[1])}</div>'
-        html += '</div></section>'
-    elif content and all(c.get("type") == "statement" for c in content):
+        html += '</div></div></section>'
+    elif content and all(c.get("type") == "statement" for c in content) and slide.get("layout") != "callout":
         # Reine Text-Slides: 1 Aussage → zentrierte Lead (medium), 2–5 → zweispaltig light (randlos)
+        # layout: callout fällt bewusst durch in die generische else-Branch unten (jede
+        # Aussage einzeln als gestapeltes, zentriertes blockquote.statement — L1, volle Breite).
         html = f'<section{data_ch}{data_lbl}>'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
-        if len(content) == 1:
+        html += render_head(chapter_label, title, subtitle)
+        html += '<div class="content-zone">'
+        if len(content) == 1 and content[0].get("layout") == "lead_copy":
+            # E17: große These oben, erklärender Absatz darunter, zentriert als ein Block
+            html += '<div class="text-lead-copy">'
+            html += f'<p class="lead">{content[0].get("text", "")}</p>'
+            html += f'<p class="copy">{content[0].get("copy", "")}</p>'
+            html += '</div>'
+        elif len(content) == 1:
+            # E15: ein Gedanke, zentriert, max. 3 Zeilen
             html += f'<div class="statement-lead">{content[0].get("text", "")}</div>'
+        elif any(c.get("heading") for c in content):
+            # E14: Copy 2-spaltig mit Headline je Spalte, Gap 72px
+            html += '<div class="text-cols-head">'
+            for c in content:
+                html += f'<div><h4>{c.get("heading", "")}</h4><p>{c.get("text", "")}</p></div>'
+            html += '</div>'
+        elif content[0].get("layout") == "stack":
+            # E16: normaler Fließtext, Absätze untereinander
+            html += '<div class="text-stack">'
+            for c in content:
+                html += f'<p>{c.get("text", "")}</p>'
+            html += '</div>'
         else:
+            # Default (bestehend): 2-5 Aussagen zweispaltig light, randlos
             html += '<div class="statement-cols">'
             for c in content:
                 html += f'<p class="statement-col">{c.get("text", "")}</p>'
             html += '</div>'
+        html += '</div>'
         html += '</section>'
     elif (len(content) == 1 and content[0].get("type") == "chart_refs"
           and content[0].get("layout") == "image_right"):
@@ -413,12 +617,7 @@ def render_slide(
         html = f'<section{data_ch}{data_lbl}>'
         html += '<div class="chart-cols">'
         html += '<div class="chart-cols-head">'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
+        html += render_head(chapter_label, title, subtitle)
         if chart.get("caption"):
             html += f'<p class="chart-cols-caption">{chart.get("caption")}</p>'
         html += '</div>'
@@ -426,14 +625,13 @@ def render_slide(
         html += '</div></section>'
     else:
         html = f'<section{data_ch}{data_lbl}>'
-        if chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if subtitle:
-            html += f'<p class="subline">{subtitle}</p>'
+        html += render_head(chapter_label, title, subtitle)
+        # Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal
+        # in der Inhaltszone (Styleguide v2 Prinzip 3) — .content-zone übernimmt das per CSS.
+        html += '<div class="content-zone">'
         for item in content:
             html += render_content_item(item)
+        html += '</div>'
         html += '</section>'
 
     return html
