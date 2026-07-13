@@ -458,10 +458,35 @@ def render_slide(
     # (chapter_label) steht dagegen auf JEDER Slide des Kapitels.
     data_lbl = f' data-chapter-label="{chapter_label}"' if (is_chapter_start and chapter_label) else ""
 
-    if role == "title":
+    if role == "title" and slide.get("layout") == "L6":
+        # L6-Experiment (Versuch, aktuell nur eine Slide in zh-tram-data/storyview
+        # per layout:-Flag) — eigenständiges Markup, siehe Kommentar bei .title-split
+        # in slides.css. Kein render_head()/.slide-head (falsche Kopfzonen-Semantik hier).
+        html = f'<section class="title-slide title-split" data-background="#3E4A5C"{data_ch}{data_lbl}>'
+        if isinstance(subtitle, list):
+            sub_text = "<br>".join(s for s in subtitle if s)
+        else:
+            sub_text = subtitle or ""
+        html += '<div class="title-split-left">'
+        if title:
+            html += f'<h2>{title}</h2>'
+        if sub_text:
+            html += f'<p class="subline">{sub_text}</p>'
+        for item in content:
+            if item.get("type") == "view_teaser":
+                html += render_content_item(item)
+        html += '<div class="closing-links title-cta"><span class="c-link" onclick="Reveal.next()">Start</span></div>'
+        html += '</div>'
+        html += '<div class="title-split-right">'
+        for item in content:
+            if item.get("type") == "figures":
+                html += render_title_slide_content([item])
+        html += '</div>'
+        html += '</section>'
+    elif role == "title":
         # Gleiche Kopfzone/Content-Zone-Struktur wie jede andere Slide (Kay: "quasi ganz
         # gleich, nur farblich invertiert") — kein Sonderlayout mehr für Title-Slides.
-        html = f'<section class="title-slide" data-background="#1a3a5c"{data_ch}{data_lbl}>'
+        html = f'<section class="title-slide" data-background="#3E4A5C"{data_ch}{data_lbl}>'
         if isinstance(subtitle, list):
             sub_text = "<br>".join(s for s in subtitle if s)
         else:
@@ -480,23 +505,49 @@ def render_slide(
         html += '</section>'
     elif role == "closing":
         # Closing / CTA — dunkel, sonst gleiche Kopfzone/Content-Zone-Struktur wie überall.
-        html = f'<section class="closing" data-background="#1a3a5c"{data_ch}{data_lbl}>'
-        html += render_head(None, title, subtitle if isinstance(subtitle, str) else "")
+        # subtitle kann eine Liste sein (title_from_hub, siehe generate_json_from_slides.py) —
+        # gleiche <br>-Verkettung wie beim Opening-Titel.
+        html = f'<section class="closing" data-background="#3E4A5C"{data_ch}{data_lbl}>'
+        if isinstance(subtitle, list):
+            sub_text = "<br>".join(s for s in subtitle if s)
+        else:
+            sub_text = subtitle or ""
+        html += render_head(None, title, sub_text)
         html += '<div class="content-zone">'
         for item in content:
             html += render_content_item(item)
         html += render_closing_links(github, closing_links)
         html += '</div>'
         html += '</section>'
+    elif len(content) == 1 and content[0].get("type") == "agenda" and slide.get("layout") == "L1":
+        # Agenda-Variante L1 (Versuch, zur Auswahl) — Kopfzone mit Kicker/Titel/Subline
+        # wie jede Standard-Slide, Liste zentriert in der Content-Zone statt Seitenspalte.
+        agenda = content[0]
+        html = f'<section{data_ch}{data_lbl}>'
+        html += render_head(chapter_label, title, subtitle)
+        html += '<div class="content-zone"><div class="agenda-list">'
+        for i, entry in enumerate(agenda.get("items", [])):
+            if agenda.get("grouped"):
+                html += f'<div class="ag-item"><span class="ag-num">{i + 1}</span><span class="ag-label">{entry.get("section", "")}</span></div>'
+                for sub in entry.get("slides", []):
+                    html += f'<div class="ag-sub">{sub}</div>'
+            else:
+                html += f'<div class="ag-item"><span class="ag-num">{i + 1}</span><span class="ag-label">{entry}</span></div>'
+        html += '</div></div></section>'
     elif len(content) == 1 and content[0].get("type") == "agenda":
-        # Table-of-contents slide → two columns: title block left, chapter list right
+        # Table-of-contents slide → two columns: title block left, chapter list right.
+        # layout: L6 (Versuch, zur Auswahl) ergänzt Kicker+Subline im Kopfblock — Default
+        # bleibt bewusst ohne Kicker/Subline (Kay), nur der Titel.
         agenda = content[0]
         html = f'<section{data_ch}{data_lbl}>'
         html += '<div class="agenda-cols">'
         html += '<div class="agenda-head">'
-        # Inhalt-Slide: bewusst ohne Kicker + ohne Subline (Kay), nur der Titel
+        if slide.get("layout") == "L6" and chapter_label:
+            html += f'<span class="slide-kicker">{chapter_label}</span>'
         if title:
             html += f'<h2>{title}</h2>'
+        if slide.get("layout") == "L6" and subtitle:
+            html += f'<p class="subline">{subtitle}</p>'
         html += '</div>'
         html += '<div class="agenda-list">'
         for i, entry in enumerate(agenda.get("items", [])):
@@ -515,8 +566,10 @@ def render_slide(
         html += f'<div class="w45">{render_content_item(content[0])}</div>'
         html += f'<div class="w55">{render_content_item(content[1])}</div>'
         html += '</div></div></section>'
-    elif content and all(c.get("type") == "statement" for c in content):
+    elif content and all(c.get("type") == "statement" for c in content) and slide.get("layout") != "callout":
         # Reine Text-Slides: 1 Aussage → zentrierte Lead (medium), 2–5 → zweispaltig light (randlos)
+        # layout: callout fällt bewusst durch in die generische else-Branch unten (jede
+        # Aussage einzeln als gestapeltes, zentriertes blockquote.statement — L1, volle Breite).
         html = f'<section{data_ch}{data_lbl}>'
         html += render_head(chapter_label, title, subtitle)
         html += '<div class="content-zone">'

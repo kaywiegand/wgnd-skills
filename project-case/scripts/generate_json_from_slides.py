@@ -70,6 +70,19 @@ def build_view_json(registry: dict, view: str, chapter_ids: list[str]) -> dict:
                         "description": view_card.get("description", ""),
                     })
                     rendered["content"] = content
+            # Closing mit title_from_hub: true (Opt-in, siehe slides.yaml) — Titel/Subline
+            # exakt wie beim Opening aus dem hub-Block, Statement-Text aus hub.footer_tagline
+            # statt Hand-Text. NUR wenn das Flag gesetzt ist — sonst (z.B. zh-tram-flow) bleibt
+            # der Closing bewusst eigenständig formuliert (Kay-Feedback 2026-07-13: nicht jeder
+            # Closing soll den Projektnamen wiederholen).
+            if rendered.get("role") == "closing" and rendered.get("title_from_hub") and hub:
+                rendered["title"] = meta.get("project", rendered.get("title", ""))
+                period = meta.get("period", "")
+                subtitle_line2 = f'{hub.get("subtitle", "")} | {period}' if period else hub.get("subtitle", "")
+                rendered["subtitle"] = [hub.get("tagline", ""), subtitle_line2]
+                footer_tagline = hub.get("footer_tagline", "")
+                if footer_tagline:
+                    rendered["content"] = [{"type": "statement", "sentiment": "neutral", "text": footer_tagline}]
             rendered_slides.append(rendered)
 
         chapters_out.append({"nav_label": nav_label, "slides": rendered_slides})
