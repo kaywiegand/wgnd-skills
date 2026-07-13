@@ -459,19 +459,17 @@ def render_slide(
     data_lbl = f' data-chapter-label="{chapter_label}"' if (is_chapter_start and chapter_label) else ""
 
     if role == "title" and slide.get("layout") == "L6":
-        # L6-Experiment (Versuch, aktuell nur eine Slide in zh-tram-data/storyview
-        # per layout:-Flag) — eigenständiges Markup, siehe Kommentar bei .title-split
-        # in slides.css. Kein render_head()/.slide-head (falsche Kopfzonen-Semantik hier).
+        # L6-Experiment v2 (Kay-Feedback 2026-07-13: Titel/Subline zurück in die
+        # normale Kopfzone, wie jede andere Slide — nur KPI-Row/Teaser/Start
+        # bleiben zweispaltig in der Content-Zone).
         html = f'<section class="title-slide title-split" data-background="#3E4A5C"{data_ch}{data_lbl}>'
         if isinstance(subtitle, list):
             sub_text = "<br>".join(s for s in subtitle if s)
         else:
             sub_text = subtitle or ""
+        html += render_head(None, title, sub_text)
+        html += '<div class="content-zone"><div class="title-split-cols">'
         html += '<div class="title-split-left">'
-        if title:
-            html += f'<h2>{title}</h2>'
-        if sub_text:
-            html += f'<p class="subline">{sub_text}</p>'
         for item in content:
             if item.get("type") == "view_teaser":
                 html += render_content_item(item)
@@ -482,6 +480,7 @@ def render_slide(
             if item.get("type") == "figures":
                 html += render_title_slide_content([item])
         html += '</div>'
+        html += '</div></div>'
         html += '</section>'
     elif role == "title":
         # Gleiche Kopfzone/Content-Zone-Struktur wie jede andere Slide (Kay: "quasi ganz
