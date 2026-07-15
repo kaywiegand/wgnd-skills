@@ -408,17 +408,18 @@
           <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
           <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
         </div>
-        <div class="view-teaser">
+        <div class="view-teaser" style="text-align: left;">
           <div class="view-teaser-heading">Label für Badge</div>
-          <p class="view-teaser-desc">View-Teaser: Beschreibung der aktuellen View — kommt automatisch aus hub.view_cards[view] in slides.yaml (generate_json_from_slides.py), nicht von Hand gepflegt.</p>
+          <p class="view-teaser-desc" style="margin: 0;">View-Teaser: Beschreibung der aktuellen View — kommt automatisch aus hub.view_cards[view] in slides.yaml (generate_json_from_slides.py), nicht von Hand gepflegt.</p>
         </div>
         <div class="closing-links title-cta"><span class="c-link">Start</span></div>
       </div>
     </section></div></div></div></div>
+    <div class="sr-bar" style="border-top:1px solid #e3edf4;border-bottom:none;">Orange Headline (<code>.view-teaser-heading</code>) und Copy (<code>.view-teaser-desc</code>) stehen linksbündig zueinander — <code>.view-teaser</code> zentriert standardmäßig, hier per <code>text-align:left</code> überschrieben (Kay-Feedback 2026-07-15).</div>
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>2b · Title-Slide (L6-Variante)</b> <code>layout: L6</code> — Titel/Subline bleiben in der Kopfzone, aber Teaser+Start und KPI-Row stehen zweispaltig (4+8) statt zentriert untereinander. Opt-in pro Slide, aktuell in Produktion (zh-tram-data, alle 3 Views).</div>
+    <div class="sr-bar"><b>2b · Title-Slide (L6-Variante) — aktueller Standard</b> <code>layout: L6</code> — Titel/Subline bleiben in der Kopfzone, aber Teaser+Start und KPI-Row stehen zweispaltig (4+8) statt zentriert untereinander. Opt-in pro Slide, aktuell in Produktion (zh-tram-data, alle 3 Views).</div>
     <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="title-slide title-split present">
       <div class="slide-head">
         <h2>Projekt-Titel</h2>
@@ -445,24 +446,33 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>3 · Closing-Slide</b> <code>gleiches Skelett, dunkel · h2 auf 1.75em · beliebiger Content-Typ · .closing-links</code> — strukturell identisch zu Title, nur andere Inhalte</div>
+    <div class="sr-bar"><b>3 · Closing-Slide</b> <code>role: closing, layout: split · h2/subline ≙ Title-Slide-Typografie · .closing-split (.closing-split-left/-right) · E17 (.text-lead-copy) + Teaser-Absatz (.sw-bold) · .closing-links-col</code> — aktuelle Version aus zh-tram-flow: Text + hervorgehobener Primary-Link links (2/3), GitHub/Übersicht-Links gestapelt rechts (1/3), gleiche Breite via <code>width: fit-content</code></div>
     <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="closing present">
       <div class="slide-head">
-        <h2>Was vorhersagbar ist, ist steuerbar.</h2>
-        <p class="subline">Der Bogen zurück zur Ausgangsfrage.</p>
+        <h2>Projekt-Titel</h2>
+        <p class="subline">Tagline-Zeile<br>Zeitraum · Umfang · Stack</p>
       </div>
-      <div class="content-zone">
-        <div class="closing-links">
-          <a href="#" class="c-link">GitHub-Repo</a>
-          <a href="#" class="c-link">Dashboard-Prototype</a>
-          <a href="#" class="c-link">Netzwerk-Karte</a>
+      <div class="content-zone"><div class="closing-split">
+        <div class="closing-split-left">
+          <div class="text-lead-copy">
+            <p class="lead">Die große These, zentriert zurück auf die Ausgangsfrage.</p>
+            <p class="copy">Erklärender Absatz — was das Projekt zeigt, was der Dashboard-Link ermöglicht.<br><br><span class="sw-bold">Teaser A · Teaser B · Teaser C</span></p>
+          </div>
+          <div class="closing-links"><a href="#" class="c-link">Primary-Link (z. B. Dashboard)</a></div>
         </div>
-      </div>
+        <div class="closing-split-right">
+          <div class="closing-links closing-links-col">
+            <a href="#" class="c-link">Zur Übersicht</a>
+            <a href="#" class="c-link">GitHub-Repo</a>
+            <a href="#" class="c-link">Weiterer Link</a>
+          </div>
+        </div>
+      </div></div>
     </section></div></div></div></div>
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Agenda · L1 (Standard)</b> <code>render_head() + .agenda-list.agenda-list-center</code> — Content-Typ <code>agenda</code>, <code>layout: L1</code>. Kopfzone wie jede Slide, Liste horizontal+vertikal zentriert. In Produktion die gewählte Variante für alle 3 Views (zh-tram-data).</div>
+    <div class="sr-bar"><b>Agenda · L1 (Alternative)</b> <code>render_head() + .agenda-list.agenda-list-center</code> — Content-Typ <code>agenda</code>, <code>layout: L1</code>. Kopfzone wie jede Slide, Liste horizontal+vertikal zentriert.</div>
     <div class="sr-stage"><div class="reveal">
       <div class="slide-head">
         <span class="slide-kicker">Agenda</span>
@@ -481,7 +491,7 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Agenda · L6 (Alternative)</b> <code>.agenda-cols · .agenda-head · .agenda-list</code> — Content-Typ <code>agenda</code>, <code>layout: L6</code>. Titelblock links, Liste rechts — kompakter, aber kein geteiltes Kopfzonen-Skelett.</div>
+    <div class="sr-bar"><b>Agenda · L6 (Standard)</b> <code>.agenda-cols · .agenda-head · .agenda-list</code> — Content-Typ <code>agenda</code>, <code>layout: L6</code>. Kicker/Titel/Subline links neben der Liste, Titelzone bleibt leer (kein geteiltes Kopfzonen-Skelett). Aktuell in Produktion für alle 3 Views (zh-tram-flow).</div>
     <div class="sr-stage"><div class="reveal">
       <div class="agenda-cols">
         <div class="agenda-head">
@@ -548,10 +558,34 @@
   </div>
 
   <div class="sr-demo">
+    <div class="sr-bar"><b>Statement-Callout · 3 Gewichte</b> <code>.sw-bold · (Standard, kein Zusatz) · .sw-thin</code> — Modifier-Klasse direkt auf <code>blockquote.statement</code> (Kay-Feedback 2026-07-15). Normal (400) bleibt der Standard ohne Zusatzklasse.</div>
+    <div class="sr-stage"><div class="reveal">
+      <blockquote class="statement sw-bold">Bold — font-weight 600, gleiches Gewicht wie die Headline in E17 (.lead).</blockquote>
+      <blockquote class="statement">Normal — der Standard für blockquote.statement, font-weight 400, keine Zusatzklasse.</blockquote>
+      <blockquote class="statement sw-thin">Thin — font-weight 100, zurückhaltender Akzent.</blockquote>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
     <div class="sr-bar"><b>Statement-Callout · gestapelt</b> <code>layout: callout</code> (Slide-Flag) — mehrere <code>statement</code>-Items fallen damit aus der zweispaltigen Fließtext-Darstellung (E14/E16) heraus und werden stattdessen als volle Breite, zentriert, untereinander gerendert. Enger Abstand zwischen gleichartigen Callouts (0.7em) statt der 3em-Regel unten.</div>
     <div class="sr-stage"><div class="reveal">
       <blockquote class="statement">Erste Aussage — z. B. der Ausgangspunkt oder Kontext.</blockquote>
       <blockquote class="statement">Zweite Aussage — die Konsequenz oder Zuspitzung daraus.</blockquote>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Statement-Callout · gestapelt, gemischte Dicke</b> <code>layout: callout + .sw-thin/.sw-bold</code> — zwei Aussagen mit unterschiedlichem Gewicht als bewusster Akzent: Kontext dünn gesetzt, Kernaussage fett.</div>
+    <div class="sr-stage"><div class="reveal">
+      <blockquote class="statement sw-thin">Ausgangslage oder Kontext — zurückhaltend gesetzt, führt zur Kernaussage hin.</blockquote>
+      <blockquote class="statement sw-bold">Die Kernaussage — fett hervorgehoben, das soll hängen bleiben.</blockquote>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>E15 · Statement, gemischte Gewichte in einem Block</b> <code>.statement-lead · .sw-normal</code> (inline <code>&lt;span&gt;</code> im text-Feld) — ein Gedanke in drei Teilen: normale Einleitung, fette Kernaussage (Standardgewicht von .statement-lead, kein Zusatz nötig), normale Konsequenz. Absatz (großer Abstand) vs. Umbruch (enger Abstand) per <code>&lt;br&gt;&lt;br&gt;</code> bzw. <code>&lt;br&gt;</code> im text-Feld steuerbar.</div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="statement-lead"><span class="sw-normal">Normale Einleitung, ein Satz zum Kontext.</span><br><br>Die fette Kernaussage in der Mitte.<br><span class="sw-normal">Und die normale Konsequenz zum Schluss.</span></div>
     </div></div>
   </div>
 

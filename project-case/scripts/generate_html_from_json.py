@@ -114,18 +114,33 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return html
 
     elif item_type == "contrasts":
-        # Myth-busting: assumption (✗) → finding (✓), marks via CSS ::before
+        # Myth-busting: assumption (✗) → finding (✓), marks via CSS ::before.
+        # Optionales `topic` pro Item gibt den Labels einen Kurztitel ("Annahme: Stadtzentrum"
+        # statt nur "Annahme") — rückwärtskompatibel, ohne `topic` bleibt es beim generischen Label.
         html = '<div class="myth-rows">'
         for c in item.get("items", []):
+            topic = c.get("topic", "")
+            assume_label = f"Annahme: {topic}" if topic else "Annahme"
+            finding_label = f"Befund: {topic}" if topic else "Befund"
             html += '<div class="myth-row-pair">'
-            html += f'<div class="myth-assume"><span class="myth-label">Annahme</span><div class="myth-text">{c.get("assumption", "")}</div></div>'
+            html += f'<div class="myth-assume"><span class="myth-label">{assume_label}</span><div class="myth-text">{c.get("assumption", "")}</div></div>'
             html += '<div class="myth-arrow">→</div>'
-            html += f'<div class="myth-finding"><span class="myth-label">Befund</span><div class="myth-text">{c.get("finding", "")}</div></div>'
+            html += f'<div class="myth-finding"><span class="myth-label">{finding_label}</span><div class="myth-text">{c.get("finding", "")}</div></div>'
             html += '</div>'
         html += '</div>'
         return html
 
     elif item_type == "statement":
+        if item.get("layout") == "lead_copy":
+            # E17 auch kombinierbar mit anderen Content-Typen auf derselben Slide (nicht nur im
+            # reinen "alle Items sind statement"-Sonderfall in render_slide). Optionales
+            # align: left (Kay-Feedback 2026-07-14) statt der zentrierten Standarddarstellung.
+            align_cls = " text-lead-copy-left" if item.get("align") == "left" else ""
+            html = f'<div class="text-lead-copy{align_cls}">'
+            html += f'<p class="lead">{item.get("text", "")}</p>'
+            html += f'<p class="copy">{item.get("copy", "")}</p>'
+            html += '</div>'
+            return html
         return f'<blockquote class="statement">{item.get("text", "")}</blockquote>'
 
     elif item_type == "steps":
@@ -145,11 +160,22 @@ def render_content_item(item: Dict[str, Any]) -> str:
 
     elif item_type == "sequence":
         # Chain of reasoning → E8 Timeline: .timeline > .tl-item (.tl-num/h4/p), Verbindungslinie per CSS
+        # sentiment steuert die Farbe des letzten/hervorgehobenen Schritts: "positive" → grün (climax,
+        # bisheriges Standardverhalten), "negative"/"warning" → rot/amber. Ohne explizites sentiment
+        # bekommt das letzte Element weiterhin automatisch "climax" (rückwärtskompatibel).
         items = item.get("items", [])
         html = '<div class="timeline">'
         for i, step in enumerate(items):
-            climax = " climax" if (step.get("sentiment") == "positive" or i == len(items) - 1) else ""
-            html += f'<div class="tl-item{climax}">'
+            sentiment = step.get("sentiment")
+            if sentiment == "positive":
+                cls = " climax"
+            elif sentiment in ("negative", "warning"):
+                cls = f" {sentiment}"
+            elif i == len(items) - 1:
+                cls = " climax"
+            else:
+                cls = ""
+            html += f'<div class="tl-item{cls}">'
             html += f'<div class="tl-num">{i + 1}</div>'
             html += f'<div><h4>{step.get("label", "")}</h4><p>{step.get("text", "")}</p></div>'
             html += '</div>'
@@ -273,9 +299,13 @@ def render_content_item(item: Dict[str, Any]) -> str:
         #   "columns" → N Spalten nebeneinander (optional numbered: 1/2/3 vor dem Label)
         #   "text"    → Prosa-Variante (Label + Punkte als Fließtext, zweispaltiger Flow)
         #   (default) → bisheriges 2-Spalten-Raster (Rückwärtskompatibilität)
+        # Optionales `heading` (Gruppen-Überschrift über der ganzen Sections-Reihe, nicht pro
+        # Karte) wrappt das Ergebnis in .sections-block, damit die 3em-Abstandskonvention
+        # (siehe .text-lead-copy + .sections-block) greifen kann.
         items = item.get("items", [])
         layout = item.get("layout", "")
         numbered = item.get("numbered", False)
+        heading = item.get("heading", "")
 
         if layout == "text":
             html = '<div class="sec-text">'
@@ -285,19 +315,34 @@ def render_content_item(item: Dict[str, Any]) -> str:
                 html += " ".join(sec.get("points", []))
                 html += '</div>'
             html += '</div>'
-            return html
-
-        if layout == "columns":
-            grid_style = f' style="grid-template-columns: repeat({len(items)}, 1fr)"'
         else:
-            grid_style = ""
-        html = f'<div class="pf-grid"{grid_style}>'
-        for i, sec in enumerate(items, 1):
-            num = f'<span class="pf-num">{i}</span>' if numbered else ""
-            html += f'<div class="pf-card"><div class="pf-title">{num}{sec.get("label", "")}</div><ul>'
-            for point in sec.get("points", []):
-                html += f'<li>{point}</li>'
-            html += '</ul></div>'
+            if layout == "columns":
+                grid_style = f' style="grid-template-columns: repeat({len(items)}, 1fr)"'
+            else:
+                grid_style = ""
+            html = f'<div class="pf-grid"{grid_style}>'
+            for i, sec in enumerate(items, 1):
+                num = f'<span class="pf-num">{i}</span>' if numbered else ""
+                # Optionales highlight: true (Kay-Feedback 2026-07-14) hebt eine einzelne Card
+                # mit sanftem Akzent-Hintergrund hervor, z.B. neue/wichtige Features.
+                card_cls = "pf-card highlight" if sec.get("highlight") else "pf-card"
+                html += f'<div class="{card_cls}"><div class="pf-title">{num}{sec.get("label", "")}</div><ul>'
+                for point in sec.get("points", []):
+                    html += f'<li>{point}</li>'
+                html += '</ul></div>'
+            html += '</div>'
+
+        if heading:
+            html = f'<div class="sections-block"><h4 class="content-heading">{heading}</h4>{html}</div>'
+        return html
+
+    elif item_type == "text_columns":
+        # E14 Copy, 2-spaltig mit Headline — als eigenständiger Content-Typ (statt nur als
+        # Spezialfall, wenn ALLE Content-Items der Slide "statement" sind) kombinierbar mit
+        # anderen Blöcken auf derselben Slide (z.B. sections-Cards oben, Erklärtext darunter).
+        html = '<div class="text-cols-head">'
+        for col in item.get("items", []):
+            html += f'<div><h4>{col.get("heading", "")}</h4><p>{col.get("text", "")}</p></div>'
         html += '</div>'
         return html
 
@@ -337,10 +382,14 @@ def render_content_item(item: Dict[str, Any]) -> str:
             html += '<div class="kv-row">'
             html += f'<div class="{cls}"><div class="fv">{secs} s</div>'
             html += '<div class="fl">Prognose</div></div>'
-            text = f'<strong>{sc.get("conditions", "")}</strong>'
+            # Titel (conditions) und Copy (interpretation) untereinander statt inline mit
+            # "—" verkettet (Kay-Feedback 2026-07-14) — .kv-text-stack bricht bewusst aus dem
+            # flex/align-items:center des äusseren .kv-text aus, damit die zwei Zeilen stapeln.
+            text = f'<div class="kv-text-stack"><div class="kv-title">{sc.get("conditions", "")}</div>'
             interp = sc.get("interpretation")
             if interp:
-                text += f' — {interp}'
+                text += f'<div class="kv-copy">{interp}</div>'
+            text += '</div>'
             html += f'<div class="kv-text">{text}</div>'
             html += '</div>'
         html += '</div>'
@@ -428,19 +477,36 @@ def render_title_slide_content(content: List[Any]) -> str:
     return html
 
 
-def render_closing_links(github: str, extra_links: List[Dict[str, str]] | None = None) -> str:
+def render_closing_links(
+    github: str,
+    extra_links: List[Dict[str, str]] | None = None,
+    primary_link: Dict[str, str] | None = None,
+    stacked: bool = False,
+) -> str:
     """Render the link row for the end-slide: Zur Übersicht + GitHub + projekt-spezifische Extras.
 
-    extra_links kommen aus slides.yaml hub.quick_links (via meta.closing_links) —
-    kein Hardcoding pro Projekt mehr."""
-    links = [("Zur Übersicht", "index.html")]
+    extra_links kommen aus slides.yaml hub.quick_links (via meta.closing_links) — kein Hardcoding
+    pro Projekt mehr. "Zur Übersicht" bleibt _self (interne Hub-Navigation), alles andere ist
+    standardmässig _blank (externe/andere Seiten — sonst verliert man beim Klick den Reveal.js-
+    Zustand der Präsentation), pro Link über `target` überschreibbar.
+    primary_link (optional, z.B. Dashboard) rendert als eigener Link vor der Reihe, GLEICHER Stil
+    wie alle anderen (Kay-Feedback 2026-07-14: nur Position ändert sich, nicht Größe/Look — die
+    Hervorhebung kommt aus der Platzierung im Layout, nicht aus einer eigenen CSS-Klasse).
+    stacked=True rendert die Reihe als Spalte (für zweispaltige Closing-Layouts, siehe
+    render_slide role=="closing", layout: split).
+    """
+    links = [("Zur Übersicht", "index.html", "_self")]
     if github:
-        links.append(("GitHub-Repo", f"https://github.com/{github}"))
+        links.append(("GitHub-Repo", f"https://github.com/{github}", "_blank"))
     for lk in (extra_links or []):
-        links.append((lk.get("label", ""), lk.get("href", "")))
-    html = '<div class="closing-links">'
-    for label, href in links:
-        html += f'<a href="{href}" class="c-link">{label}</a>'
+        links.append((lk.get("label", ""), lk.get("href", ""), lk.get("target", "_blank")))
+    if primary_link:
+        links.insert(0, (primary_link.get("label", ""), primary_link.get("href", ""),
+                         primary_link.get("target", "_blank")))
+    cls = "closing-links closing-links-col" if stacked else "closing-links"
+    html = f'<div class="{cls}">'
+    for label, href, target in links:
+        html += f'<a href="{href}" class="c-link" target="{target}">{label}</a>'
     html += '</div>'
     return html
 
@@ -449,6 +515,7 @@ def render_slide(
     slide: Dict[str, Any],
     chapter_idx: int = 0,
     chapter_label: str | None = None,
+    chapter_tick_label: str | None = None,
     github: str = "",
     is_last_chapter: bool = False,
     closing_links: List[Dict[str, str]] | None = None,
@@ -459,11 +526,33 @@ def render_slide(
     title = slide.get("title", "")
     subtitle = slide.get("subtitle", "")
     content = slide.get("content", [])
+    # Optionales Slide-Feld `kicker` überschreibt den sonst automatisch gezeigten
+    # Kapitel-Namen nur für diese eine Slide (z.B. Agenda-Slide im Kapitel "Einstieg",
+    # die "Agenda" statt "Einstieg" als Kicker zeigen soll).
+    effective_label = slide.get("kicker") or chapter_label
 
     data_ch = f' data-chapter="{chapter_idx}"'
-    # data-chapter-label markiert nur den KAPITEL-START (für die Navi). Der sichtbare Kicker
-    # (chapter_label) steht dagegen auf JEDER Slide des Kapitels.
-    data_lbl = f' data-chapter-label="{chapter_label}"' if (is_chapter_start and chapter_label) else ""
+    # data-chapter-label steuert NUR die Nav-Tick-Beschriftung (Fortschrittsleiste), nicht den
+    # sichtbaren Kicker auf der Slide selbst (der lebt in render_head/effective_label).
+    # Kay-Prinzip (2026-07-14): Titel und Ende haben FIXE Nav-Label, unabhängig vom Kapitel, in
+    # dem ihre Slide-ID technisch steckt (z.B. steckt die Titel-Slide im Kapitel "Einstieg", zeigt
+    # aber trotzdem "Titel"). Alle anderen Slides gehören zu einem Kapitel — dessen NAME erscheint
+    # in der Nav nur an der ersten regulären (nicht title/closing/abbinder) Slide dieses Kapitels
+    # (is_chapter_start, siehe render_chapter).
+    if role == "title" and not is_last_chapter:
+        nav_tick_label = "Titel"
+    elif role in ("closing", "abbinder") or (role == "title" and is_last_chapter):
+        nav_tick_label = "Ende"
+    elif slide.get("kicker"):
+        # Slide-eigener Kicker-Override (z.B. Agenda im Kapitel "Einstieg") bekommt automatisch
+        # einen eigenen Nav-Tick, unabhängig davon ob diese Slide is_chapter_start ist — sie soll
+        # nicht stillschweigend im Kapitel-Tick untergehen (Kay-Feedback 2026-07-14).
+        nav_tick_label = slide.get("kicker")
+    elif is_chapter_start and chapter_tick_label:
+        nav_tick_label = chapter_tick_label
+    else:
+        nav_tick_label = None
+    data_lbl = f' data-chapter-label="{nav_tick_label}"' if nav_tick_label else ""
 
     if role == "title" and slide.get("layout") == "L6":
         # L6-Experiment v2 (Kay-Feedback 2026-07-13: Titel/Subline zurück in die
@@ -503,7 +592,7 @@ def render_slide(
         # Link-Reihe nur auf der End-Slide (title-repeat). Opening-Titel trägt KEIN github mehr
         # — der GitHub-Link lebt auf dem Closing (CTA).
         if is_last_chapter:
-            html += render_closing_links(github, closing_links)
+            html += render_closing_links(github, closing_links, slide.get("closing_primary_link"))
         else:
             # Opening-Titel: Start-CTA — exakt derselbe Baustein wie Closing (.closing-links > .c-link)
             html += '<div class="closing-links title-cta"><span class="c-link" onclick="Reveal.next()">Start</span></div>'
@@ -519,11 +608,35 @@ def render_slide(
         else:
             sub_text = subtitle or ""
         html += render_head(None, title, sub_text)
-        html += '<div class="content-zone">'
-        for item in content:
-            html += render_content_item(item)
-        html += render_closing_links(github, closing_links)
-        html += '</div>'
+        # Optionales Slide-Feld `closing_extra_links` überschreibt die sonst aus
+        # meta.closing_links (hub.quick_links oder linkedin, siehe generate_json_from_slides.py)
+        # kommende Link-Liste NUR für diese eine Slide — für exakte Kontrolle ohne den
+        # projektübergreifend geteilten linkedin/quick_links-Mechanismus anzufassen.
+        slide_links = slide.get("closing_extra_links")
+        links_to_use = slide_links if slide_links is not None else closing_links
+        primary_link = slide.get("closing_primary_link")
+        if slide.get("layout") == "split" and primary_link:
+            # Zweispaltig (Kay-Feedback 2026-07-14): Text + hervorgehobener Primary-Link links
+            # (2/3 Breite), die übrigen Links gestapelt rechts (1/3) — Primary-Link im selben
+            # .c-link-Stil wie alle anderen, nur die Platzierung macht ihn prominent.
+            html += '<div class="content-zone"><div class="closing-split">'
+            html += '<div class="closing-split-left">'
+            for item in content:
+                html += render_content_item(item)
+            p_target = primary_link.get("target", "_blank")
+            html += (f'<div class="closing-links"><a href="{primary_link.get("href", "")}" class="c-link" '
+                     f'target="{p_target}">{primary_link.get("label", "")}</a></div>')
+            html += '</div>'
+            html += '<div class="closing-split-right">'
+            html += render_closing_links(github, links_to_use, stacked=True)
+            html += '</div>'
+            html += '</div></div>'
+        else:
+            html += '<div class="content-zone">'
+            for item in content:
+                html += render_content_item(item)
+            html += render_closing_links(github, links_to_use, primary_link)
+            html += '</div>'
         html += '</section>'
     elif len(content) == 1 and content[0].get("type") == "agenda" and slide.get("layout") == "L1":
         # Agenda-Variante L1 — Kopfzone mit Kicker/Titel/Subline wie jede Standard-Slide,
@@ -531,7 +644,7 @@ def render_slide(
         # 2026-07-13, nach Vergleich mit der L6-Variante).
         agenda = content[0]
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(chapter_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle)
         html += '<div class="content-zone"><div class="agenda-list agenda-list-center">'
         for i, entry in enumerate(agenda.get("items", [])):
             if agenda.get("grouped"):
@@ -549,8 +662,8 @@ def render_slide(
         html = f'<section{data_ch}{data_lbl}>'
         html += '<div class="agenda-cols">'
         html += '<div class="agenda-head">'
-        if slide.get("layout") == "L6" and chapter_label:
-            html += f'<span class="slide-kicker">{chapter_label}</span>'
+        if slide.get("layout") == "L6" and effective_label:
+            html += f'<span class="slide-kicker">{effective_label}</span>'
         if title:
             html += f'<h2>{title}</h2>'
         if slide.get("layout") == "L6" and subtitle:
@@ -568,7 +681,7 @@ def render_slide(
     elif [c.get("type") for c in content] == ["statement", "scenarios"]:
         # Title row on top, then two columns: text left, KPI/scenario boxes right
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(chapter_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle)
         html += '<div class="content-zone"><div class="cols">'
         html += f'<div class="w45">{render_content_item(content[0])}</div>'
         html += f'<div class="w55">{render_content_item(content[1])}</div>'
@@ -578,7 +691,7 @@ def render_slide(
         # layout: callout fällt bewusst durch in die generische else-Branch unten (jede
         # Aussage einzeln als gestapeltes, zentriertes blockquote.statement — L1, volle Breite).
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(chapter_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle)
         html += '<div class="content-zone">'
         if len(content) == 1 and content[0].get("layout") == "lead_copy":
             # E17: große These oben, erklärender Absatz darunter, zentriert als ein Block
@@ -609,23 +722,45 @@ def render_slide(
             html += '</div>'
         html += '</div>'
         html += '</section>'
-    elif (len(content) == 1 and content[0].get("type") == "chart_refs"
+    elif (content and content[0].get("type") == "chart_refs"
           and content[0].get("layout") == "image_right"):
-        # Zweispaltiges Bild-Layout (vertikale Bilder): Titel/Text links, Bild rechts
+        # Kopfzone bleibt STANDARD (fix 170px, volle Breite) — nur die Content-Zone splittet
+        # sich in Beschreibung/Statement links + Bild rechts (Kay-Feedback 2026-07-14:
+        # "Titelzone bleibt unangetastet, es geht um die Content-Zone").
         chart = content[0].get("items", [{}])[0]
         src = _img_src(chart.get("source", ""))
         html = f'<section{data_ch}{data_lbl}>'
-        html += '<div class="chart-cols">'
+        html += render_head(effective_label, title, subtitle)
+        html += '<div class="content-zone"><div class="chart-cols">'
         html += '<div class="chart-cols-head">'
-        html += render_head(chapter_label, title, subtitle)
         if chart.get("caption"):
             html += f'<p class="chart-cols-caption">{chart.get("caption")}</p>'
+        for extra_item in content[1:]:
+            html += render_content_item(extra_item)
         html += '</div>'
         html += f'<div class="chart-cols-img"><a href="{src}" target="_blank"><img src="{src}" alt="{chart.get("label", "")}"></a></div>'
-        html += '</div></section>'
+        html += '</div></div></section>'
+    elif (content and content[0].get("type") == "chart_refs"
+          and content[0].get("layout") == "image_left"):
+        # Bild 2/3 links (so gross wie möglich, keine max-width/height-Deckelung), Text 1/3
+        # rechts — Kopfzone bleibt STANDARD, gleiches Prinzip wie image_right oben, nur
+        # Bild/Text-Reihenfolge und -Gewichtung gespiegelt (2:1 statt 40:60).
+        chart = content[0].get("items", [{}])[0]
+        src = _img_src(chart.get("source", ""))
+        html = f'<section{data_ch}{data_lbl}>'
+        html += render_head(effective_label, title, subtitle)
+        html += '<div class="content-zone"><div class="chart-cols chart-cols-reverse">'
+        html += f'<div class="chart-cols-img chart-cols-img-large"><a href="{src}" target="_blank"><img src="{src}" alt="{chart.get("label", "")}"></a></div>'
+        html += '<div class="chart-cols-head">'
+        if chart.get("caption"):
+            html += f'<p class="chart-cols-caption">{chart.get("caption")}</p>'
+        for extra_item in content[1:]:
+            html += render_content_item(extra_item)
+        html += '</div>'
+        html += '</div></div></section>'
     else:
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(chapter_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle)
         # Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal
         # in der Inhaltszone (Styleguide v2 Prinzip 3) — .content-zone übernimmt das per CSS.
         html += '<div class="content-zone">'
@@ -641,13 +776,26 @@ def render_chapter(chapter: Dict[str, Any], chapter_idx: int = 0, github: str = 
                    closing_links: List[Dict[str, str]] | None = None) -> str:
     """Render a chapter as flat reveal.js sections (1D, no nesting)."""
     nav_label = chapter.get("nav_label", "")
+    # nav_tick_label: kürzere Variante nur für den Nav-Tick, fällt auf nav_label zurück wenn nicht
+    # gesetzt (siehe generate_json_from_slides.py, Feld nav_tick_by_view).
+    nav_tick_label = chapter.get("nav_tick_label", nav_label)
     slides = chapter.get("slides", [])
+
+    # Kapitel-Start für die Nav ist die erste REGULÄRE Slide (kein title/closing/abbinder) —
+    # Titel/Ende bekommen ihr fixes Nav-Label unabhängig davon direkt in render_slide (siehe dort).
+    # Ohne diese Ausnahme würde z.B. im Kapitel "Einstieg" die Titel-Slide (immer erste Slide dort)
+    # fälschlich als Kapitel-Start markiert, statt "Die These" (Kay-Feedback 2026-07-14).
+    first_standard_idx = next(
+        (j for j, s in enumerate(slides) if s.get("role") not in ("title", "closing", "abbinder")),
+        None,
+    )
 
     html = f'<!-- Chapter: {nav_label} -->\n'
     for j, slide in enumerate(slides):
-        html += render_slide(slide, chapter_idx=chapter_idx, chapter_label=nav_label, github=github,
+        html += render_slide(slide, chapter_idx=chapter_idx, chapter_label=nav_label,
+                             chapter_tick_label=nav_tick_label, github=github,
                              is_last_chapter=is_last, closing_links=closing_links,
-                             is_chapter_start=(j == 0))
+                             is_chapter_start=(j == first_standard_idx))
     return html
 
 

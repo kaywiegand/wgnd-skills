@@ -63,7 +63,7 @@ const tickContainer = document.getElementById('slideticks');
 const chapterStarts = {};
 slides.forEach((section, i) => {
   if (section.hasAttribute('data-chapter-label')) {
-    chapterStarts[i] = i === 0 ? 'Titel' : section.dataset.chapterLabel;
+    chapterStarts[i] = section.dataset.chapterLabel;
   }
 });
 

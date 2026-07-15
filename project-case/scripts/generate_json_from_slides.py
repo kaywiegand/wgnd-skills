@@ -45,6 +45,12 @@ def build_view_json(registry: dict, view: str, chapter_ids: list[str]) -> dict:
             continue  # Kapitel existiert, hat aber keine Slides für diese View
 
         nav_label = chapter.get("nav_label_by_view", {}).get(view, chapter["nav_label"])
+        # nav_tick_label: optionale KÜRZERE Variante nur für den Nav-Tick unten (Platzmangel in
+        # der Leiste bei langen Kapitelnamen) — der sichtbare Kicker auf der Slide und das
+        # Inhaltsverzeichnis nutzen weiterhin nav_label (voller Name). Fällt auf nav_label
+        # zurück, wenn kein nav_tick_by_view gesetzt ist (Kay-Entscheidung 2026-07-14: nur für
+        # "Exploration / EDA" genutzt, kein generelles Kürzungssystem).
+        nav_tick_label = chapter.get("nav_tick_by_view", {}).get(view, nav_label)
 
         rendered_slides = []
         for slide in slides_for_view:
@@ -81,7 +87,7 @@ def build_view_json(registry: dict, view: str, chapter_ids: list[str]) -> dict:
                 rendered["subtitle"] = [hub.get("tagline", ""), subtitle_line2]
             rendered_slides.append(rendered)
 
-        chapters_out.append({"nav_label": nav_label, "slides": rendered_slides})
+        chapters_out.append({"nav_label": nav_label, "nav_tick_label": nav_tick_label, "slides": rendered_slides})
 
     # Closing-Links (kein Hardcoding im Renderer): LinkedIn wenn gesetzt, sonst hub.quick_links.
     # Übersicht + GitHub werden im Renderer davor gesetzt.
