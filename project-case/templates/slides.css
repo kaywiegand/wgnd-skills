@@ -406,7 +406,7 @@ body.nav-invert #progress-fill                    { background: #fff; }
    linksbündig statt als zentrierte Gruppe (gleiches Muster wie .title-slide .kpi-row). */
 .metric-row { display: flex; justify-content: center; gap: 24px; }
 .metric { border-left: 3px solid var(--card-border); padding-left: 18px; text-align: left; display: flex; flex-direction: column; justify-content: center; }
-.metric .val { font-size: 2em; font-weight: 800; color: var(--ink); line-height: 1; }
+.metric .val { font-size: 2em; font-weight: 600; color: var(--ink); line-height: 1; }
 .metric .lbl { font-size: 0.62em; color: var(--ink-soft); margin-top: 8px; line-height: 1.4; }
 .metric.good .val { border-left-color: var(--positive); }
 .metric.good .val { color: var(--positive); }
@@ -417,7 +417,11 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .metric.bad  .val { color: var(--negative); }
 
 /* ── Agenda / Inhalt slide — two columns (title left, chapters right) ── */
-.agenda-cols { display: flex; gap: 100px; align-items: flex-start; margin-top: 0.4em; }
+/* margin: auto 0 statt margin-top: 0.4em — .agenda-cols sitzt direkt im
+   Flex-Column-<section> (kein .content-zone-Wrapper hier), margin:auto zentriert
+   den Block vertikal in der verfügbaren Höhe (Kay-Feedback 2026-07-17: war oben
+   ausgerichtet statt vertikal mittig, betraf auch zh-tram-flow). */
+.agenda-cols { display: flex; gap: 100px; align-items: flex-start; margin: auto 0; }
 .agenda-head { flex: 0 0 36%; }
 .agenda-head .subline { margin-bottom: 0; }
 .agenda-list { flex: 1; display: flex; flex-direction: column; }
@@ -533,7 +537,7 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .sec-text { column-count: 2; column-gap: 2.4em; margin-top: 0.7em; }
 /* Nach einer Karten-Reihe (.pf-grid) braucht der Text mehr Abstand — gleiches
    Muster wie bei KPI-Row/Tabelle/Steps + folgendem Statement. */
-.reveal .pf-grid + .sec-text { margin-top: 3em; }
+.reveal .pf-grid + .sec-text { margin-top: 2em; }
 .sec-text-block { break-inside: avoid; margin-bottom: 0.9em; font-size: 0.85em; line-height: 1.5; color: var(--ink-body); }
 .sec-text-label { display: block; font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.82em; letter-spacing: 0.05em; margin-bottom: 2px; }
 
@@ -593,29 +597,37 @@ body.nav-invert #progress-fill                    { background: #fff; }
    konkurrierende Regel hat und die explizite Gewichtsangabe immer gewinnt. */
 .reveal blockquote.statement.sw-bold { font-weight: 600; }
 .reveal blockquote.statement.sw-thin { font-weight: 100; }
+/* layout: wide (Kay-Feedback 2026-07-17) — Statement neben anderem Content (z.B.
+   Metric-Row/Table/Contrasts) soll die volle Content-Zone-Breite nutzen statt der
+   860px-Kappung, bleibt aber zentriert gesetzt. */
+/* width:100% zusätzlich zu max-width:none nötig — margin:auto (Basisregel) verhindert
+   sonst das Flex-Stretch von .content-zone (auto-Margins gewinnen gegen align-items:stretch),
+   Element würde sich trotz aufgehobener Kappung weiter auf die Textbreite schrumpfen. */
+.reveal blockquote.statement.wide { max-width: none; width: 100%; margin-left: 0; margin-right: 0; }
 .sw-thin { font-weight: 100; }
 .sw-normal { font-weight: 400; }
 .sw-bold { font-weight: 600; }
-/* KONVENTION (Kay, 2026-07-14): Größerer Abstand NUR nach einem "schweren"
-   Vorgänger-Element (KPI-Row/.metric-row, Tabelle, Steps, Arrows, Karten-Reihe/
-   .pf-grid, Empfehlungen) vor dem nächsten Block (Statement, Card-Reihe,
-   Text-Spalten) ist IMMER 3em — als eigene Regel auf margin-top, statt den
+/* KONVENTION (Kay, 2026-07-14, Wert auf 2em reduziert 2026-07-17): Größerer Abstand
+   NUR nach einem "schweren" Vorgänger-Element (KPI-Row/.metric-row, Tabelle, Steps,
+   Arrows, Karten-Reihe/.pf-grid, Empfehlungen) vor dem nächsten Block (Statement,
+   Card-Reihe, Text-Spalten) ist IMMER 2em — als eigene Regel auf margin-top, statt den
    Basiswert selbst zu erhöhen. Grund: .content-zone ist ein Flex-Container,
    dort kollabieren Margins zwischen Geschwistern NICHT (anders als im
-   normalen Blockfluss) — würde man stattdessen die Basis auf 3em setzen und
+   normalen Blockfluss) — würde man stattdessen die Basis auf 2em setzen und
    bei gestapelten Callout-Statements (mehrere blockquote.statement
    hintereinander) nur den margin-top der zweiten Blockquote wieder senken,
-   bliebe trotzdem margin-bottom:3em an der ersten stehen und die Lücke
-   summiert sich auf ~3.7em statt der gewünschten ~0.7em.
+   bliebe trotzdem margin-bottom:2em an der ersten stehen und die Lücke
+   summiert sich auf ~2.7em statt der gewünschten ~0.7em.
    Neue Kombination "schweres Element + Folge-Block" gefunden, die noch nicht
    in der Liste unten steht? → einfach als weiteren Selektor ergänzen, gleiche
-   Regel (margin-top: 3em), kein neues Konzept nötig. */
+   Regel (margin-top: 2em), kein neues Konzept nötig. */
 /* .reveal-Präfix ist Pflicht, nicht Kosmetik: ".reveal blockquote.statement"
    hat 2 Klassen (0,2,1) — ohne den Präfix hätte z.B. "table + blockquote.statement"
    nur 1 Klasse (0,1,2) und würde TROTZ passendem Selektor gegen die Basisregel
    verlieren (Klassenzahl schlägt Elementzahl bei der CSS-Spezifität). */
 .reveal .metric-row + blockquote.statement,
 .reveal table + blockquote.statement,
+.reveal .myth-rows + blockquote.statement,
 .reveal .steps + blockquote.statement,
 .reveal .reco-grid + blockquote.statement,
 .reveal .arrows + blockquote.statement,
@@ -624,7 +636,7 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .reveal .pf-grid + .text-cols-head,
 .reveal table + .text-lead-copy,
 .reveal .metric-row + .text-lead-copy,
-.reveal .text-lead-copy + .sections-block { margin-top: 3em; }
+.reveal .text-lead-copy + .sections-block { margin-top: 2em; }
 
 /* Optionale Gruppen-Überschrift über einer Sections-Reihe (nicht pro Karte) — siehe
    item_type "sections", Feld `heading` in generate_html_from_json.py. */

@@ -141,7 +141,11 @@ def render_content_item(item: Dict[str, Any]) -> str:
             html += f'<p class="copy">{item.get("copy", "")}</p>'
             html += '</div>'
             return html
-        return f'<blockquote class="statement">{item.get("text", "")}</blockquote>'
+        # layout: wide (Kay-Feedback 2026-07-17) — Statement neben anderem Content soll die
+        # volle Content-Zone-Breite nutzen statt der 860px-Standardkappung (siehe .statement.wide
+        # in slides.css).
+        cls = "statement wide" if item.get("layout") == "wide" else "statement"
+        return f'<blockquote class="{cls}">{item.get("text", "")}</blockquote>'
 
     elif item_type == "steps":
         # Numbered process steps → .steps > .step (.sn badge/.sl/p), 3/4/5-spaltig
