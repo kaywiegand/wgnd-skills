@@ -11,6 +11,10 @@ Generates Reveal.js-based HTML slides with CSS styling from template.
 import json
 import re
 import shutil
+from html import escape as escape_html  # not "import html" — every render function below
+# uses a local variable literally named `html` for string-building, which would shadow
+# the stdlib module for the whole function (Python treats `html` as local if assigned
+# anywhere in scope, even before the assignment). The aliased import avoids that clash.
 from pathlib import Path
 from typing import Dict, List, Any
 
@@ -48,13 +52,26 @@ def load_slides_template(path: Path) -> str:
         return f.read()
 
 
-def render_head(chapter_label: str | None, title: str, subtitle: str) -> str:
+def _render_copy_paragraphs(copy: str | list[str]) -> str:
+    """Render a lead_copy `copy` field as one or more <p class="copy"> paragraphs.
+
+    List support (Kay-Feedback 2026-07-21) — echter Absatzumbruch statt <br>, für Fälle
+    wie "ein Absatz vor Satz X". String bleibt unverändert möglich (Rückwärtskompatibilität).
+    """
+    paragraphs = copy if isinstance(copy, list) else [copy]
+    return "".join(f'<p class="copy">{p}</p>' for p in paragraphs if p)
+
+
+def render_head(chapter_label: str | None, title: str, subtitle: str, subtitle_width: str | None = None) -> str:
     """Kicker + h2 + subline, gemeinsam in .slide-head gewrappt.
 
     .slide-head reserviert per CSS die feste 170px-Kopfzone (Styleguide v2 §2) —
     Subline sitzt dadurch immer direkt unter dem Titel, unabhängig davon, wie
     lang/kurz der Titel ist. Ohne diesen Wrapper hing die Subline-Position am
     h2-min-height und driftete Richtung Content-Zone ab, statt am Titel zu kleben.
+
+    Optionales `subtitle_width` (slide-Feld, z.B. "50ch") überschreibt die
+    CSS-Default-max-width (68ch) für diese eine Slide (Kay-Feedback 2026-07-20).
     """
     html = '<div class="slide-head">'
     if chapter_label:
@@ -62,7 +79,8 @@ def render_head(chapter_label: str | None, title: str, subtitle: str) -> str:
     if title:
         html += f'<h2>{title}</h2>'
     if subtitle:
-        html += f'<p class="subline">{subtitle}</p>'
+        width_style = f' style="max-width: {subtitle_width}"' if subtitle_width else ""
+        html += f'<p class="subline"{width_style}>{subtitle}</p>'
     html += '</div>'
     return html
 
@@ -138,7 +156,7 @@ def render_content_item(item: Dict[str, Any]) -> str:
             align_cls = " text-lead-copy-left" if item.get("align") == "left" else ""
             html = f'<div class="text-lead-copy{align_cls}">'
             html += f'<p class="lead">{item.get("text", "")}</p>'
-            html += f'<p class="copy">{item.get("copy", "")}</p>'
+            html += _render_copy_paragraphs(item.get("copy", ""))
             html += '</div>'
             return html
         # layout: wide (Kay-Feedback 2026-07-17) — Statement neben anderem Content soll die
@@ -221,26 +239,40 @@ def render_content_item(item: Dict[str, Any]) -> str:
     elif item_type == "box_grid":
         # E6 Box-Grid — neutrale Boxen (Linksrand) + hervorgehobene (voller Akzentrand).
         # Items können plain strings oder {text, highlight} sein (wie process_arrows).
-        html = '<div class="box-grid">'
-        for box in item.get("items", []):
+        # Spaltenzahl folgt der Item-Anzahl (Kay-Feedback 2026-07-20: 3 Boxen in einer
+        # Reihe) statt der CSS-Grunddefinition (repeat(2,1fr)) — analog zu sections/value_row.
+        items = item.get("items", [])
+        # Optionales `heading` (analog zu sections) — Gruppen-Überschrift über der Box-Reihe.
+        heading = item.get("heading", "")
+        html = f'<div class="box-grid" style="grid-template-columns: repeat({len(items)}, 1fr)">'
+        for box in items:
             is_dict = isinstance(box, dict)
             text = box.get("text", "") if is_dict else box
             highlight = bool(box.get("highlight")) if is_dict else False
             cls = "box-item highlight" if highlight else "box-item"
             html += f'<div class="{cls}">{text}</div>'
         html += '</div>'
+        if heading:
+            html = f'<div class="sections-block"><h4 class="content-heading">{heading}</h4>{html}</div>'
         return html
 
     elif item_type == "h_timeline":
-        # E9 Horizontale Timeline — Meilenstein-Punkte auf einer Linie
+        # E9 Horizontale Timeline — Meilenstein-Punkte auf einer Linie.
+        # show_labels: false (Kay-Feedback 2026-07-22) lässt nur die Punkte-Linie stehen,
+        # ohne die .ht-labels-Zeile darunter — für Fälle, in denen ein eigener Content-Block
+        # (z.B. text_columns) direkt darunter schon Überschrift + Text liefert und die
+        # Timeline nur noch als reiner visueller Prozess-Marker dient.
         items = item.get("items", [])
         html = '<div class="h-timeline"><div class="ht-line-row">'
         for _ in items:
             html += '<div class="ht-dot-wrap"><div class="ht-dot"></div></div>'
-        html += '</div><div class="ht-labels">'
-        for entry in items:
-            html += f'<div class="ht-label"><h4>{entry.get("label", "")}</h4><p>{entry.get("text", "")}</p></div>'
-        html += '</div></div>'
+        html += '</div>'
+        if item.get("show_labels", True):
+            html += '<div class="ht-labels">'
+            for entry in items:
+                html += f'<div class="ht-label"><h4>{entry.get("label", "")}</h4><p>{entry.get("text", "")}</p></div>'
+            html += '</div>'
+        html += '</div>'
         return html
 
     elif item_type == "funnel":
@@ -330,7 +362,12 @@ def render_content_item(item: Dict[str, Any]) -> str:
                 # Optionales highlight: true (Kay-Feedback 2026-07-14) hebt eine einzelne Card
                 # mit sanftem Akzent-Hintergrund hervor, z.B. neue/wichtige Features.
                 card_cls = "pf-card highlight" if sec.get("highlight") else "pf-card"
-                html += f'<div class="{card_cls}"><div class="pf-title">{num}{sec.get("label", "")}</div><ul>'
+                html += f'<div class="{card_cls}"><div class="pf-title">{num}{sec.get("label", "")}</div>'
+                # Optionales `sub` (Kay-Feedback 2026-07-21) — kurze Zweitzeile unter dem
+                # Karten-Titel, z.B. "Betrachtung Jahre, Quartale und Monate".
+                if sec.get("sub"):
+                    html += f'<div class="pf-sub">{sec.get("sub")}</div>'
+                html += '<ul>'
                 for point in sec.get("points", []):
                     html += f'<li>{point}</li>'
                 html += '</ul></div>'
@@ -341,11 +378,14 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return html
 
     elif item_type == "text_columns":
-        # E14 Copy, 2-spaltig mit Headline — als eigenständiger Content-Typ (statt nur als
+        # E14 Copy, N-spaltig mit Headline — als eigenständiger Content-Typ (statt nur als
         # Spezialfall, wenn ALLE Content-Items der Slide "statement" sind) kombinierbar mit
         # anderen Blöcken auf derselben Slide (z.B. sections-Cards oben, Erklärtext darunter).
-        html = '<div class="text-cols-head">'
-        for col in item.get("items", []):
+        # Spaltenzahl folgt der Item-Anzahl (Kay-Feedback 2026-07-20: 3 Spalten für die
+        # Ergänzungen-Bemerkungen) statt der CSS-Grunddefinition (1fr 1fr).
+        cols = item.get("items", [])
+        html = f'<div class="text-cols-head" style="grid-template-columns: repeat({len(cols)}, 1fr)">'
+        for col in cols:
             html += f'<div><h4>{col.get("heading", "")}</h4><p>{col.get("text", "")}</p></div>'
         html += '</div>'
         return html
@@ -364,12 +404,16 @@ def render_content_item(item: Dict[str, Any]) -> str:
         return html
 
     elif item_type == "recommendations":
-        # Recommendation cards → .reco-grid > .reco (.rn/strong/ul)
-        html = '<div class="reco-grid">'
+        # Recommendation cards → .reco-grid > .reco (.rn/strong?/ul)
+        # `title` ist optional (Kay-Feedback 2026-07-21: "lead lines raus") — ohne title
+        # kein leeres <strong></strong> rendern.
+        html = f'<div class="reco-grid" style="grid-template-columns: repeat({len(item.get("items", []))}, 1fr)">'
         for rec in item.get("items", []):
             html += '<div class="reco">'
             html += f'<div class="rn">{rec.get("category", "")}</div>'
-            html += f'<strong>{rec.get("title", "")}</strong><ul>'
+            if rec.get("title"):
+                html += f'<strong>{rec.get("title")}</strong>'
+            html += '<ul>'
             for point in rec.get("points", []):
                 html += f'<li>{point}</li>'
             html += '</ul></div>'
@@ -418,13 +462,17 @@ def render_content_item(item: Dict[str, Any]) -> str:
     elif item_type == "chart_refs":
         # One full-size image per slide → .chart-single (slides are split so each
         # chart_refs carries a single item; loop kept for safety)
+        # Optionales `width` (z.B. "70%", Kay-Feedback 2026-07-20) begrenzt die Bildbreite
+        # innerhalb der zentrierten .chart-single-Zelle, statt der CSS-Default-100%.
         html = ""
         for chart in item.get("items", []):
             src = _img_src(chart.get("source", ""))
             label = chart.get("label", "")
             caption = chart.get("caption", "")
+            width = chart.get("width", "")
+            width_style = f' style="max-width: {width}"' if width else ""
             html += '<div class="chart-single">'
-            html += f'<a class="chart-tile" href="{src}" target="_blank"><img src="{src}" alt="{label}"></a>'
+            html += f'<a class="chart-tile" href="{src}" target="_blank"{width_style}><img src="{src}" alt="{label}"></a>'
             if caption:
                 html += f'<div class="caption">{caption}</div>'
             html += '</div>'
@@ -648,7 +696,7 @@ def render_slide(
         # 2026-07-13, nach Vergleich mit der L6-Variante).
         agenda = content[0]
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(effective_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
         html += '<div class="content-zone"><div class="agenda-list agenda-list-center">'
         for i, entry in enumerate(agenda.get("items", [])):
             if agenda.get("grouped"):
@@ -685,23 +733,50 @@ def render_slide(
     elif [c.get("type") for c in content] == ["statement", "scenarios"]:
         # Title row on top, then two columns: text left, KPI/scenario boxes right
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(effective_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
         html += '<div class="content-zone"><div class="cols">'
         html += f'<div class="w45">{render_content_item(content[0])}</div>'
         html += f'<div class="w55">{render_content_item(content[1])}</div>'
         html += '</div></div></section>'
+    elif [c.get("type") for c in content[:2]] == ["recommendations", "box_grid"] and len(content[0].get("items", [])) == 1:
+        # Einzelne Reco-Card + Hinweis-Box nebeneinander statt gestapelt (Kay-Feedback
+        # 2026-07-21: "linkes Hinweisfeld kommt rechts neben die Box, 50/50") — nur wenn
+        # genau 1 Recommendation übrig ist (sonst bleibt die normale Stapel-Darstellung unten).
+        html = f'<section{data_ch}{data_lbl}>'
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
+        html += '<div class="content-zone"><div class="cols">'
+        html += f'<div class="w50">{render_content_item(content[0])}</div>'
+        html += f'<div class="w50">{render_content_item(content[1])}</div>'
+        html += '</div>'
+        for extra_item in content[2:]:
+            html += render_content_item(extra_item)
+        html += '</div></section>'
+    elif [c.get("type") for c in content] == ["box_grid", "rings", "box_grid"]:
+        # Kay 2026-07-21: erste box_grid volle Breite (Zeile 1), darunter Ring (halbe
+        # Breite, nicht die volle Content-Zone) + Hinweis-Box nebeneinander (Zeile 2).
+        html = f'<section{data_ch}{data_lbl}>'
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
+        html += '<div class="content-zone">'
+        html += render_content_item(content[0])
+        html += '<div class="cols">'
+        html += f'<div class="w50">{render_content_item(content[1])}</div>'
+        # box-narrow: die einzelne Hinweis-Box wirkt neben dem Ring sonst zu breit,
+        # Zeilen laufen zu lang (Kay-Feedback 2026-07-22: "margin:0 5em hat geholfen").
+        html += f'<div class="w50 box-narrow">{render_content_item(content[2])}</div>'
+        html += '</div>'
+        html += '</div></section>'
     elif content and all(c.get("type") == "statement" for c in content) and slide.get("layout") != "callout":
         # Reine Text-Slides: 1 Aussage → zentrierte Lead (medium), 2–5 → zweispaltig light (randlos)
         # layout: callout fällt bewusst durch in die generische else-Branch unten (jede
         # Aussage einzeln als gestapeltes, zentriertes blockquote.statement — L1, volle Breite).
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(effective_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
         html += '<div class="content-zone">'
         if len(content) == 1 and content[0].get("layout") == "lead_copy":
             # E17: große These oben, erklärender Absatz darunter, zentriert als ein Block
             html += '<div class="text-lead-copy">'
             html += f'<p class="lead">{content[0].get("text", "")}</p>'
-            html += f'<p class="copy">{content[0].get("copy", "")}</p>'
+            html += _render_copy_paragraphs(content[0].get("copy", ""))
             html += '</div>'
         elif len(content) == 1:
             # E15: ein Gedanke, zentriert, max. 3 Zeilen
@@ -734,7 +809,7 @@ def render_slide(
         chart = content[0].get("items", [{}])[0]
         src = _img_src(chart.get("source", ""))
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(effective_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
         html += '<div class="content-zone"><div class="chart-cols">'
         html += '<div class="chart-cols-head">'
         if chart.get("caption"):
@@ -752,7 +827,7 @@ def render_slide(
         chart = content[0].get("items", [{}])[0]
         src = _img_src(chart.get("source", ""))
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(effective_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
         html += '<div class="content-zone"><div class="chart-cols chart-cols-reverse">'
         html += f'<div class="chart-cols-img chart-cols-img-large"><a href="{src}" target="_blank"><img src="{src}" alt="{chart.get("label", "")}"></a></div>'
         html += '<div class="chart-cols-head">'
@@ -762,9 +837,51 @@ def render_slide(
             html += render_content_item(extra_item)
         html += '</div>'
         html += '</div></div></section>'
+    elif (content and content[0].get("type") == "code"
+          and content[0].get("layout") == "code_right"):
+        # Code + Copy, Code rechts, Copy links — gleiches Prinzip wie chart_refs
+        # image_right, nur .chart-cols-code statt .chart-cols-img (Kay 2026-07-21:
+        # "links Code, rechts Copy" als erste Variante, code_right als gespiegeltes
+        # Gegenstück, gleiche Namenskonvention wie image_left/image_right).
+        block = content[0].get("items", [{}])[0]
+        html = f'<section{data_ch}{data_lbl}>'
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
+        html += '<div class="content-zone"><div class="chart-cols">'
+        html += '<div class="chart-cols-head">'
+        if block.get("caption"):
+            html += f'<p class="chart-cols-caption">{block.get("caption")}</p>'
+        for extra_item in content[1:]:
+            html += render_content_item(extra_item)
+        html += '</div>'
+        html += '<div class="chart-cols-code"><div class="code-block">'
+        if block.get("label"):
+            html += f'<div class="code-block-label">{block.get("label")}</div>'
+        html += f'<pre><code>{escape_html(block.get("code", ""))}</code></pre>'
+        html += '</div></div>'
+        html += '</div></div></section>'
+    elif (content and content[0].get("type") == "code"
+          and content[0].get("layout") == "code_left"):
+        # Code links, Copy rechts — gespiegelt zu code_right, gleiche Struktur wie
+        # chart_refs image_left.
+        block = content[0].get("items", [{}])[0]
+        html = f'<section{data_ch}{data_lbl}>'
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
+        html += '<div class="content-zone"><div class="chart-cols chart-cols-reverse">'
+        html += '<div class="chart-cols-code"><div class="code-block">'
+        if block.get("label"):
+            html += f'<div class="code-block-label">{block.get("label")}</div>'
+        html += f'<pre><code>{escape_html(block.get("code", ""))}</code></pre>'
+        html += '</div></div>'
+        html += '<div class="chart-cols-head">'
+        if block.get("caption"):
+            html += f'<p class="chart-cols-caption">{block.get("caption")}</p>'
+        for extra_item in content[1:]:
+            html += render_content_item(extra_item)
+        html += '</div>'
+        html += '</div></div></section>'
     else:
         html = f'<section{data_ch}{data_lbl}>'
-        html += render_head(effective_label, title, subtitle)
+        html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
         # Elemente schrumpfen auf ihren Inhalt und zentrieren sich als Gruppe vertikal
         # in der Inhaltszone (Styleguide v2 Prinzip 3) — .content-zone übernimmt das per CSS.
         html += '<div class="content-zone">'

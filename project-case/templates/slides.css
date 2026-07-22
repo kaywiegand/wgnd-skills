@@ -65,7 +65,7 @@
    Browser rundet auf die nächste tatsächlich geladene Schriftschnittstärke.
    --font-ui (System-Font-Stack, wie index-template.html) hat echte Thin-Schnitte. */
 .reveal { font-size: var(--font-base-size); font-family: var(--font-ui); }
-.reveal h1, .reveal h2, .reveal h3 { text-transform: none; }
+.reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
 /* kein h1 mehr im Generator — Title-Slide nutzt jetzt render_head() wie jede andere Slide */
 /* Kay 2026-07-14: h2 ist der technische Slide-Titel (Reihenfolge/Wegweiser), nicht die
    Kernbotschaft — deshalb klein. .lead/.statement tragen die eigentliche Botschaft und sind
@@ -416,15 +416,22 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .metric.bad  { border-left-color: var(--negative); }
 .metric.bad  .val { color: var(--negative); }
 
-/* ── Agenda / Inhalt slide — two columns (title left, chapters right) ── */
-/* margin: auto 0 statt margin-top: 0.4em — .agenda-cols sitzt direkt im
-   Flex-Column-<section> (kein .content-zone-Wrapper hier), margin:auto zentriert
-   den Block vertikal in der verfügbaren Höhe (Kay-Feedback 2026-07-17: war oben
-   ausgerichtet statt vertikal mittig, betraf auch zh-tram-flow). */
-.agenda-cols { display: flex; gap: 100px; align-items: flex-start; margin: auto 0; }
-.agenda-head { flex: 0 0 36%; }
+/* ── Agenda / Inhalt slide — einfach L6 (4+8, Gap 24px) ──
+   Kay-Feedback 2026-07-22: "mach doch einfach L6 Schmal+Breit" statt eigener
+   36%/Gap-Tuning-Werte und Wrapper-Konstruktion — Titel-Block links (span 4,
+   linksbündig), Aufzählung rechts (span 8, linksbündig). Grid statt Flex, damit
+   Gap und Spans exakt wie beim generischen .g12-Grid rechnen (Flex-Basis in %
+   plus Gap hätte über 100% hinaus überlaufen). margin: auto 0 zentriert den
+   Block vertikal in der Section (kein .content-zone-Wrapper hier, siehe Generator). */
+.agenda-cols { display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; align-items: center; margin: auto 0; }
+.agenda-head { grid-column: span 4; }
 .agenda-head .subline { margin-bottom: 0; }
-.agenda-list { flex: 1; display: flex; flex-direction: column; }
+/* justify-self: center statt einer eigenen Wrapper-Konstruktion (Kay-Feedback
+   2026-07-22, zweite Runde) — reines Grid-Item-Alignment, keine zusätzliche HTML-
+   Ebene. .agenda-list schrumpft dadurch auf Inhaltsbreite und zentriert sich als
+   EIN Block im 8-Spalten-Bereich; die Items selbst bleiben untereinander linksbündig
+   (align-items:stretch default auf dem intern flex-column .agenda-list). */
+.agenda-list { grid-column: span 8; justify-self: center; display: flex; flex-direction: column; }
 /* L1-Agenda-Variante: Liste horizontal zentrieren statt volle Breite zu füllen
    (vertikale Zentrierung kommt bereits von .content-zone). align-self statt
    margin:auto, weil .agenda-list in .content-zone (flex-column) sitzt. */
@@ -513,10 +520,14 @@ body.nav-invert #progress-fill                    { background: #fff; }
 
 /* ── Recommendation cards ─────────────────────── */
 .reco-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; margin-top: 10px; }
+/* Im 50/50-Cols-Layout (Reco-Card neben Hinweis-Box, Kay-Feedback 2026-07-21: "gleiche
+   Top haben") würde der Standard-margin-top die Reco-Card gegenüber der Box im Nachbar-
+   .w50 nach unten verschieben — hier auf 0, da .cols selbst schon die Abstände regelt. */
+.cols .reco-grid { margin-top: 0; }
 .reco { background: var(--card); border-radius: var(--radius-card); padding: 18px 22px; }
 .reco .rn { font-size: 0.68em; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-bottom: 1em; }
 .reco strong { display: block; font-size: 0.88em; color: var(--ink); margin-bottom: 7px; line-height: 1.35; }
-.reco ul { padding-left: 1em; margin: 0; }
+.reco ul { list-style: none; padding-left: 0; margin: 0; }
 .reco li { font-size: 0.82em; color: var(--ink-body); margin-bottom: 4px; }
 
 /* ── E2/E3 — Karten (sections, tools) ─────────── */
@@ -528,6 +539,9 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .pf-card.highlight { background: rgba(26,58,92,0.07); border: 1px solid rgba(26,58,92,0.16); }
 .pf-card.highlight .pf-title { color: var(--navy); }
 .pf-card .pf-title { font-size: 0.68em; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-bottom: 1em; }
+/* Optionale Zweitzeile unter dem Karten-Titel (Kay-Feedback 2026-07-21), z.B.
+   "Betrachtung Jahre, Quartale und Monate" unter "Langfristige Zeitebene". */
+.pf-card .pf-sub { font-size: 0.85em; font-weight: 600; color: var(--ink); margin: -0.6em 0 0.8em; }
 .pf-card p { font-size: 0.82em; color: var(--ink-body); line-height: 1.5; margin: 0; }
 .pf-card ul { padding-left: 1em; margin: 0; }
 .pf-card li { font-size: 0.81em; color: var(--ink-body); margin-bottom: 4px; line-height: 1.5; }
@@ -540,6 +554,12 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .reveal .pf-grid + .sec-text { margin-top: 2em; }
 .sec-text-block { break-inside: avoid; margin-bottom: 0.9em; font-size: 0.85em; line-height: 1.5; color: var(--ink-body); }
 .sec-text-label { display: block; font-weight: 700; color: var(--accent); text-transform: uppercase; font-size: 0.82em; letter-spacing: 0.05em; margin-bottom: 2px; }
+
+/* Einzelne Box neben einem Ring (Kay-Feedback 2026-07-22) — die Box füllt sonst die
+   ganze .w50-Spalte, Textzeilen laufen zu lang. margin:0 5em zieht sie auf lesbare
+   Zeilenlänge zusammen, ohne die Spaltenbreite selbst (und damit die Ring-Zentrierung
+   daneben) anzufassen. */
+.box-narrow .box-grid { margin: 0 5em; }
 
 /* ── E4 — Rings (Donut-Ringe, nur echte Anteile) ── */
 .rings { display: grid; gap: 28px; justify-items: center; align-items: center; }
@@ -556,8 +576,16 @@ body.nav-invert #progress-fill                    { background: #fff; }
 
 /* ── E6 — Box-Grid (3 neutral + 1 hervorgehoben) ── */
 .box-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 22px; }
-.box-item { border: 1px solid var(--card-border); border-left: 3px solid var(--ink); border-radius: var(--radius-box); padding: 18px 22px; font-size: 0.85em; font-weight: 600; color: var(--ink); }
+.box-item { border: 1px solid var(--card-border); border-left: 3px solid var(--ink); border-radius: var(--radius-box); padding: 18px 22px; font-size: 0.85em; font-weight: 400; line-height: 1.5; color: var(--ink); }
+.box-item strong { font-weight: 700; }
 .box-item.highlight { border: 1.5px solid var(--accent); border-left: 1.5px solid var(--accent); }
+/* Echte Aufzählung innerhalb einer Box (Kay-Feedback 2026-07-21), z.B. Airline-Namen
+   statt Fließtext — Browser-Default-Margins zurückgesetzt, Marker bleiben sichtbar. */
+/* display:block nötig — Reveal.js' Basis-Theme setzt <ul> auf inline-block, was hier
+   (Liste folgt direkt auf Fließtext im selben .box-item) zu einer Nebeneinander- statt
+   Untereinander-Anordnung führte. */
+.box-item ul { display: block; margin: 0.5em 0 0; padding-left: 1.2em; }
+.box-item li { margin-bottom: 2px; }
 
 /* ── E10 — Funnel (echte Verengung/Filterung) ──── */
 .funnel { display: flex; flex-direction: column; gap: 3px; }
@@ -636,6 +664,16 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .reveal .pf-grid + .text-cols-head,
 .reveal table + .text-lead-copy,
 .reveal .metric-row + .text-lead-copy,
+.reveal .box-grid + .box-grid,
+.reveal .sections-block + .box-grid,
+.reveal .reco-grid + .box-grid,
+.reveal .pf-grid + .box-grid,
+.reveal .box-grid + .rings,
+.reveal .rings + .box-grid,
+.reveal .box-grid + .cols,
+.reveal .sections-block + .cols,
+.reveal .arrows + .text-cols-head,
+.reveal .h-timeline + .text-cols-head,
 .reveal .text-lead-copy + .sections-block { margin-top: 2em; }
 
 /* Optionale Gruppen-Überschrift über einer Sections-Reihe (nicht pro Karte) — siehe
@@ -672,6 +710,9 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .text-lead-copy-left { text-align: left; margin: 0; max-width: none; }
 .text-lead-copy .lead { font-size: 1.8em; font-weight: 600; color: var(--ink); line-height: 1.3; margin: 0 0 0.7em; }
 .text-lead-copy .copy { font-size: 0.88em; color: var(--ink-body); line-height: 1.5; margin: 0; }
+/* Mehrere .copy-Absätze (Kay-Feedback 2026-07-21: "copy" als Liste, echter Absatzumbruch)
+   brauchen sichtbaren Abstand — sonst kollabieren sie zu einem einzigen Textblock. */
+.text-lead-copy .copy + .copy { margin-top: 0.9em; }
 
 /* Zusatztext unter einem Element (E2–E13, 40px Abstand) */
 .extra-text { margin-top: 40px; }
@@ -703,6 +744,16 @@ body.nav-invert #progress-fill                    { background: #fff; }
 .chart-cols-img-large { flex: 2; justify-content: center; align-items: stretch; }
 .chart-cols-img-large a { display: flex; width: 100%; }
 .chart-cols-img-large img { width: 100%; height: 100%; object-fit: contain; margin: 0; max-width: none; max-height: none; display: block; }
+
+/* ── Code + Copy (chart-cols mit Codeblock statt Bild, Kay 2026-07-21) ──
+   Gleiche .chart-cols/.chart-cols-reverse/.chart-cols-head-Struktur wie image_left/
+   image_right — nur .chart-cols-code statt .chart-cols-img, damit der Copy-Text auf
+   beiden Seiten (Code oder Bild) exakt gleich formatiert bleibt. */
+.chart-cols-code { flex: 1.2; min-width: 0; }
+.code-block-label { font-size: 0.68em; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.9em; }
+.code-block { background: var(--navy); color: rgba(255,255,255,0.88); font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 0.72em; line-height: 1.5; padding: 20px 22px; border-radius: var(--radius-card); overflow: auto; max-height: 62vh; }
+.code-block pre { margin: 0; white-space: pre-wrap; word-break: break-word; }
+.code-block code { font-family: inherit; color: inherit; background: none; padding: 0; border: none; }
 
 /* ── Chart: one full-size image per slide (no shadow) ── */
 .chart-single { text-align: center; margin: 0.3em 0; }
@@ -760,7 +811,8 @@ body.nav-invert #progress-fill                    { background: #fff; }
    Boxen verschieden weit links anfingen (Subline wirkte "mittig" statt mit
    dem Titel linksbündig). Jetzt wie .title-slide: volle Breite, Text darin
    linksbündig (per .reveal h2/.reveal .subline). */
-.closing h2 { font-size: 3.29em; font-weight: 100; color: #fff; letter-spacing: -0.01em; line-height: 1.2; }
+/* Kay-Feedback 2026-07-21: weight 100 auf großer weißer Fläche wirkte zu hart — 300 statt 100. */
+.closing h2 { font-size: 3.29em; font-weight: 300; color: #fff; letter-spacing: -0.01em; line-height: 1.2; }
 .closing .subline { font-size: 0.94em; color: rgba(255,255,255,0.78); }
 .closing blockquote.statement { color: rgba(255,255,255,0.92); max-width: 720px; font-weight: 300; margin: 0.5em auto 0; }
 /* process_arrows (Dashboard-Teaser-Zeile) auf dunklem Closing-Hintergrund — ohne Override erbt

@@ -33,6 +33,10 @@
     .sr-stage { padding: 20px 18px; }
     .sr-stage.flush { padding: 0; }
     .sr-stage.dark { background: var(--navy); padding: 24px 18px; }
+    /* Kennzeichnung für bekannte IST/SOLL-Abweichungen in Regel-Tabellen (Kay-Feedback 2026-07-21:
+       Font-Weight/Line-Height-Regeln zentral dokumentieren, aber slides.css bewusst NICHT anfassen —
+       diese Klasse macht den Gap sichtbar, ohne ihn zu verstecken). */
+    .deviation { color: var(--warning); font-weight: 700; }
 
     /* ── Hub-Elemente — 1:1 aus templates/index-template.html kopiert (gleiche
        Klassennamen, gleiche Werte). Bei Änderungen an index-template.html IMMER
@@ -142,7 +146,73 @@
   <p class="sr-intro">Jede Komponente einzeln, mit Label + CSS-Klasse. Die Klassennamen entsprechen
      exakt dem, was <code>generate_html_from_json.py</code> ausgibt; das Theme kommt per
      <code>&lt;link&gt;</code> direkt aus <code>slides.css</code> (selber Ordner) — jede Projekt-Kopie
-     wird bei <code>make portfolio</code> von hier aus aktualisiert.</p>
+     wird bei <code>make portfolio</code> von hier aus aktualisiert.
+     <br><br>
+     <b>Notation für Briefings:</b> <code>Layout · Element [+ Modifier]</code>, mit Verweis auf eine
+     bestehende Slide. Beispiel: „<code>L6 · E8</code> wie in zh-tram-flow:
+     erkenntnis-kaskade-kernaussage, aber Element E10 statt E8."</p>
+
+  <!-- ═══════════════ GLOBALE REGELN ═══════════════
+       Kay-Feedback 2026-07-21: Font-Weight/Uppercase/Line-Height standen nirgends zentral —
+       Ergebnis war ein System, das sich Slide für Slide leicht unterschiedlich anfühlte. Diese
+       drei Tabellen sind die Referenz VOR jeder Farb-/Typo-Entscheidung auf einer neuen Slide.
+       Wo die reale slides.css aktuell abweicht (⚠️ .deviation), wird das hier bewusst offen
+       benannt statt versteckt — der Fix ist ein separater, bewusst freigegebener Schritt. -->
+  <div class="sr-cat">Globale Regeln</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Font-Weight</b> — Normal ist immer der Ausgangspunkt</div>
+    <div class="sr-stage">
+      <p style="font-size:0.88rem; color:#444; margin:0 0 14px;">Größe transportiert Hervorhebung, nicht Gewicht.
+        Fettung (<code>.sw-bold</code>, 600) ist immer ein bewusster Opt-in, nie Standard. Ausnahme:
+        Zahlen (KPI/Value/Fact) sind konventionell immer fett.</p>
+      <table class="spec-table">
+        <tr><th>Rolle</th><th>Soll-Gewicht</th><th>IST-Zustand</th></tr>
+        <tr><td class="name">h2 / Slide-Titel</td><td>300</td><td>✅ passt</td></tr>
+        <tr><td class="name">Subline / Body / Copy</td><td>200–400 (normal)</td><td>✅ passt</td></tr>
+        <tr><td class="name"><code>blockquote.statement</code> (E12/callout)</td><td>400, Modifier <code>.sw-bold</code>/<code>.sw-thin</code></td><td>✅ passt (Kay-Feedback 2026-07-15)</td></tr>
+        <tr><td class="name">Zahlen (KPI/Value/Fact — <code>.v</code>/<code>.val</code>/<code>.fv</code>)</td><td>500–700 (bewusste Ausnahme)</td><td>✅ Konvention, kein Verstoß</td></tr>
+        <tr><td class="name"><code>.statement-lead</code> (E15)</td><td>400 + Modifier, wie <code>blockquote.statement</code></td><td><span class="deviation">⚠️ hart auf 600 — bekannte Abweichung, Fix separat geplant</span></td></tr>
+        <tr><td class="name"><code>.text-lead-copy .lead</code> (E17)</td><td>400 + Modifier, wie <code>blockquote.statement</code></td><td><span class="deviation">⚠️ hart auf 600 — bekannte Abweichung, Fix separat geplant</span></td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Uppercase</b> — nur für Caption/Kicker/Label, nie für Headlines/Leads/Copy</div>
+    <div class="sr-stage">
+      <p style="font-size:0.88rem; color:#444; margin:0 0 14px;">Versalien markieren Meta-Labels. h2, Subline,
+        Lead und Copy bleiben immer normal geschrieben. Bereits eingehalten, keine Korrektur nötig.</p>
+      <table class="spec-table">
+        <tr><th>Klasse</th><th>Verwendung</th></tr>
+        <tr><td class="name">.slide-kicker</td><td>Kapitel-Eyebrow über dem Titel</td></tr>
+        <tr><td class="name">.pf-title</td><td>Karten-Label (Karten-Grid)</td></tr>
+        <tr><td class="name">.reco .rn</td><td>Kategorie-Label vor dem Recommendation-Titel</td></tr>
+        <tr><td class="name">.myth-label</td><td>✗/✓-Label in Myth-Busting-Zeilen</td></tr>
+        <tr><td class="name">.sec-text-label</td><td>Label vor einem Text-Abschnitt (Sections, Text-Variante)</td></tr>
+        <tr><td class="name">.var-badge</td><td>Varianten-Badge (Styleguide-intern)</td></tr>
+        <tr><td class="name">.view-teaser-heading / .view-label</td><td>Badge-Label auf Title-Slide-Teaser bzw. Hub-Karten</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Line-Height</b> — genau zwei Werte projektweit</div>
+    <div class="sr-stage">
+      <p style="font-size:0.88rem; color:#444; margin:0 0 14px;">1.3 für Headline/Caption/kurze Labels, 1.5 für
+        Body/Copy/Fließtext. Ausnahme <code>line-height:1</code> nur bei großen freistehenden Zahlen.</p>
+      <table class="spec-table">
+        <tr><th>Wert</th><th>Rolle</th></tr>
+        <tr><td class="name">1.3</td><td>h2, Kicker/Caption, kurze Labels</td></tr>
+        <tr><td class="name">1.5</td><td>Subline, Body, Copy, Fließtext in Karten/Boxen/Statements</td></tr>
+        <tr><td class="name">1 (Ausnahme)</td><td>Große freistehende Zahlen — KPI/Value/Fact (<code>.v</code>/<code>.val</code>/<code>.fv</code>/<code>.hv</code>)</td></tr>
+      </table>
+      <p style="font-size:0.82rem; color:var(--warning); margin:12px 0 0;">⚠️ Bekannte Abweichung, Fix separat geplant:
+        <code>slides.css</code> nutzt aktuell auch 1.25, 1.35, 1.4, 1.55 und 1.6 (u. a. <code>.fact-cell .l</code>,
+        <code>.timeline</code>, <code>.kpi .l</code>, <code>.kv-text</code>, <code>.box</code>). Kein Code-Change
+        jetzt.</p>
+    </div>
+  </div>
 
   <!-- ═══════════════ HUB-ELEMENTE ═══════════════ -->
   <div class="sr-cat">Hub-Elemente (index.html)</div>
@@ -371,6 +441,32 @@
     </div>
   </div>
 
+  <!-- Kay-Feedback 2026-07-21: "wir haben bislang schon einige Varianten erstellt, die sollten
+       abgebildet sein, damit ich darauf verweisen kann" — Quelle: Audit aller 4
+       public/md/slides.yaml (zh-tram-flow, zh-tram-data, us-used-vehicle-resales,
+       fl-airport-company). Auswahl der aussagekräftigsten Kombinationen, nicht jeder Beleg. -->
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Bereits gebaute Kombinationen</b></div>
+    <div class="sr-stage">
+      <table class="spec-table">
+        <tr><th>Notation</th><th>Verwendung</th><th>Beispiel (Projekt · Slide-ID)</th></tr>
+        <tr><td class="name">L6 · E1</td><td>Title-Slide, Teaser+Start links, KPI-Reihe rechts</td><td>zh-tram-flow: einstieg-title-overview</td></tr>
+        <tr><td class="name">L6 · agenda</td><td>Agenda mit Kopfzone links, Liste rechts</td><td>zh-tram-flow: einstieg-agenda-overview</td></tr>
+        <tr><td class="name">L1 · agenda</td><td>Agenda zentriert, ohne geteilte Kopfzone</td><td>zh-tram-data: ausgangssituation-agenda-overview</td></tr>
+        <tr><td class="name">L6 · chart_refs (image_left)</td><td>Bild 2/3 links (volle Höhe), Text 1/3 rechts</td><td>us-used-vehicle-resales: findings-wheeltype-chart</td></tr>
+        <tr><td class="name">L6 · chart_refs (image_right)</td><td>Text links, Bild rechts</td><td>zh-tram-flow: ueberraschungen-innenstadt-map</td></tr>
+        <tr><td class="name">callout · statement (gestapelt)</td><td>2+ Statements untereinander, volle Breite, enger Abstand</td><td>zh-tram-data: genese-genese</td></tr>
+        <tr><td class="name">wide · statement</td><td>Statement ohne 860px-Kappung, volle Content-Zone-Breite</td><td>us-used-vehicle-resales: problem</td></tr>
+        <tr><td class="name">lead_copy · statement (E17)</td><td>These + erklärender Absatz, zentriert als ein Block</td><td>zh-tram-flow: einstieg-these</td></tr>
+        <tr><td class="name">split · closing</td><td>Text+Primary-Link links, Link-Spalte rechts</td><td>fl-airport-company: closing-danke</td></tr>
+        <tr><td class="name">L3 · box_grid (heading außen)</td><td>3–4 Boxen, Gruppen-Überschrift über der Reihe</td><td>fl-airport-company: insights-verspaetungen-erkenntnisse, insights-zeitraeume-erkenntnisse</td></tr>
+        <tr><td class="name">rings + box_grid (nebeneinander)</td><td>Ring (halbe Breite) + Hinweisbox nebeneinander, als 2. Zeile nach einer box_grid-Reihe</td><td>fl-airport-company: insights-verspaetungen-erkenntnisse</td></tr>
+        <tr><td class="name">recommendations + box_grid (50/50)</td><td>Einzelne Reco-Card + Hinweisbox nebeneinander statt gestapelt, nur bei genau 1 Recommendation</td><td>fl-airport-company: empfehlungen-indikator</td></tr>
+        <tr><td class="name">L4 · process_arrows</td><td>Kompakte Schritt-Kette, je Folgeslide ein anderer Schritt <code>current</code></td><td>zh-tram-data: anreicherung-intro</td></tr>
+      </table>
+    </div>
+  </div>
+
   <!-- ═══════════════ SLIDE-FORMATE ═══════════════
        Drei Formate, EIN Skelett: .slide-head (feste 150px-Kopfzone, Titel+Subline+
        Trennlinie, immer oben) + .content-zone (restliche Höhe, Inhalt zentriert sich
@@ -396,30 +492,7 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>2 · Title-Slide</b> <code>gleiches Skelett, dunkel · h2/subline ≙ Hub-Header-Typografie (3.29em/0.94em) · .kpi-row (E1-Optik) · .view-teaser · Start-CTA</code></div>
-    <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="title-slide present">
-      <div class="slide-head">
-        <h2>Projekt-Titel</h2>
-        <p class="subline">Tagline-Zeile<br>Zeitraum · Umfang · Stack</p>
-      </div>
-      <div class="content-zone">
-        <div class="kpi-row">
-          <div class="kpi"><div class="v">00,0</div><div class="l">Kennzahl A</div></div>
-          <div class="kpi green"><div class="v">00 %</div><div class="l">Kennzahl B</div></div>
-          <div class="kpi red"><div class="v">−00 %</div><div class="l">Kennzahl C</div></div>
-        </div>
-        <div class="view-teaser" style="text-align: left;">
-          <div class="view-teaser-heading">Label für Badge</div>
-          <p class="view-teaser-desc" style="margin: 0;">View-Teaser: Beschreibung der aktuellen View — kommt automatisch aus hub.view_cards[view] in slides.yaml (generate_json_from_slides.py), nicht von Hand gepflegt.</p>
-        </div>
-        <div class="closing-links title-cta"><span class="c-link">Start</span></div>
-      </div>
-    </section></div></div></div></div>
-    <div class="sr-bar" style="border-top:1px solid #e3edf4;border-bottom:none;">Orange Headline (<code>.view-teaser-heading</code>) und Copy (<code>.view-teaser-desc</code>) stehen linksbündig zueinander — <code>.view-teaser</code> zentriert standardmäßig, hier per <code>text-align:left</code> überschrieben (Kay-Feedback 2026-07-15).</div>
-  </div>
-
-  <div class="sr-demo">
-    <div class="sr-bar"><b>2b · Title-Slide (L6-Variante) — aktueller Standard</b> <code>layout: L6</code> — Titel/Subline bleiben in der Kopfzone, aber Teaser+Start und KPI-Row stehen zweispaltig (4+8) statt zentriert untereinander. Opt-in pro Slide, aktuell in Produktion (zh-tram-data, alle 3 Views).</div>
+    <div class="sr-bar"><b>2 · Title-Slide</b> <code>layout: L6</code></div>
     <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="title-slide title-split present">
       <div class="slide-head">
         <h2>Projekt-Titel</h2>
@@ -446,7 +519,7 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>3 · Closing-Slide</b> <code>role: closing, layout: split · h2/subline ≙ Title-Slide-Typografie · .closing-split (.closing-split-left/-right) · E17 (.text-lead-copy) + Teaser-Absatz (.sw-bold) · .closing-links-col</code> — aktuelle Version aus zh-tram-flow: Text + hervorgehobener Primary-Link links (2/3), GitHub/Übersicht-Links gestapelt rechts (1/3), gleiche Breite via <code>width: fit-content</code></div>
+    <div class="sr-bar"><b>3 · Closing-Slide</b> <code>role: closing, layout: split</code></div>
     <div class="sr-stage flush"><div class="slide-canvas-wrap dark"><div class="reveal"><div class="slides"><section class="closing present">
       <div class="slide-head">
         <h2>Projekt-Titel</h2>
@@ -455,8 +528,9 @@
       <div class="content-zone"><div class="closing-split">
         <div class="closing-split-left">
           <div class="text-lead-copy">
-            <p class="lead">Die große These, zentriert zurück auf die Ausgangsfrage.</p>
-            <p class="copy">Erklärender Absatz — was das Projekt zeigt, was der Dashboard-Link ermöglicht.<br><br><span class="sw-bold">Teaser A · Teaser B · Teaser C</span></p>
+            <p class="lead">Die große These, zentriert zurück auf die Ausgangsfrage</p>
+            <p class="copy">Erklärender Absatz, was das Projekt zeigt und was der Dashboard-Link ermöglicht.</p>
+            <p class="copy">Zweiter Absatz möglich, wenn <code>copy</code> als Liste statt String gesetzt wird. Echter Absatzumbruch statt <code>&lt;br&gt;</code>.</p>
           </div>
           <div class="closing-links"><a href="#" class="c-link">Primary-Link (z. B. Dashboard)</a></div>
         </div>
@@ -472,27 +546,8 @@
   </div>
 
   <div class="sr-demo">
-    <div class="sr-bar"><b>Agenda · L1 (Alternative)</b> <code>render_head() + .agenda-list.agenda-list-center</code> — Content-Typ <code>agenda</code>, <code>layout: L1</code>. Kopfzone wie jede Slide, Liste horizontal+vertikal zentriert.</div>
-    <div class="sr-stage"><div class="reveal">
-      <div class="slide-head">
-        <span class="slide-kicker">Agenda</span>
-        <h2>Inhaltsübersicht</h2>
-        <p class="subline">Eine Zeile Untertitel zum Überblick.</p>
-      </div>
-      <div class="content-zone">
-        <div class="agenda-list agenda-list-center">
-          <div class="ag-item"><span class="ag-num">1</span><span class="ag-label">Erstes Kapitel</span></div>
-          <div class="ag-item"><span class="ag-num">2</span><span class="ag-label">Zweites Kapitel</span></div>
-          <div class="ag-sub">Optionaler Unterpunkt (grouped)</div>
-          <div class="ag-item"><span class="ag-num">3</span><span class="ag-label">Drittes Kapitel</span></div>
-        </div>
-      </div>
-    </div></div>
-  </div>
-
-  <div class="sr-demo">
-    <div class="sr-bar"><b>Agenda · L6 (Standard)</b> <code>.agenda-cols · .agenda-head · .agenda-list</code> — Content-Typ <code>agenda</code>, <code>layout: L6</code>. Kicker/Titel/Subline links neben der Liste, Titelzone bleibt leer (kein geteiltes Kopfzonen-Skelett). Aktuell in Produktion für alle 3 Views (zh-tram-flow).</div>
-    <div class="sr-stage"><div class="reveal">
+    <div class="sr-bar"><b>Agenda</b> <code>layout: L6</code></div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap"><div class="reveal"><div class="slides"><section class="present">
       <div class="agenda-cols">
         <div class="agenda-head">
           <span class="slide-kicker">Agenda</span>
@@ -502,11 +557,29 @@
         <div class="agenda-list">
           <div class="ag-item"><span class="ag-num">1</span><span class="ag-label">Erstes Kapitel</span></div>
           <div class="ag-item"><span class="ag-num">2</span><span class="ag-label">Zweites Kapitel</span></div>
-          <div class="ag-sub">Optionaler Unterpunkt (grouped)</div>
-          <div class="ag-item"><span class="ag-num">3</span><span class="ag-label">Drittes Kapitel</span></div>
+          <div class="ag-item"><span class="ag-num">3</span><span class="ag-label">Drittes, etwas längeres Kapitel</span></div>
         </div>
       </div>
-    </div></div>
+    </section></div></div></div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Agenda, grouped</b> <code>layout: L6, grouped: true</code></div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap"><div class="reveal"><div class="slides"><section class="present">
+      <div class="agenda-cols">
+        <div class="agenda-head">
+          <span class="slide-kicker">Agenda</span>
+          <h2>Inhaltsübersicht</h2>
+          <p class="subline">Eine Zeile Untertitel zum Überblick.</p>
+        </div>
+        <div class="agenda-list">
+          <div class="ag-item"><span class="ag-num">1</span><span class="ag-label">Erstes Kapitel</span></div>
+          <div class="ag-sub">Optionale Copy-Zeile zum Kapitel</div>
+          <div class="ag-item"><span class="ag-num">2</span><span class="ag-label">Zweites Kapitel</span></div>
+          <div class="ag-sub">Noch eine kurze Erläuterung</div>
+        </div>
+      </div>
+    </section></div></div></div></div>
   </div>
 
   <div class="sr-demo">
@@ -640,9 +713,43 @@
         <div class="box-item">Erster Punkt</div>
         <div class="box-item">Zweiter Punkt</div>
         <div class="box-item">Dritter Punkt</div>
-        <div class="box-item highlight">Vierter Punkt — hervorgehoben</div>
+        <div class="box-item highlight">Vierter Punkt, hervorgehoben</div>
       </div>
     </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Insights — Box-Grid (heading außen) + Ring/Box-Reihe</b> <code>box_grid (heading) → cols &gt; w50 (rings) + w50.box-narrow (box_grid)</code> — komplettes Zwei-Zeilen-Insight-Layout, <b>fl-airport-company: insights-verspaetungen-erkenntnisse</b></div>
+    <div class="sr-stage flush"><div class="slide-canvas-wrap"><div class="reveal"><div class="slides"><section class="present">
+      <div class="slide-head">
+        <span class="slide-kicker">Insights</span>
+        <h2>Erkenntnisse aus der Betrachtung</h2>
+        <p class="subline">Analyse der höchsten durchschnittlichen Unpünktlichkeit</p>
+      </div>
+      <div class="content-zone">
+        <div class="sections-block">
+          <h4 class="content-heading">Beobachtungen</h4>
+          <div class="box-grid" style="grid-template-columns: repeat(3, 1fr)">
+            <div class="box-item">Erster Beobachtungspunkt in einem Satz.</div>
+            <div class="box-item">Zweiter Beobachtungspunkt in einem Satz.</div>
+            <div class="box-item">Dritter Beobachtungspunkt in einem Satz.</div>
+          </div>
+        </div>
+        <div class="cols">
+          <div class="w50">
+            <div class="rings" style="grid-template-columns: repeat(1, 1fr);">
+              <div class="ring-wrap"><div class="ring" style="background: conic-gradient(var(--accent) 22%, var(--card) 0);"><div class="ring-inner">22 %</div></div><div class="l">Anteil an der Gesamtzahl</div></div>
+            </div>
+          </div>
+          <div class="w50 box-narrow">
+            <div class="box-grid" style="grid-template-columns: repeat(1, 1fr)">
+              <div class="box-item highlight">Ergänzende Kennzahl mit Aufzählung:<ul><li>Punkt A</li><li>Punkt B</li><li>Punkt C</li></ul></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section></div></div></div></div>
+    <p style="font-size:0.8rem; color:#888; margin:8px 4px 0;">Ohne Ring (z. B. zwei Vergleichs-Boxen statt Ring+Hinweis): einfach eine zweite <code>box_grid</code>-Reihe direkt nach der ersten, gleicher Abstand (<code>.sections-block + .box-grid</code>), siehe <b>insights-zeitraeume-erkenntnisse</b>.</p>
   </div>
 
   <div class="sr-demo">
@@ -792,6 +899,81 @@
   </div>
 
   <div class="sr-demo">
+    <div class="sr-bar"><b>Bild + Text (image_right, 4:3)</b> <code>.chart-cols · .chart-cols-head · .chart-cols-img</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="chart-cols">
+        <div class="chart-cols-head">
+          <p class="chart-cols-caption">Kurzer Beschreibungstext zum Chart.</p>
+        </div>
+        <div class="chart-cols-img">
+          <div style="width:100%; aspect-ratio:4/3; background:#dde8f0; display:flex; align-items:center; justify-content:center; color:#9ab; font-size:0.85em; border-radius:5px;">PNG-Chart 4:3</div>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Bild + Text (image_left, 1:1)</b> <code>.chart-cols.chart-cols-reverse · .chart-cols-img-large</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="chart-cols chart-cols-reverse">
+        <div class="chart-cols-img chart-cols-img-large">
+          <div style="width:100%; aspect-ratio:1/1; background:#dde8f0; display:flex; align-items:center; justify-content:center; color:#9ab; font-size:0.85em; border-radius:5px;">PNG-Chart 1:1</div>
+        </div>
+        <div class="chart-cols-head">
+          <p class="chart-cols-caption">Gleiche Textformatierung wie oben, nur Bild links.</p>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Bild + Untertitel + Copy (image_left)</b> <code>.chart-cols-caption + blockquote.statement</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="chart-cols chart-cols-reverse">
+        <div class="chart-cols-img chart-cols-img-large">
+          <div style="width:100%; aspect-ratio:1/1; background:#dde8f0; display:flex; align-items:center; justify-content:center; color:#9ab; font-size:0.85em; border-radius:5px;">PNG-Chart 1:1</div>
+        </div>
+        <div class="chart-cols-head">
+          <p class="chart-cols-caption">Bild-Untertitel, erklärt kurz was zu sehen ist.</p>
+          <blockquote class="statement">Zusätzliche Copy darunter, linksbündig.</blockquote>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Code links, Copy rechts</b> <code>type: code, layout: code_left</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="chart-cols chart-cols-reverse">
+        <div class="chart-cols-code"><div class="code-block">
+          <div class="code-block-label">demo.py</div>
+          <pre><code>def foo(x: int) -&gt; bool:
+    return x &lt; 5 and x &gt; 0</code></pre>
+        </div></div>
+        <div class="chart-cols-head">
+          <p class="chart-cols-caption">Erklärt, was der Code macht und warum.</p>
+        </div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Copy links, Code rechts</b> <code>type: code, layout: code_right</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="chart-cols">
+        <div class="chart-cols-head">
+          <p class="chart-cols-caption">Gleiche Textformatierung, nur gespiegelt.</p>
+        </div>
+        <div class="chart-cols-code"><div class="code-block">
+          <div class="code-block-label">demo.py</div>
+          <pre><code>def foo(x: int) -&gt; bool:
+    return x &lt; 5 and x &gt; 0</code></pre>
+        </div></div>
+      </div>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
     <div class="sr-bar"><b>Link-Grid</b> <code>.links-grid · a.quick-link</code> — <code>links</code></div>
     <div class="sr-stage"><div class="reveal">
       <div class="links-grid">
@@ -820,6 +1002,89 @@
         <div class="w45"><div class="box">Schmalere Spalte (45%) — z. B. eine Box oder Kennzahl.</div></div>
       </div>
     </div></div>
+  </div>
+
+  <!-- ═══════════════ BOX- & CARD-VARIANTEN ═══════════════
+       Kay-Feedback 2026-07-21: keine Beschreibungstabellen — nur visuelle Beispiele,
+       klar referenzierbar. Die 5 Box-Typen ohne eigene Demo hier haben schon eine
+       weiter oben: Karten-Grid, Recommendations, Box-Grid (E6), Fakt + Text,
+       Myth-Busting, Boxen. Hier nur die eine bisher fehlende Variante. -->
+  <div class="sr-cat">Box- &amp; Card-Varianten</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Box-Grid, Heading außen</b> <code>.content-heading + .box-grid</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="content-heading">Beobachtungen</div>
+      <div class="box-grid">
+        <div class="box-item">Erster Befund</div>
+        <div class="box-item">Zweiter Befund</div>
+        <div class="box-item highlight">Dritter Befund, hervorgehoben</div>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ═══════════════ TEXT-VARIANTEN (STATEMENT-FAMILIE) ═══════════════
+       Gleiche Regel: nur die 2 bisher fehlenden Demos. Alle anderen Statement/Lead/Copy-
+       Varianten haben schon eine Demo weiter oben (Statement-Callout, E14–E17). -->
+  <div class="sr-cat">Text-Varianten (Statement-Familie)</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Statement, volle Breite</b> <code>blockquote.statement.wide</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <blockquote class="statement wide">Keine 860px-Kappung, volle Content-Zone-Breite.</blockquote>
+    </div></div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Lead + Copy, linksbündig</b> <code>.text-lead-copy-left</code></div>
+    <div class="sr-stage"><div class="reveal">
+      <div class="text-lead-copy-left">
+        <p class="lead">Die These bleibt links ausgerichtet.</p>
+        <p class="copy">Für Kontexte neben einer zweiten Spalte, z. B. Closing-Split.</p>
+      </div>
+    </div></div>
+  </div>
+
+  <!-- ═══════════════ ERWEITERUNGEN / MODIFIER ═══════════════
+       Kay-Entscheidung 2026-07-21: bewusst NICHT ins L1–L7/E1–E17-Schema umbenannt, sondern als
+       eigene Kategorie danebengestellt — diese Flags sind in Produktion, aber nie im Styleguide
+       benannt. Jedes Feld gegen generate_html_from_json.py / generate_json_from_slides.py
+       verifiziert, keine geratenen Feldnamen. -->
+  <div class="sr-cat">Erweiterungen &amp; Modifier</div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Slide-Ebene</b> <code>slides.yaml</code>-Felder auf Slide-Höhe</div>
+    <div class="sr-stage">
+      <table class="spec-table">
+        <tr><th>Feld</th><th>Wirkung</th><th>Beispiel</th></tr>
+        <tr><td class="name">layout: split</td><td>Closing-Slide: Text+Primary-Link links, Link-Spalte rechts</td><td>fl-airport-company: closing-danke</td></tr>
+        <tr><td class="name">layout: callout</td><td>Alle Statement-Items einzeln als gestapeltes <code>blockquote.statement</code> statt zweispaltig</td><td>zh-tram-data: genese-genese</td></tr>
+        <tr><td class="name">kicker</td><td>Überschreibt das sonst automatisch aus dem Kapitel gezogene Eyebrow-Label</td><td>zh-tram-flow: einstieg-agenda-overview</td></tr>
+        <tr><td class="name">subtitle_width</td><td>Begrenzt die Subline-Breite explizit (z. B. „70ch"), statt der Default-Breite</td><td>fl-airport-company: einstieg-bedingungen</td></tr>
+        <tr><td class="name">title_from_hub: true</td><td>Closing-Slide übernimmt Titel/Subtitle aus dem <code>hub</code>-Block statt eigener Felder</td><td>fl-airport-company: closing-danke</td></tr>
+        <tr><td class="name">closing_primary_link / closing_extra_links</td><td>Überschreibt die sonst automatisch generierten Closing-Links</td><td>alle Closing-Slides, projektübergreifend</td></tr>
+        <tr><td class="name">show_labels: false (auf h_timeline)</td><td>Nur die Punkte-Linie, ohne <code>.ht-labels</code> darunter, für Fälle wo ein eigener Content-Block (z. B. <code>text_columns</code>) direkt danach schon Überschrift+Text liefert</td><td>fl-airport-company: insights-airlines-bemerkungen</td></tr>
+        <tr><td class="name">heading (auf box_grid)</td><td>Gruppen-Überschrift über der Box-Reihe, wrappt in <code>.sections-block</code></td><td>fl-airport-company: insights-verspaetungen-erkenntnisse</td></tr>
+        <tr><td class="name">width (auf chart_refs-Item)</td><td>Begrenzt die Bildbreite (z. B. „70%"), statt volle Content-Zone-Breite</td><td>fl-airport-company: kennzahlen-gesamt</td></tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="sr-demo">
+    <div class="sr-bar"><b>Item-Ebene</b> Felder auf einzelnen Content-Items innerhalb einer Slide</div>
+    <div class="sr-stage">
+      <table class="spec-table">
+        <tr><th>Feld</th><th>Wirkung</th><th>Beispiel</th></tr>
+        <tr><td class="name">layout: lead_copy (auf statement)</td><td>Rendert als E17 (<code>.text-lead-copy</code>) statt als einfaches Blockquote</td><td>zh-tram-flow: einstieg-these</td></tr>
+        <tr><td class="name">layout: image_left / image_right (auf chart_refs)</td><td>Bild+Text nebeneinander, Bild links (volle Höhe) bzw. rechts</td><td>us-used-vehicle-resales / zh-tram-flow</td></tr>
+        <tr><td class="name">layout: columns / text (auf sections)</td><td>Mehrspaltiger Fließtext (<code>.sec-text</code>) statt Karten-Grid</td><td>zh-tram-data: ausgangssituation-summary-overview</td></tr>
+        <tr><td class="name">heading (auf box_grid/sections)</td><td>Gruppen-Überschrift über der ganzen Reihe (<code>.content-heading</code>), nicht pro Item</td><td>fl-airport-company: insights-verspaetungen-erkenntnisse</td></tr>
+        <tr><td class="name">grouped: true (auf agenda)</td><td>Agenda-Items mit Section-Header + eingerückten Unterpunkten (<code>.ag-sub</code>)</td><td>zh-tram-flow: einstieg-agenda-techview</td></tr>
+        <tr><td class="name">width (auf chart_refs)</td><td>Begrenzt die Bildbreite explizit (z. B. „70%")</td><td>fl-airport-company: chart_refs-Slides</td></tr>
+        <tr><td class="name">hero (auf figures)</td><td><span class="deviation">⚠️ aktuell nicht implementiert — Feld wird im Generator ignoriert (item_type "figures" liest nur `items`, nicht `hero`), Content geht dadurch stillschweigend verloren. Kein Fix in diesem Schritt, aber als Befund festgehalten.</span></td><td>zh-tram-flow: modell-mae-hero-overview/-storyview</td></tr>
+      </table>
+      <p style="font-size:0.78rem; color:var(--ink-soft); margin:10px 0 0;"><code>current: true</code> (process_arrows) ist bereits im E11-Abschnitt oben dokumentiert, taucht hier bewusst nicht doppelt auf.</p>
+    </div>
   </div>
 
   <!-- ═══════════════ FARB-PALETTE ═══════════════ -->
