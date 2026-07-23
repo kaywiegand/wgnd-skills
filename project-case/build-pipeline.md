@@ -185,10 +185,16 @@ view_meta:
 
 hub:
   headline_kpis_from: <slide-id>   # Zeiger auf eine Slide — deren figures-Block wird Hero-KPI-Reihe im Hub
-  view_order: [<view>, ...]        # Reihenfolge der Karten auf dem Hub
+  view_order: [overview, techview, storyview]   # Standard-Reihenfolge (Kay-Konvention 2026-07-22)
   view_cards:
     <view>: {kicker, label, description, badge, badge_class}   # steuert public/index.html
 ```
+
+**`view_order`-Konvention (Kay, 2026-07-22):** immer `[overview, techview, storyview]` — Overview
+zuerst (verdichtete Business-Sicht), dann TechView (technischer Deep-Dive), StoryView zuletzt
+(vollständiger Report). Gilt für jedes neue Projekt, nicht nur fl-airport-company (wo diese
+Reihenfolge nachträglich korrigiert wurde — zh-tram-flow/us-used-vehicle-resales/zh-tram-data
+hatten sie schon richtig).
 
 **`hub` ist Teil von `slides.yaml`, nicht optional** — `public/index.html` wird daraus generiert
 (`generate_index_from_portfolio.py`, siehe Build-Scripts unten). Wer Slide-Inhalte ändert, die auch
@@ -305,7 +311,12 @@ python3 $SKILL_SCRIPTS/convert_json_to_md.py
      (Zeiger, keine Kopie — die 4 KPIs oben im Hub sind immer exakt die dieser Slide)
    - `hub.view_order` + `hub.view_cards[view]` (`kicker`, `label`, `description`, `badge`, `badge_class`):
      rendert die 3 View-Karten
-3. Ersetzt `{{...}}`-Platzhalter im Template (inkl. `{{HEADLINE_KPIS}}`, `{{VIEW_CARDS}}`)
+3. Liest `public/json/storyline-{view}.json` (bereits von `generate_json_from_slides.py` erzeugt,
+   läuft vorher im Makefile) und zählt die Slides je View — steht als `<N> Slides` auf der
+   Karte, statt einer manuell gepflegten Dauer (Kay-Feedback 2026-07-23: nüchterner Umfang statt
+   Uhr-Icon/Zeitschätzung, die praktisch nie zutrifft). `view_meta[view].duration_minutes` bleibt
+   für die Slide-Deck-Meta-Zeile und den `.md`-Export erhalten, speist aber **nicht** mehr die Hub-Karte.
+4. Ersetzt `{{...}}`-Platzhalter im Template (inkl. `{{HEADLINE_KPIS}}`, `{{VIEW_CARDS}}`)
 
 **⚠️ Wichtig für jede künftige Slide-Autorenarbeit** (aktuell manuell, später `/project-case slides`-Modus):
 `public/index.html` wird **nicht mehr unabhängig von den Slides gepflegt**. Wer `slides.yaml` ändert
@@ -313,8 +324,9 @@ python3 $SKILL_SCRIPTS/convert_json_to_md.py
 mitdenken:
 - Ändert sich die von `headline_kpis_from` referenzierte Slide inhaltlich? → Hub ändert sich automatisch mit (kein Handeln nötig).
 - Soll der Hub eine ANDERE Slide als KPI-Quelle nutzen? → `headline_kpis_from` anpassen.
-- Ändert sich Titel/Beschreibung/Zielgruppe/Dauer einer View grundlegend? → `hub.view_cards[view]`
+- Ändert sich Titel/Beschreibung/Zielgruppe einer View grundlegend? → `hub.view_cards[view]`
   entsprechend nachziehen, sonst zeigt der Hub veraltete Texte.
+- Die Slide-Anzahl auf der Karte zieht sich automatisch aus dem generierten JSON — kein Handeln nötig.
 Das ist der Grund, warum dieser Wert überhaupt in `slides.yaml` und nicht mehr hart im Template steht
 (gefunden 2026-07-01: identische KPIs standen doppelt in Template und Slides, sind bei einer Content-
 Änderung nur an einer Stelle aktualisiert worden — genau das soll dieser Mechanismus verhindern).

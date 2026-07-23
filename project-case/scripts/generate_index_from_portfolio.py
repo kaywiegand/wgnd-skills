@@ -15,6 +15,7 @@ hartcodiert zu sein — sonst driftet der Hub-Inhalt unbemerkt von den Slides we
 Run:     python scripts/generate_index_from_portfolio.py
 """
 
+import json
 import re
 import sys
 from pathlib import Path
@@ -24,6 +25,7 @@ import yaml
 BASE          = Path.cwd()  # invoked from the project root, matches skill calling convention
 MD_PATH       = BASE / "public" / "md" / "portfolio.md"
 SLIDES_PATH   = BASE / "public" / "md" / "slides.yaml"
+JSON_DIR      = BASE / "public" / "json"
 # Layout lebt im Skill (projektübergreifend einheitlicher Hub), nicht im Projekt.
 TEMPLATE_PATH = Path(__file__).parent.parent / "templates" / "index-template.html"
 OUT_PATH      = BASE / "public" / "index.html"
@@ -69,20 +71,29 @@ def render_headline_kpis(registry: dict) -> str:
     return html
 
 
+def count_slides(view: str) -> int:
+    """Slide-Anzahl der View aus dem bereits generierten storyline-JSON zählen
+    (generate_json_from_slides.py läuft vor diesem Script, siehe Makefile) — kein
+    eigenes view_composition-Filtering duplizieren."""
+    json_path = JSON_DIR / f"storyline-{view}.json"
+    data = json.loads(json_path.read_text(encoding="utf-8"))
+    return sum(len(chapter["slides"]) for chapter in data["chapters"])
+
+
 def render_view_cards(registry: dict) -> str:
     hub = registry["hub"]
-    view_meta = registry.get("view_meta", {})
 
     html = ""
     for view in hub["view_order"]:
         card = hub["view_cards"][view]
-        duration = view_meta.get(view, {}).get("duration_minutes", "")
+        n_slides = count_slides(view)
+        slide_label = "Slide" if n_slides == 1 else "Slides"
         html += f'      <a href="{view}.html" class="view-card {view}">\n'
         html += f'        <div class="view-label">{card["kicker"]}</div>\n'
         html += f'        <h3>{card["label"]}</h3>\n'
         html += f'        <p class="view-desc">{card["description"]}</p>\n'
         html += '        <div class="view-meta">\n'
-        html += f'          <span class="view-time">⏱️ {duration} Min</span>\n'
+        html += f'          <span class="view-count">{n_slides} {slide_label}</span>\n'
         html += f'          <span class="view-badge {card["badge_class"]}">{card["badge"]}</span>\n'
         html += '        </div>\n'
         html += '      </a>\n'

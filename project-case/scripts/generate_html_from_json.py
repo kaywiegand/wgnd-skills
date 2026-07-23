@@ -62,6 +62,20 @@ def _render_copy_paragraphs(copy: str | list[str]) -> str:
     return "".join(f'<p class="copy">{p}</p>' for p in paragraphs if p)
 
 
+def _render_chart_cols_head(block: Dict[str, Any]) -> str:
+    """Caption (optional) + bullets (optional) für code_left/code_right und
+    chart_refs image_left/image_right — Bullets lesen sich besser als ein
+    Fließtext-Absatz, wenn mehrere Einzelschritte aufgezählt werden sollen
+    (Kay-Feedback 2026-07-23)."""
+    html = ""
+    if block.get("caption"):
+        html += f'<p class="chart-cols-caption">{block.get("caption")}</p>'
+    bullets = block.get("bullets")
+    if bullets:
+        html += '<ul class="chart-cols-list">' + "".join(f"<li>{b}</li>" for b in bullets) + "</ul>"
+    return html
+
+
 def render_head(chapter_label: str | None, title: str, subtitle: str, subtitle_width: str | None = None) -> str:
     """Kicker + h2 + subline, gemeinsam in .slide-head gewrappt.
 
@@ -105,6 +119,12 @@ def render_content_item(item: Dict[str, Any]) -> str:
             html += '</div>'
         html += '</div>'
         return html
+
+    elif item_type == "note":
+        # Einzelner erklärender Satz unter KPI-/Ring-Reihen — reuses .chart-cols-caption
+        # statt einer neuen Klasse, gleiche Bildunterschrift-Optik, nur zentriert statt
+        # linksbündig neben Code/Bild (Kay-Feedback 2026-07-23).
+        return f'<p class="chart-cols-caption" style="text-align: center; margin: 4em 0 0 0;">{item.get("text", "")}</p>'
 
     elif item_type == "view_teaser":
         # Title-Slide-Teaser für die aktuelle View — automatisch aus hub.view_cards[view]
@@ -475,6 +495,9 @@ def render_content_item(item: Dict[str, Any]) -> str:
             html += f'<a class="chart-tile" href="{src}" target="_blank"{width_style}><img src="{src}" alt="{label}"></a>'
             if caption:
                 html += f'<div class="caption">{caption}</div>'
+            bullets = chart.get("bullets")
+            if bullets:
+                html += '<ul class="chart-cols-list" style="text-align: left; max-width: 640px; margin-left: auto; margin-right: auto; list-style: none; padding-left: 0;">' + "".join(f"<li>{b}</li>" for b in bullets) + "</ul>"
             html += '</div>'
         return html
 
@@ -812,8 +835,7 @@ def render_slide(
         html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
         html += '<div class="content-zone"><div class="chart-cols">'
         html += '<div class="chart-cols-head">'
-        if chart.get("caption"):
-            html += f'<p class="chart-cols-caption">{chart.get("caption")}</p>'
+        html += _render_chart_cols_head(chart)
         for extra_item in content[1:]:
             html += render_content_item(extra_item)
         html += '</div>'
@@ -831,8 +853,7 @@ def render_slide(
         html += '<div class="content-zone"><div class="chart-cols chart-cols-reverse">'
         html += f'<div class="chart-cols-img chart-cols-img-large"><a href="{src}" target="_blank"><img src="{src}" alt="{chart.get("label", "")}"></a></div>'
         html += '<div class="chart-cols-head">'
-        if chart.get("caption"):
-            html += f'<p class="chart-cols-caption">{chart.get("caption")}</p>'
+        html += _render_chart_cols_head(chart)
         for extra_item in content[1:]:
             html += render_content_item(extra_item)
         html += '</div>'
@@ -848,8 +869,7 @@ def render_slide(
         html += render_head(effective_label, title, subtitle, slide.get("subtitle_width"))
         html += '<div class="content-zone"><div class="chart-cols">'
         html += '<div class="chart-cols-head">'
-        if block.get("caption"):
-            html += f'<p class="chart-cols-caption">{block.get("caption")}</p>'
+        html += _render_chart_cols_head(block)
         for extra_item in content[1:]:
             html += render_content_item(extra_item)
         html += '</div>'
@@ -873,8 +893,7 @@ def render_slide(
         html += f'<pre><code>{escape_html(block.get("code", ""))}</code></pre>'
         html += '</div></div>'
         html += '<div class="chart-cols-head">'
-        if block.get("caption"):
-            html += f'<p class="chart-cols-caption">{block.get("caption")}</p>'
+        html += _render_chart_cols_head(block)
         for extra_item in content[1:]:
             html += render_content_item(extra_item)
         html += '</div>'
